@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="btn_color">#2196F3</color>
+    <color name="blur_background">#6B100F0F</color>
+    <color name="rating_text_color">#D4AF37</color>
+    <color name="transparent">#00000000</color>
+</resources>

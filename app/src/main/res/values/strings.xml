@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Live Football</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Live Football</string>
+    <string name="check_your_conn">Check Your Connection</string>
+    <string name="no_internet">You don\'t seem to have an active internet connection.</string>
+    <string name="conn_try_again">Please check your connection and try again.</string>
+    <string name="try_again">Try Again</string>
+
+    //ADMOB ID's
+    <string name="ADMOB_APP_ID">ca-app-pub-3489810328478410~304093714</string>
+    <string name="ADMOB_BANNER_ID">ca-app-pub-3489810328478410/935607688</string>
+    <string name="ADMOB_INTER_ID">ca-app-pub-3489810328478410/172785340</string>
+
+    //FACEBOOK ID's
+    <string name="FACEBOOK_APP_ID"></string>
+    <string name="FACEBOOK_BANNER_ID">1204722533310735_1204722656644056</string>
+    <string name="FACEBOOK_INTER_ID">1204722533310735_1204722749977380</string>
+
+    //PACKEGE NAME AND YOUTUBE API KEY
+    <string name="PACKAGE_NAME">com.fun.livefbmatch</string>
+    <string name="YOUTUBE_API_KEY">AIzaSyDT77zvdQIeFdZ7GT3xnXWLBgJCXXKw8n0</string>
+
+
+
+
+</resources>

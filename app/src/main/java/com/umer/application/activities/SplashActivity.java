@@ -1,0 +1,172 @@
+package com.umer.application.activities;
+
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.Toast;
+
+import com.google.android.gms.ads.MobileAds;
+import com.umer.application.R;
+import com.umer.application.models.AppSlider;
+import com.umer.application.models.ApplicationSettings;
+import com.umer.application.models.BaseResponse;
+import com.umer.application.models.Songs_list;
+import com.umer.application.networks.Network;
+import com.umer.application.networks.NetworkCall;
+import com.umer.application.networks.OnNetworkResponse;
+import com.umer.application.utils.APIToken;
+import com.umer.application.utils.Constants;
+import com.umer.application.utils.RequestCodes;
+import com.umer.application.utils.functions;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Response;
+
+public class SplashActivity extends AppCompatActivity implements OnNetworkResponse {
+
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    ImageView backgroundImage ;
+    LinearLayout internetError ;
+    boolean isConnected = false;
+    ApplicationSettings applicationSettings;
+    ArrayList<AppSlider>  appSlider ;
+    SharedPreferences sharedpreferences;
+    Button tryAgain ;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.splash_activity);
+//        backgroundImage = findViewById(R.id.background_image);
+        internetError = findViewById(R.id.internet_Error);
+        tryAgain = findViewById(R.id.tryAgain);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        isInternetConnected();
+        if (!isConnected) {
+            internetError.setVisibility(View.VISIBLE);
+        }
+        getApplicationSettings();
+        getApplicationSlider();
+
+        tryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent t= new Intent(SplashActivity.this,SplashActivity.class);
+                startActivity(t);
+                finish();
+            }
+        });
+    }
+
+    private void getApplicationSettings() {
+        NetworkCall.make()
+                .setCallback(this)
+                .setTag(RequestCodes.API.GET_APPLICATION_SETTINGS)
+                .enque(new Network().apis().getApplicationSettings(getResources().getString(R.string.PACKAGE_NAME)))
+                .execute();
+
+    }
+
+    private void getApplicationSlider() {
+        NetworkCall.make()
+                .setCallback(this)
+                .setTag(RequestCodes.API.GET_APPLICATION_SLIDER)
+                .enque(new Network().apis().getApplicationSlider(getResources().getString(R.string.PACKAGE_NAME)))
+                .execute();
+
+    }
+
+    @Override
+    public void onSuccess(Call call, Response response, Object tag) {
+        switch ((int) tag) {
+
+            case RequestCodes.API.GET_APPLICATION_SLIDER:
+                appSlider = new ArrayList<>();
+                appSlider = (ArrayList<AppSlider>) response.body();
+
+                break;
+
+            case RequestCodes.API.GET_APPLICATION_SETTINGS:
+                applicationSettings = new ApplicationSettings();
+                applicationSettings = (ApplicationSettings) response.body();
+
+                if (applicationSettings != null) {
+                    applicationSettings.saveApplicationSettings(getApplicationContext(), applicationSettings);
+
+//                    backgroundImage.setVisibility(View.VISIBLE);
+//                    functions.GlideImageLoaderWithPlaceholder(SplashActivity.this, backgroundImage, Constants.BASE_URL_IMAGES + applicationSettings.getSplashScreen());
+                    new Handler().postDelayed(() -> {
+                        Intent splashIntent = new Intent(SplashActivity.this, GridViewActivity.class);
+                        if (!appSlider.get(0).getUrl().isEmpty() && applicationSettings!=null) {
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            splashIntent.putExtra("applicationSettings", applicationSettings);
+                            splashIntent.putExtra("ApplicationSlider", appSlider);
+                            editor.putString("App_Header_color" , applicationSettings.getActionBarColor());
+                            editor.putString("Logo" , applicationSettings.getLog());
+                            editor.apply();
+                            startActivity(splashIntent);
+                            finish();
+                        }
+                    }, 3000);
+                }
+                break;
+
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onFailure(Call call, BaseResponse response, Object tag) {
+        switch ((int) tag) {
+            case RequestCodes.API.GET_APPLICATION_SETTINGS:
+                Log.d("Response Failure", "Error=" + response.message);
+                break;
+            case RequestCodes.API.GET_APPLICATION_SLIDER:
+                Log.d("Slider Failure", "Error=" + response.message);
+                break;
+        }
+    }
+
+    public boolean isInternetConnected() {
+
+        ConnectivityManager mgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = mgr.getActiveNetworkInfo();
+
+        if (netInfo != null) {
+            if (netInfo.isConnected()) {
+                // Internet Available
+                isConnected = true;
+            } else {
+                //No internet
+                isConnected = false;
+            }
+        } else {
+            //No internet
+            isConnected = false;
+        }
+        return isConnected;
+    }
+
+}

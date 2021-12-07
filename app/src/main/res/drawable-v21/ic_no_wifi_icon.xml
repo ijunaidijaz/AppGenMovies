@@ -1,0 +1,20 @@
+<vector android:height="71.46484dp" android:viewportHeight="370.666"
+    android:viewportWidth="518.669" android:width="100dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#FF000000"
+        android:pathData="M447.768,104.266A295.958,295.958 0,0 0,227.352 4,295.938 295.938,0 0,0 6.978,104.266a10.667,10.667 0,0 0,15.377 14.787c0.141,-0.146 0.277,-0.3 0.41,-0.451A274.876,274.876 0,0 1,227.352 25.333,274.879 274.879,0 0,1 431.96,118.688a10.667,10.667 0,0 0,15.787 -14.336Z"
+        android:strokeColor="#000" android:strokeWidth="8"/>
+    <path android:fillColor="#FF000000"
+        android:pathData="M227.373,89.333A222.316,222.316 0,0 0,61.826 164.68,10.667 10.667,0 0,0 77.2,179.469c0.141,-0.146 0.277,-0.3 0.41,-0.451a201.239,201.239 0,0 1,149.76 -68.352,201.2 201.2,0 0,1 149.76,68.267 10.667,10.667 0,0 0,16.2 -13.885c-0.132,-0.154 -0.269,-0.3 -0.41,-0.451A222.231,222.231 0,0 0,227.373 89.333Z"
+        android:strokeColor="#000" android:strokeWidth="8"/>
+    <path android:fillColor="#FF000000"
+        android:pathData="M116.674,225.013a10.667,10.667 0,1 0,15.377 14.787c0.141,-0.146 0.277,-0.3 0.41,-0.451a125.994,125.994 0,0 1,174.421 -15.4,10.667 10.667,0 0,0 14.251,-15.872A147.649,147.649 0,0 0,116.674 225.013Z"
+        android:strokeColor="#000" android:strokeWidth="8"/>
+    <path android:fillColor="#FF000000"
+        android:pathData="M227.373,313.333m-53.333,0a53.333,53.333 0,1 1,106.666 0a53.333,53.333 0,1 1,-106.666 0"
+        android:strokeColor="#000" android:strokeWidth="8"/>
+    <path android:fillColor="#fe0000"
+        android:pathData="M438.039,36.372A74.628,74.628 0,1 1,363.411 111,74.628 74.628,0 0,1 438.039,36.372Z"
+        android:strokeColor="#fff" android:strokeWidth="12"/>
+    <path android:fillColor="#fafafa" android:pathData="M465.177,144.922a6.782,6.782 0,0 1,-4.8 -1.981l-54.275,-54.275a6.785,6.785 0,0 1,9.593 -9.593L469.967,133.347a6.785,6.785 0,0 1,-4.8 11.588Z"/>
+    <path android:fillColor="#fafafa" android:pathData="M410.902,144.921a6.784,6.784 0,0 1,-4.8 -11.588l54.275,-54.275a6.785,6.785 0,0 1,9.593 9.593L415.692,142.927A6.785,6.785 0,0 1,410.902 144.921Z"/>
+</vector>
