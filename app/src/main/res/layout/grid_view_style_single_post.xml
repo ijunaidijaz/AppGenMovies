@@ -6,9 +6,9 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:padding="2dp"
-        android:scaleType="fitXY"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:padding="2dp"
+        android:scaleType="fitXY" />
 
 </RelativeLayout>

@@ -10,8 +10,7 @@
         android:id="@+id/image_view"
         android:layout_width="150dp"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        />
+        android:layout_alignParentStart="true" />
     <ImageView
         android:id="@+id/search_backBtn"
         android:layout_width="wrap_content"

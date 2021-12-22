@@ -8,5 +8,7 @@
     <color name="btn_color">#2196F3</color>
     <color name="blur_background">#6B100F0F</color>
     <color name="rating_text_color">#D4AF37</color>
+    <color name="pink">#E91E63</color>
+    <color name="green">#4CAF50</color>
     <color name="transparent">#00000000</color>
 </resources>

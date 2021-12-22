@@ -1,10 +1,16 @@
 package com.umer.application.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,8 +26,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.ads.AbstractAdListener;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
+import com.facebook.ads.AdSettings;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
@@ -38,7 +46,12 @@ import com.smarteist.autoimageslider.SliderView;
 import com.umer.application.R;
 import com.umer.application.adapters.GridViewAdapter;
 import com.umer.application.adapters.SliderAdapter;
+import com.umer.application.app.AppSession;
+import com.umer.application.fragments.MovieListFragment;
+import com.umer.application.fragments.ServerLinksFragment;
 import com.umer.application.fragments.VideoListFragment;
+import com.umer.application.fragments.WatchNowFirstFragment;
+import com.umer.application.fragments.WatchNowSecondFragment;
 import com.umer.application.models.AppSlider;
 import com.umer.application.models.ApplicationSettings;
 import com.umer.application.models.BaseResponse;
@@ -58,6 +71,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,22 +84,23 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     ImageView imageView_searchBar, search_button, search_backBtn;
     SliderView sliderView;
     EditText search_EditText;
-    TextView description ;
+    TextView description;
     GridView gridView1;
     ArrayList<Songs_list> songsList;
     ArrayList<AppSlider> appSliders;
-    LinearLayout container_gridView , DailyMotion_banner_container , facebook_banner_container;
-    RelativeLayout actionBar , bannerLayout;
+    LinearLayout container_gridView, DailyMotion_banner_container, facebook_banner_container;
+    RelativeLayout actionBar, bannerLayout;
     FrameLayout container_video_fragment;
     private AdView facebookAdView;
-    private com.google.android.gms.ads.AdView admobAdView;
+    private com.google.android.gms.ads.AdView admobAdView, myAdView;
     ApplicationSettings applicationSettings;
     int clickCount = 0;
+    int mClickCount = 0;
     private InterstitialAd admobInterstitialAd;
     private com.facebook.ads.InterstitialAd facebookInterstitialAd;
     int itemPosition = 0;
     static GridViewActivity instance;
-    String inFragment = "" ;
+    String inFragment = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,26 +109,29 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         AudienceNetworkAds.initialize(this);
         applicationSettings = (ApplicationSettings) getIntent().getSerializableExtra("applicationSettings");
         appSliders = (ArrayList<AppSlider>) getIntent().getSerializableExtra("ApplicationSlider");
-        bannerLayout=findViewById(R.id.facebookBannerLayout);
+        bannerLayout = findViewById(R.id.facebookBannerLayout);
         facebook_banner_container = findViewById(R.id.facebook_banner_container);
-        DailyMotion_banner_container = findViewById(R.id.DailyMotion_banner_container) ;
+        DailyMotion_banner_container = findViewById(R.id.DailyMotion_banner_container);
         // Initialize the Audience Network SDK
         instance = this;
+        bannerLayout.setVisibility(View.VISIBLE);
+        facebook_banner_container.setVisibility(View.VISIBLE);
+        facebookBannerAds();
+        facebookInterstitialAds();
 
-
-        if (applicationSettings.getAdds() == AdsTypes.admobAds){
-            bannerLayout.setVisibility(View.VISIBLE);
-            DailyMotion_banner_container.setVisibility(View.VISIBLE);
-            admobBannerAds();
-            admobInterstitialAds();
-        }
-        else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-            bannerLayout.setVisibility(View.VISIBLE);
-            facebook_banner_container.setVisibility(View.VISIBLE);
-            facebookBannerAds();
-            facebookInterstitialAds();
-
-        }
+//        if (applicationSettings.getAdds() == AdsTypes.admobAds){
+//            bannerLayout.setVisibility(View.VISIBLE);
+//            DailyMotion_banner_container.setVisibility(View.VISIBLE);
+//            admobBannerAds();
+//            admobInterstitialAds();
+//        }
+//        else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
+//            bannerLayout.setVisibility(View.VISIBLE);
+//            facebook_banner_container.setVisibility(View.VISIBLE);
+//            facebookBannerAds();
+//            facebookInterstitialAds();
+//
+//        }
 
 
         initViews();
@@ -122,6 +141,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
 
     }
+
     public static GridViewActivity getInstance() {
         return instance;
     }
@@ -138,16 +158,17 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         search_EditText = findViewById(R.id.search_et);
         search_backBtn = findViewById(R.id.search_backBtn);
         gridView1 = findViewById(R.id.gridView1);
+        myAdView = findViewById(R.id.myAddJu);
         gridView1.setNumColumns(applicationSettings.getRowDisplay());
         container_gridView = findViewById(R.id.container_gridView);
         container_video_fragment = findViewById(R.id.container_video_fragment);
         setSlider();
+//        loadBannerAd();
 
     }
 
-    public void setSlider()
-    {
-        SliderAdapter adapter = new SliderAdapter(this, appSliders , applicationSettings);
+    public void setSlider() {
+        SliderAdapter adapter = new SliderAdapter(this, appSliders, applicationSettings);
         sliderView.setSliderAdapter(adapter);
         sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
         sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
@@ -157,6 +178,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
         sliderView.startAutoCycle();
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -167,9 +189,9 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                     search_backBtn.setVisibility(View.VISIBLE);
                     search_EditText.setVisibility(View.VISIBLE);
                 } else {
-                    openVideoFragment(search_EditText.getText().toString(), "" , false,20 ,
-                            applicationSettings.isYoutubePost(),applicationSettings.getAdds(),applicationSettings.getActionBarColor() ,
-                            applicationSettings.getLog() , getResources().getString(R.string.ADMOB_INTER_ID),getResources().getString(R.string.FACEBOOK_INTER_ID));
+                    openVideoFragment(search_EditText.getText().toString(), "", false, 20,
+                            applicationSettings.isYoutubePost(), applicationSettings.getAdds(), applicationSettings.getActionBarColor(),
+                            applicationSettings.getLog(), getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
                 }
                 break;
 
@@ -214,12 +236,12 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                 if (response.body() != null) {
                     songsList = new ArrayList<>();
                     songsList = (ArrayList<Songs_list>) response.body();
-                    GridViewAdapter myAdapter ;
-                    if (applicationSettings.getRowDisplay() == 1){
-                         myAdapter = new GridViewAdapter(this, R.layout.grid_view_style_single_post, songsList);
+                    GridViewAdapter myAdapter;
+                    if (applicationSettings.getRowDisplay() == 1) {
+                        myAdapter = new GridViewAdapter(this, R.layout.grid_view_style_single_post, songsList);
 
-                    }else {
-                         myAdapter = new GridViewAdapter(this, R.layout.gridview_style, songsList);
+                    } else {
+                        myAdapter = new GridViewAdapter(this, R.layout.gridview_style, songsList);
                     }
 
                     gridView1.setAdapter(myAdapter);
@@ -227,12 +249,11 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 //                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
                         itemPosition = songsList.get(position).getId();
                         clickCount++;
-                        if (songsList.get(position).getRedirectApp().isEmpty()){
-                            openSinglePost(itemPosition,clickCount);
-                        }else {
+                        if (songsList.get(position).getRedirectApp().isEmpty()) {
+                            openSinglePost(itemPosition, clickCount);
+                        } else {
                             openAppOnPlayStore(songsList.get(position).getRedirectApp());
                         }
-
 
 
                     });
@@ -273,7 +294,8 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 //        com.google.android.gms.ads.AdView adView = new com.google.android.gms.ads.AdView(this);
 //        adView.setAdSize(com.google.android.gms.ads.AdSize.BANNER);
 //        adView.setAdUnitId(getResources().getString(R.string.ADMOB_BANNER_ID));
-        MobileAds.initialize(this, getResources().getString(R.string.ADMOB_APP_ID));
+//        MobileAds.initialize(this, getResources().getString(R.string.ADMOB_APP_ID));
+
         admobAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         admobAdView.loadAd(adRequest);
@@ -281,7 +303,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onAdClosed() {
                 super.onAdClosed();
-                if (clickCount == applicationSettings.getAdMobLimit()){
+                if (clickCount == applicationSettings.getAdMobLimit()) {
                     clickCount = 0;
                 }
                 admobInterstitialAds();
@@ -362,47 +384,107 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void facebookInterstitialAds() {
+//        facebookInterstitialAd = new com.facebook.ads.InterstitialAd(this, getResources().getString(R.string.FACEBOOK_INTER_ID));
+////        "IMG_16_9_APP_INSTALL#1197001037304304_1197857703885304"
+//        facebookInterstitialAd.setAdListener(new InterstitialAdListener() {
+//            @Override
+//            public void onInterstitialDisplayed(Ad ad) {
+//
+//            }
+//
+//            @Override
+//            public void onInterstitialDismissed(Ad ad) {
+//                if (itemPosition!= 0){
+//                    getSinglePost(itemPosition);
+//                }if (clickCount == applicationSettings.getAdMobLimit()){
+//                    clickCount = 0;
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError(Ad ad, AdError adError) {
+////                Toast.makeText(GridViewActivity.this, "Error in ad loading ", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onAdLoaded(Ad ad) {
+//
+//            }
+//
+//            @Override
+//            public void onAdClicked(Ad ad) {
+//
+//            }
+//
+//            @Override
+//            public void onLoggingImpression(Ad ad) {
+//
+//            }
+//
+//        });
+//
+//        facebookInterstitialAd.loadAd();
+        AdSettings.setTestAdType(AdSettings.TestAdType.IMG_16_9_APP_INSTALL);
+        AdSettings.getTestAdType();
+        AdSettings.setDebugBuild(true);
         facebookInterstitialAd = new com.facebook.ads.InterstitialAd(this, getResources().getString(R.string.FACEBOOK_INTER_ID));
-//        "IMG_16_9_APP_INSTALL#1197001037304304_1197857703885304"
+        facebookInterstitialAd.setAdListener(new AbstractAdListener() {
+            public void onAdLoaded(Ad ad) {
+//                adfacebook = ad;
+            }
+        });
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                facebookInterstitialAd.loadAd();
+            }
+        }, 5000);
+
         facebookInterstitialAd.setAdListener(new InterstitialAdListener() {
             @Override
             public void onInterstitialDisplayed(Ad ad) {
-
+                // Interstitial ad displayed callback
+                Log.e("TAG", "Interstitial ad displayed.");
             }
 
             @Override
             public void onInterstitialDismissed(Ad ad) {
-                if (itemPosition!= 0){
-                    getSinglePost(itemPosition);
-                }if (clickCount == applicationSettings.getAdMobLimit()){
-                    clickCount = 0;
-                }
-
+                // Interstitial dismissed callback
+                Log.e("TAG", "Interstitial ad dismissed.");
             }
 
             @Override
             public void onError(Ad ad, AdError adError) {
-//                Toast.makeText(GridViewActivity.this, "Error in ad loading ", Toast.LENGTH_SHORT).show();
+                // Ad error callback
+                Log.e("TAG", "Interstitial ad failed to load: " + adError.getErrorMessage());
             }
 
             @Override
             public void onAdLoaded(Ad ad) {
-
+                // Interstitial ad is loaded and ready to be displayed
+                Log.d("TAG", "Interstitial ad is loaded and ready to be displayed!");
+                // Show the ad
+                //  interstitial.loadAd();
+                facebookInterstitialAd.show();
+//                adfacebook = ad;
             }
 
             @Override
             public void onAdClicked(Ad ad) {
-
+                // Ad clicked callback
+                Log.d("TAG", "Interstitial ad clicked!");
             }
 
             @Override
             public void onLoggingImpression(Ad ad) {
-
+                // Ad impression logged callback
+                Log.d("TAG", "Interstitial ad impression logged!");
             }
-
         });
 
-        facebookInterstitialAd.loadAd();
     }
 
     public void showFacebookInterstitialAds() {
@@ -421,46 +503,93 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         facebookInterstitialAds();
     }
 
-    public void openVideoFragment(String keyword, String playListId , boolean isPlayList ,
-                                  int limit , boolean isYoutube , int Adds , String color , String imageUrl,
-                                  String admob_interID , String faebook_interID) {
+    public void openVideoFragment(String keyword, String playListId, boolean isPlayList,
+                                  int limit, boolean isYoutube, int Adds, String color, String imageUrl,
+                                  String admob_interID, String faebook_interID) {
         Bundle bundle = new Bundle();
         bundle.putString("KEYWORD", keyword);
-        bundle.putString("PLAYLIST_ID" , playListId);
-        bundle.putBoolean("isPLAYLIST" , isPlayList);
+        bundle.putString("PLAYLIST_ID", playListId);
+        bundle.putBoolean("isPLAYLIST", isPlayList);
         bundle.putInt("LIMIT", limit);
-        bundle.putBoolean("isYoutube" , isYoutube);
-        bundle.putInt("ADDS" , Adds);
+        bundle.putBoolean("isYoutube", isYoutube);
+        bundle.putInt("ADDS", Adds);
         bundle.putString("Color", color);
-        bundle.putString("appIcon" , imageUrl);
-        bundle.putString("ADMOB_INTER_ID" , admob_interID);
-        bundle.putString("FACEBOOK_INTER_ID" , faebook_interID);
+        bundle.putString("appIcon", imageUrl);
+        bundle.putString("ADMOB_INTER_ID", admob_interID);
+        bundle.putString("FACEBOOK_INTER_ID", faebook_interID);
         VideoListFragment fragment = new VideoListFragment();
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(null).commit();
     }
 
+    public void openMovieListFragment(String keyword, String playListId, boolean isPlayList,
+                                      int limit, boolean isYoutube, int Adds, String color, String imageUrl,
+                                      String admob_interID, String faebook_interID) {
+        Bundle bundle = new Bundle();
+        bundle.putString("KEYWORD", keyword);
+        bundle.putString("PLAYLIST_ID", playListId);
+        bundle.putBoolean("isPLAYLIST", isPlayList);
+        bundle.putInt("LIMIT", limit);
+        bundle.putBoolean("isYoutube", isYoutube);
+        bundle.putInt("ADDS", Adds);
+        bundle.putString("Color", color);
+        bundle.putString("appIcon", imageUrl);
+        bundle.putString("ADMOB_INTER_ID", admob_interID);
+        bundle.putString("FACEBOOK_INTER_ID", faebook_interID);
+        bundle.putSerializable("VideosList", songsList);
+        bundle.putSerializable("applicationSettings", applicationSettings);
+        MovieListFragment fragment = new MovieListFragment();
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
+    }
+
     public void openWebUrl(String url) {
-        Intent i = new Intent(this , WebViewActivity.class);
-        i.putExtra("WEBURL" , url);
+        Intent i = new Intent(this, WebViewActivity.class);
+        i.putExtra("WEBURL", url);
         startActivity(i);
     }
 
     @Override
     public void onBackPressed() {
-
-        if(inFragment.equals("inFragment")){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.container_video_fragment);
+            if (f instanceof MovieListFragment || f instanceof WatchNowFirstFragment || f instanceof WatchNowSecondFragment
+                    || f instanceof ServerLinksFragment) {
+                popBackStack();
+            }
+        } else if (inFragment.equals("inFragment")) {
             super.onBackPressed();
             admobInterstitialAds();
             facebookInterstitialAds();
-            clickCount = 0 ;
+            clickCount = 0;
             inFragment = "";
-        }else if (inFragment.equals("")){
+        } else if (inFragment.equals("")) {
             onButtonShowPopupWindowClick();
-            clickCount = 0 ;
+            clickCount = 0;
+        }
+    }
+
+    public void popBackStack() {
+        FragmentManager fm = getLastFragmentManagerWithBack(getSupportFragmentManager());
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
 
         }
+    }
 
+    private FragmentManager getLastFragmentManagerWithBack(FragmentManager fm) {
+        FragmentManager fmLast = fm;
+        List<Fragment> fragments = fm.getFragments();
+        for (Fragment f : fragments) {
+            if ((f.getChildFragmentManager() != null) && (f.getChildFragmentManager().getBackStackEntryCount() > 0)) {
+                fmLast = f.getFragmentManager();
+                FragmentManager fmChild = getLastFragmentManagerWithBack(f.getChildFragmentManager());
+                if (fmChild != fmLast)
+                    fmLast = fmChild;
+            }
+        }
+        return fmLast;
+    }
 //        else if (clickCount > applicationSettings.getAdMobLimit()){
 //            clickCount = 0;
 //             if (applicationSettings.getAdds() == AdsTypes.admobAds){
@@ -472,30 +601,34 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 //
 //            }
 //        }
-    }
 
-    public void singlePostResponseHandling(singlePost singlePost1){
+
+    public void singlePostResponseHandling(singlePost singlePost1) {
 
         if (singlePost1.getRedirectApp().isEmpty() && !singlePost1.isRedirectLink()) {
-            if (singlePost1.getPlayList()){
+            if (singlePost1.getPlayList()) {
                 //playlist should be in string
-                openVideoFragment("", singlePost1.getBaseApi().getCode()  ,
-                        singlePost1.getPlayList(),  singlePost1.getLimit(),applicationSettings.isYoutubePost(),
-                        applicationSettings.getAdds(),applicationSettings.getActionBarColor() , applicationSettings.getLog(),
-                        getResources().getString(R.string.ADMOB_INTER_ID),getResources().getString(R.string.FACEBOOK_INTER_ID));
+                openVideoFragment("", singlePost1.getBaseApi().getCode(),
+                        singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                        applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                        getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
-            }else {
-                openVideoFragment(singlePost1.getKeyword(),"" ,
-                        singlePost1.getPlayList() ,  singlePost1.getLimit(),applicationSettings.isYoutubePost(),
-                        applicationSettings.getAdds(),applicationSettings.getActionBarColor() , applicationSettings.getLog(),
-                        getResources().getString(R.string.ADMOB_INTER_ID),getResources().getString(R.string.FACEBOOK_INTER_ID));
+            } else {
+//                openVideoFragment(singlePost1.getKeyword(),"" ,
+//                        singlePost1.getPlayList() ,  singlePost1.getLimit(),applicationSettings.isYoutubePost(),
+//                        applicationSettings.getAdds(),applicationSettings.getActionBarColor() , applicationSettings.getLog(),
+//                        getResources().getString(R.string.ADMOB_INTER_ID),getResources().getString(R.string.FACEBOOK_INTER_ID));
+                openMovieListFragment(singlePost1.getKeyword(), "",
+                        singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                        applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                        getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
             }
 
         } else if (!singlePost1.getRedirectApp().isEmpty()) {
             openAppOnPlayStore(singlePost1.getRedirectApp());
         } else if (singlePost1.isRedirectLink()) {
-            if (applicationSettings.getAdds() == AdsTypes.admobAds){
+            if (applicationSettings.getAdds() == AdsTypes.admobAds) {
                 if (admobInterstitialAd.isLoaded()) {
                     admobInterstitialAd.show();
                     admobInterstitialAds();
@@ -505,21 +638,22 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                             openWebUrl(singlePost1.getBaseApi().getUrl());
                         }
                     });
-                }else {
+                } else {
                     openWebUrl(singlePost1.getBaseApi().getUrl());
                 }
-            }else if (applicationSettings.getAdds() == AdsTypes.facebooksAds){
+            } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
 //                showFacebookInterstitialAds();
 //                facebookInterstitialAds();
                 openWebUrl(singlePost1.getBaseApi().getUrl());
-            }else {
+            } else {
                 openWebUrl(singlePost1.getBaseApi().getUrl());
             }
         }
     }
 
-    public void openSinglePost(int position , int clickCount){
-            itemPosition = position ;
+
+    public void openSinglePost(int position, int clickCount) {
+        itemPosition = position;
         if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.admobAds) {
             if (admobInterstitialAd.isLoaded()) {
                 admobInterstitialAd.show();
@@ -543,7 +677,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void openSinglePostWithoutAdd(int position){
+    public void openSinglePostWithoutAdd(int position) {
         getSinglePost(position);
     }
 
@@ -592,23 +726,24 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
         ratingImage.setOnClickListener(v13 -> {
             openAppOnPlayStore(getResources().getString(R.string.PACKAGE_NAME));
-                });
+        });
         ratingText.setOnClickListener(v13 -> {
             openAppOnPlayStore(getResources().getString(R.string.PACKAGE_NAME));
         });
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onResultReceived(String result) {
-        inFragment = result ;
+        inFragment = result;
     }
 
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        if (applicationSettings.getAdds() == AdsTypes.admobAds){
+        if (applicationSettings.getAdds() == AdsTypes.admobAds) {
             admobInterstitialAds();
-        }else if (applicationSettings.getAdds() == AdsTypes.facebooksAds){
+        } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
             facebookInterstitialAds();
         }
     }
@@ -617,13 +752,35 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        if (applicationSettings.getAdds() == AdsTypes.admobAds){
+        if (applicationSettings.getAdds() == AdsTypes.admobAds) {
             admobInterstitialAds();
-        }else if (applicationSettings.getAdds() == AdsTypes.facebooksAds){
+        } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
             facebookInterstitialAds();
         }
     }
 
+    private void loadBannerAd() {
+        // Creating  a Ad Request
+        AdRequest adRequest = new AdRequest.Builder().build();
 
+        // load Ad with the Request
+        myAdView.loadAd(adRequest);
 
+        // Showing a simple Toast message to user when an ad is Loading
+        Toast.makeText(this, "Banner Ad is loading ", Toast.LENGTH_LONG).show();
+
+    }
+
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//       int myClick=AppSession.getInt("myClick");
+//       if (myClick==2){
+//           AppSession.put("myClick",0);
+//           myAdView.setVisibility(View.VISIBLE);
+//           loadBannerAd();
+//       }else if (myClick<2){
+//           AppSession.put("myClick",myClick+1);
+//       }
+//        return super.dispatchTouchEvent(ev);
+//    }
 }

@@ -8,14 +8,20 @@
     <string name="try_again">Try Again</string>
 
     //ADMOB ID's
-    <string name="ADMOB_APP_ID">ca-app-pub-3489810328478410~304093714</string>
-    <string name="ADMOB_BANNER_ID">ca-app-pub-3489810328478410/935607688</string>
-    <string name="ADMOB_INTER_ID">ca-app-pub-3489810328478410/172785340</string>
+<!--    <string name="ADMOB_APP_ID">ca-app-pub-3489810328478410~304093714</string>-->
+    <string name="ADMOB_APP_ID">ca-app-pub-2830201261334544~2516166051</string>
+<!--    <string name="ADMOB_BANNER_ID">ca-app-pub-3489810328478410/935607688</string>-->
+    <string name="ADMOB_BANNER_ID">ca-app-pub-2830201261334544/8919838597</string>
+<!--    <string name="ADMOB_INTER_ID">ca-app-pub-3489810328478410/172785340</string>-->
+    <string name="ADMOB_INTER_ID">ca-app-pub-2830201261334544/2107018236</string>
+    <string name="MY_APP_ID">ca-app-pub-7314799413633448~7713870348</string>
 
     //FACEBOOK ID's
     <string name="FACEBOOK_APP_ID"></string>
-    <string name="FACEBOOK_BANNER_ID">1204722533310735_1204722656644056</string>
-    <string name="FACEBOOK_INTER_ID">1204722533310735_1204722749977380</string>
+<!--    <string name="FACEBOOK_BANNER_ID">1204722533310735_1204722656644056</string>-->
+    <string name="FACEBOOK_BANNER_ID">IMG_16_9_APP_INSTALL#YOUR_PLACEMENT_ID</string>
+<!--    <string name="FACEBOOK_INTER_ID">1204722533310735_1204722749977380</string>-->
+    <string name="FACEBOOK_INTER_ID">YOUR_PLACEMENT_ID</string>
 
     //PACKEGE NAME AND YOUTUBE API KEY
     <string name="PACKAGE_NAME">com.fun.livefbmatch</string>
