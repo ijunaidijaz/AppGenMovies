@@ -60,7 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@color/green"
+                android:background="@drawable/round_bg_green"
+                android:elevation="5dp"
                 android:text="Watch Now"
                 android:textColor="@color/white" />
             <Button
@@ -69,8 +70,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@color/pink"
                 android:text="DCMA Notice"
+                android:background="@drawable/round_bg"
+                android:elevation="5dp"
                 android:textColor="@color/white" />
         </LinearLayout>
         <LinearLayout
@@ -83,7 +85,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@color/green"
+                android:background="@drawable/round_bg_green"
+                android:elevation="5dp"
                 android:text="Server Link 1"
                 android:textColor="@color/white" />
             <Button
@@ -92,7 +95,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_weight="1"
-                android:background="@color/pink"
+                android:background="@drawable/round_bg"
+                android:elevation="5dp"
                 android:text="Server Link 2"
                 android:textColor="@color/white" />
             <Button
@@ -101,7 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@color/green"
+                android:background="@drawable/round_bg_green"
+                android:elevation="5dp"
                 android:text="Server Link 3"
                 android:textColor="@color/white" />
             <Button
@@ -110,7 +115,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_weight="1"
-                android:background="@color/pink"
+                android:background="@drawable/round_bg"
+                android:elevation="5dp"
                 android:text="Server Link 4"
                 android:textColor="@color/white" />
         </LinearLayout>

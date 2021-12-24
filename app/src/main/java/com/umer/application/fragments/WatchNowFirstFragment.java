@@ -13,14 +13,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdListener;
 import com.umer.application.R;
+import com.umer.application.activities.GridViewActivity;
 import com.umer.application.adapters.GridViewAdapter;
 import com.umer.application.adapters.VideoListAdapter;
 import com.umer.application.databinding.MovieListFragmentBinding;
 import com.umer.application.databinding.WatchNowFirstFragmentBinding;
 import com.umer.application.models.ApplicationSettings;
+import com.umer.application.models.BaseResponse;
 import com.umer.application.models.Songs_list;
+import com.umer.application.models.singlePost;
+import com.umer.application.networks.Network;
+import com.umer.application.networks.NetworkCall;
+import com.umer.application.networks.OnNetworkResponse;
+import com.umer.application.utils.AdsTypes;
 import com.umer.application.utils.Constants;
+import com.umer.application.utils.RequestCodes;
 import com.umer.application.utils.functions;
 import com.umer.application.viewModels.MovieListViewModel;
 import com.umer.application.viewModels.WatchNowFirstViewModel;
@@ -29,7 +38,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WatchNowFirstFragment extends Fragment {
+import retrofit2.Call;
+import retrofit2.Response;
+
+public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse {
     private WatchNowFirstViewModel mViewModel;
     WatchNowFirstFragmentBinding binding;
     private VideoListAdapter mAdapter;
@@ -76,7 +88,7 @@ public class WatchNowFirstFragment extends Fragment {
             binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
 //                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
                 itemPosition = songsList.get(position).getId();
-                openWatchNowSecondFragment(songsList.get(position));
+                ((GridViewActivity)getActivity()).getSinglePost(itemPosition);
 
             });
             binding.watchNow.setOnClickListener(v -> {
@@ -99,5 +111,94 @@ public class WatchNowFirstFragment extends Fragment {
         WatchNowSecondFragment fragment = new WatchNowSecondFragment();
         fragment.setArguments(bundle);
         getParentFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
+    }
+
+    public void openMovieListFragment(String keyword, String playListId, boolean isPlayList,
+                                      int limit, boolean isYoutube, int Adds, String color, String imageUrl,
+                                      String admob_interID, String faebook_interID) {
+        Bundle bundle = new Bundle();
+        bundle.putString("KEYWORD", keyword);
+        bundle.putString("PLAYLIST_ID", playListId);
+        bundle.putBoolean("isPLAYLIST", isPlayList);
+        bundle.putInt("LIMIT", limit);
+        bundle.putBoolean("isYoutube", isYoutube);
+        bundle.putInt("ADDS", Adds);
+        bundle.putString("Color", color);
+        bundle.putString("appIcon", imageUrl);
+        bundle.putString("ADMOB_INTER_ID", admob_interID);
+        bundle.putString("FACEBOOK_INTER_ID", faebook_interID);
+        bundle.putSerializable("VideosList", (Serializable) songsList);
+        bundle.putSerializable("applicationSettings", applicationSettings);
+        MovieListFragment fragment = new MovieListFragment();
+        fragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
+    }
+
+    public void openSinglePost(int position, int clickCount) {
+        itemPosition = position;
+//        if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.admobAds) {
+//            if (admobInterstitialAd.isLoaded()) {
+//                admobInterstitialAd.show();
+//                admobInterstitialAd.setAdListener(new AdListener() {
+//                    @Override
+//                    public void onAdClosed() {
+//                        getSinglePost(position);
+//
+//                    }
+//                });
+//            } else {
+////              Toast.makeText(GridViewActivity.this, "interstitial ads not loaded", Toast.LENGTH_SHORT).show();
+//                getSinglePost(position);
+//            }
+//
+//        } else if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.facebooksAds) {
+//            showFacebookInterstitialAds();
+//        } else {
+//            getSinglePost(position);
+//
+//        }
+    }
+
+    private void getSinglePost(int id) {
+        NetworkCall.make()
+                .setCallback(this)
+                .autoLoading(getParentFragmentManager())
+                .setTag(RequestCodes.API.GET_SINGLE_POST)
+                .enque(new Network().apis().getSinglePost(id))
+                .execute();
+
+    }
+
+    @Override
+    public void onSuccess(Call call, Response response, Object tag) {
+        switch ((int) tag) {
+            case RequestCodes.API.GET_SINGLE_POST:
+//                Toast.makeText(this, "Successful get Single posts", Toast.LENGTH_SHORT).show();
+                if (response.body() != null) {
+                    singlePost singlePost1 = (singlePost) response.body();
+                    singlePostResponseHandling(singlePost1);
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onFailure(Call call, BaseResponse response, Object tag) {
+        switch ((int) tag) {
+            case RequestCodes.API.GET_ALL_POSTS:
+            case RequestCodes.API.GET_SINGLE_POST:
+//                Toast.makeText(this, "UnSuccessful" + response.message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void singlePostResponseHandling(singlePost singlePost1) {
+        openMovieListFragment(singlePost1.getKeyword(), "",
+                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+
     }
 }

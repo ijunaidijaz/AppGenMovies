@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.umer.application.R;
+import com.umer.application.activities.GridViewActivity;
 import com.umer.application.adapters.GridViewAdapter;
 import com.umer.application.adapters.VideoListAdapter;
 import com.umer.application.databinding.ServerLinksFragmentBinding;
@@ -35,11 +36,12 @@ public class ServerLinksFragment extends Fragment {
     private String keyword, imageURL, colorString, admob_Inter_Id, facebook_Inter_Id;
     private int limit, adds;
     private boolean isYoutube;
-    int itemPosition=0;
-    int clickCount=0;
+    int itemPosition = 0;
+    int clickCount = 0;
     private boolean isPlayList;
     List<Songs_list> songsList = new ArrayList<>();
     ApplicationSettings applicationSettings;
+
     public static ServerLinksFragment newInstance() {
         return new ServerLinksFragment();
     }
@@ -74,11 +76,13 @@ public class ServerLinksFragment extends Fragment {
             binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
 //                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
                 itemPosition = songsList.get(position).getId();
-
+                ((GridViewActivity) getActivity()).getSinglePost(itemPosition);
 
             });
-
-            imageURL =  applicationSettings.getLog();
+            binding.serverLink1.setOnClickListener(v -> {
+                ((GridViewActivity) getActivity()).openSinglePost(song.getId(), clickCount,true);
+            });
+            imageURL = applicationSettings.getLog();
             functions.GlideImageLoaderWithPlaceholder(getContext(), binding.header.imageView, Constants.BASE_URL_IMAGES + imageURL);
 
 

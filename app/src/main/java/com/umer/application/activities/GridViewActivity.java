@@ -99,6 +99,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     private InterstitialAd admobInterstitialAd;
     private com.facebook.ads.InterstitialAd facebookInterstitialAd;
     int itemPosition = 0;
+    boolean isSingleVideoFrag = false;
     static GridViewActivity instance;
     String inFragment = "";
 
@@ -218,7 +219,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void getSinglePost(int id) {
+    public void getSinglePost(int id) {
         NetworkCall.make()
                 .setCallback(this)
                 .autoLoading(getSupportFragmentManager())
@@ -227,6 +228,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                 .execute();
 
     }
+
 
     @Override
     public void onSuccess(Call call, Response response, Object tag) {
@@ -608,17 +610,24 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         if (singlePost1.getRedirectApp().isEmpty() && !singlePost1.isRedirectLink()) {
             if (singlePost1.getPlayList()) {
                 //playlist should be in string
-                openVideoFragment("", singlePost1.getBaseApi().getCode(),
-                        singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
-                        applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                        getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
-
+                if (isSingleVideoFrag) {
+                    openVideoFragment("", singlePost1.getBaseApi().getCode(),
+                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+                } else {
+                    openMovieListFragment(singlePost1.getKeyword(), "",
+                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+                }
             } else {
-//                openVideoFragment(singlePost1.getKeyword(),"" ,
-//                        singlePost1.getPlayList() ,  singlePost1.getLimit(),applicationSettings.isYoutubePost(),
-//                        applicationSettings.getAdds(),applicationSettings.getActionBarColor() , applicationSettings.getLog(),
-//                        getResources().getString(R.string.ADMOB_INTER_ID),getResources().getString(R.string.FACEBOOK_INTER_ID));
-                openMovieListFragment(singlePost1.getKeyword(), "",
+                if (isSingleVideoFrag) {
+                    openVideoFragment(singlePost1.getKeyword(), "",
+                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+                } else openMovieListFragment(singlePost1.getKeyword(), "",
                         singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
                         applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                         getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
@@ -639,20 +648,71 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                         }
                     });
                 } else {
-                    openWebUrl(singlePost1.getBaseApi().getUrl());
+                    if (isSingleVideoFrag) {
+                        openWebUrl(singlePost1.getBaseApi().getUrl());
+                    }else {
+                        openMovieListFragment(singlePost1.getKeyword(), "",
+                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                                getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+
+                    }
                 }
             } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
 //                showFacebookInterstitialAds();
 //                facebookInterstitialAds();
-                openWebUrl(singlePost1.getBaseApi().getUrl());
+                if (isSingleVideoFrag) {
+                    openWebUrl(singlePost1.getBaseApi().getUrl());
+                }else {
+                    openMovieListFragment(singlePost1.getKeyword(), "",
+                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+
+                }
             } else {
-                openWebUrl(singlePost1.getBaseApi().getUrl());
+                if (isSingleVideoFrag) {
+                    openWebUrl(singlePost1.getBaseApi().getUrl());
+                }else {
+                    openMovieListFragment(singlePost1.getKeyword(), "",
+                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+
+                }
             }
         }
     }
 
 
     public void openSinglePost(int position, int clickCount) {
+        isSingleVideoFrag = false;
+        itemPosition = position;
+        if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.admobAds) {
+            if (admobInterstitialAd.isLoaded()) {
+                admobInterstitialAd.show();
+                admobInterstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        getSinglePost(position);
+
+                    }
+                });
+            } else {
+//              Toast.makeText(GridViewActivity.this, "interstitial ads not loaded", Toast.LENGTH_SHORT).show();
+                getSinglePost(position);
+            }
+
+        } else if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.facebooksAds) {
+            showFacebookInterstitialAds();
+        } else {
+            getSinglePost(position);
+
+        }
+    }
+
+    public void openSinglePost(int position, int clickCount, boolean isVideoFrag) {
+        isSingleVideoFrag = true;
         itemPosition = position;
         if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.admobAds) {
             if (admobInterstitialAd.isLoaded()) {

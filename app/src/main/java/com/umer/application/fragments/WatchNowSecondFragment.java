@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.umer.application.R;
+import com.umer.application.activities.GridViewActivity;
 import com.umer.application.adapters.GridViewAdapter;
 import com.umer.application.adapters.VideoListAdapter;
 import com.umer.application.databinding.WatchNowFirstFragmentBinding;
@@ -76,7 +77,7 @@ public class WatchNowSecondFragment extends Fragment {
             binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
 //                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
                 itemPosition = songsList.get(position).getId();
-                openServerLinkFragment(songsList.get(position));
+                ((GridViewActivity)getActivity()).getSinglePost(itemPosition);
 
             });
             binding.watchNow.setOnClickListener(v -> {
