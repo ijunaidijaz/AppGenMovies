@@ -1,10 +1,5 @@
 package com.umer.application.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -26,6 +21,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.facebook.ads.AbstractAdListener;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
@@ -37,16 +38,19 @@ import com.facebook.ads.InterstitialAdListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.umer.application.R;
+import com.umer.application.adapters.CategoryAdapter;
 import com.umer.application.adapters.GridViewAdapter;
+import com.umer.application.adapters.MoviesAdapter;
 import com.umer.application.adapters.SliderAdapter;
-import com.umer.application.app.AppSession;
+import com.umer.application.adapters.viewHolders.CategoryViewHolder;
+import com.umer.application.adapters.viewHolders.MoviesViewHolder;
+import com.umer.application.callbacks.CategoryCallback;
+import com.umer.application.callbacks.MoviesCallback;
+import com.umer.application.databinding.TestingGridViewBinding;
 import com.umer.application.fragments.MovieListFragment;
 import com.umer.application.fragments.ServerLinksFragment;
 import com.umer.application.fragments.VideoListFragment;
@@ -57,7 +61,6 @@ import com.umer.application.models.ApplicationSettings;
 import com.umer.application.models.BaseResponse;
 import com.umer.application.models.Songs_list;
 import com.umer.application.models.singlePost;
-import com.umer.application.networks.ApiServices;
 import com.umer.application.networks.Network;
 import com.umer.application.networks.NetworkCall;
 import com.umer.application.networks.OnNetworkResponse;
@@ -70,16 +73,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GridViewActivity extends AppCompatActivity implements View.OnClickListener, OnNetworkResponse, com.facebook.ads.AdListener {
+public class GridViewActivity extends AppCompatActivity implements View.OnClickListener, OnNetworkResponse, com.facebook.ads.AdListener, MoviesCallback, CategoryCallback {
 
     ImageView imageView_searchBar, search_button, search_backBtn;
     SliderView sliderView;
@@ -98,15 +99,18 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     int mClickCount = 0;
     private InterstitialAd admobInterstitialAd;
     private com.facebook.ads.InterstitialAd facebookInterstitialAd;
-    int itemPosition = 0;
-    boolean isSingleVideoFrag = false;
+    int itemId = 0;
+    int itemPosition;
+    boolean isSingleVideoFrag = false, isCategory = false;
     static GridViewActivity instance;
     String inFragment = "";
+    TestingGridViewBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.testing_grid_view);
+        binding = TestingGridViewBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         AudienceNetworkAds.initialize(this);
         applicationSettings = (ApplicationSettings) getIntent().getSerializableExtra("applicationSettings");
         appSliders = (ArrayList<AppSlider>) getIntent().getSerializableExtra("ApplicationSlider");
@@ -158,9 +162,9 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         search_button = findViewById(R.id.search_btn);
         search_EditText = findViewById(R.id.search_et);
         search_backBtn = findViewById(R.id.search_backBtn);
-        gridView1 = findViewById(R.id.gridView1);
+//        gridView1 = findViewById(R.id.gridView1);
         myAdView = findViewById(R.id.myAddJu);
-        gridView1.setNumColumns(applicationSettings.getRowDisplay());
+//        gridView1.setNumColumns(applicationSettings.getRowDisplay());
         container_gridView = findViewById(R.id.container_gridView);
         container_video_fragment = findViewById(R.id.container_video_fragment);
         setSlider();
@@ -245,20 +249,22 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                     } else {
                         myAdapter = new GridViewAdapter(this, R.layout.gridview_style, songsList);
                     }
+                    setMoviesAdapter(songsList);
+                    setCategoryOneAdapter(songsList);
+                    setCategoryTwoAdapter(songsList);
+//                    gridView1.setAdapter(myAdapter);
+//                    gridView1.setOnItemClickListener((parent, view, position, id) -> {
+////                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
+//                        itemPosition = songsList.get(position).getId();
+//                        clickCount++;
+//                        if (songsList.get(position).getRedirectApp().isEmpty()) {
+//                            openSinglePost(itemPosition, clickCount);
+//                        } else {
+//                            openAppOnPlayStore(songsList.get(position).getRedirectApp());
+//                        }
 
-                    gridView1.setAdapter(myAdapter);
-                    gridView1.setOnItemClickListener((parent, view, position, id) -> {
-//                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
-                        itemPosition = songsList.get(position).getId();
-                        clickCount++;
-                        if (songsList.get(position).getRedirectApp().isEmpty()) {
-                            openSinglePost(itemPosition, clickCount);
-                        } else {
-                            openAppOnPlayStore(songsList.get(position).getRedirectApp());
-                        }
 
-
-                    });
+//                    });
 
                 }
                 break;
@@ -556,7 +562,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.container_video_fragment);
             if (f instanceof MovieListFragment || f instanceof WatchNowFirstFragment || f instanceof WatchNowSecondFragment
-                    || f instanceof ServerLinksFragment) {
+                    || f instanceof VideoListFragment || f instanceof ServerLinksFragment) {
                 popBackStack();
             }
         } else if (inFragment.equals("inFragment")) {
@@ -616,10 +622,15 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                             applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                             getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
                 } else {
-                    openMovieListFragment(singlePost1.getKeyword(), "",
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
-                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+                    if (isCategory) {
+                        openMovieListFragment(singlePost1.getKeyword(), "",
+                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                                getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+
+                    } else {
+                        openWatchNowFirstFragment(songsList);
+                    }
                 }
             } else {
                 if (isSingleVideoFrag) {
@@ -627,11 +638,17 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                             singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
                             applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                             getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
-                } else openMovieListFragment(singlePost1.getKeyword(), "",
-                        singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
-                        applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                        getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+                } else {
+                    if (isCategory) {
+                        openMovieListFragment(singlePost1.getKeyword(), "",
+                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                                getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
+                    } else {
+                        openWatchNowFirstFragment(songsList);
+                    }
+                }
             }
 
         } else if (!singlePost1.getRedirectApp().isEmpty()) {
@@ -650,12 +667,16 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                 } else {
                     if (isSingleVideoFrag) {
                         openWebUrl(singlePost1.getBaseApi().getUrl());
-                    }else {
-                        openMovieListFragment(singlePost1.getKeyword(), "",
-                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
-                                applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                                getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+                    } else {
+                        if (isCategory) {
+                            openMovieListFragment(singlePost1.getKeyword(), "",
+                                    singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                    applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                                    getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
+                        } else {
+                            openWatchNowFirstFragment(songsList);
+                        }
                     }
                 }
             } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
@@ -663,22 +684,30 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 //                facebookInterstitialAds();
                 if (isSingleVideoFrag) {
                     openWebUrl(singlePost1.getBaseApi().getUrl());
-                }else {
-                    openMovieListFragment(singlePost1.getKeyword(), "",
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
-                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+                } else {
+                    if (isCategory) {
+                        openMovieListFragment(singlePost1.getKeyword(), "",
+                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                                getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
+                    } else {
+                        openWatchNowFirstFragment(songsList);
+                    }
                 }
             } else {
                 if (isSingleVideoFrag) {
                     openWebUrl(singlePost1.getBaseApi().getUrl());
-                }else {
-                    openMovieListFragment(singlePost1.getKeyword(), "",
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
-                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+                } else {
+                    if (isCategory) {
+                        openMovieListFragment(singlePost1.getKeyword(), "",
+                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                                getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
+                    } else {
+                        openWatchNowFirstFragment(songsList);
+                    }
                 }
             }
         }
@@ -687,7 +716,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
     public void openSinglePost(int position, int clickCount) {
         isSingleVideoFrag = false;
-        itemPosition = position;
+        itemId = position;
         if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.admobAds) {
             if (admobInterstitialAd.isLoaded()) {
                 admobInterstitialAd.show();
@@ -713,7 +742,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
     public void openSinglePost(int position, int clickCount, boolean isVideoFrag) {
         isSingleVideoFrag = true;
-        itemPosition = position;
+        itemId = position;
         if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.admobAds) {
             if (admobInterstitialAd.isLoaded()) {
                 admobInterstitialAd.show();
@@ -831,7 +860,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-//    @Override
+    //    @Override
 //    public boolean dispatchTouchEvent(MotionEvent ev) {
 //       int myClick=AppSession.getInt("myClick");
 //       if (myClick==2){
@@ -843,4 +872,61 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 //       }
 //        return super.dispatchTouchEvent(ev);
 //    }
+    public void setMoviesAdapter(List<Songs_list> lists) {
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(this, applicationSettings.getRowDisplay());
+        MoviesAdapter adapter = new MoviesAdapter(this, lists, this);
+        binding.gridView1.setLayoutManager(linearLayoutManager);
+        binding.gridView1.setAdapter(adapter);
+    }
+
+    public void setCategoryOneAdapter(List<Songs_list> lists) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        CategoryAdapter adapter = new CategoryAdapter(this, lists, this);
+        binding.categoryOneRv.setLayoutManager(linearLayoutManager);
+        binding.categoryOneRv.setAdapter(adapter);
+    }
+
+    public void setCategoryTwoAdapter(List<Songs_list> lists) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        CategoryAdapter adapter = new CategoryAdapter(this, lists, this);
+        binding.categoryTwoRv.setLayoutManager(linearLayoutManager);
+        binding.categoryTwoRv.setAdapter(adapter);
+    }
+
+    @Override
+    public void onMovieClick(Songs_list songs_list, MoviesViewHolder viewHolder, int position) {
+//        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
+        this.itemPosition = position;
+        isCategory = false;
+        itemId = songsList.get(position).getId();
+        clickCount++;
+        if (songsList.get(position).getRedirectApp().isEmpty()) {
+            openSinglePost(itemId, clickCount);
+        } else {
+            openAppOnPlayStore(songsList.get(position).getRedirectApp());
+        }
+    }
+
+    @Override
+    public void onCategoryClick(Songs_list songs_list, CategoryViewHolder viewHolder, int position) {
+        isCategory = true;
+        this.itemPosition = position;
+        itemId = songsList.get(position).getId();
+        clickCount++;
+        if (songsList.get(position).getRedirectApp().isEmpty()) {
+            openSinglePost(itemId, clickCount);
+        } else {
+            openAppOnPlayStore(songsList.get(position).getRedirectApp());
+        }
+    }
+
+    public void openWatchNowFirstFragment(List<Songs_list> songs_list) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("VideosList", (Serializable) songsList);
+        bundle.putSerializable("selectedVideo", songs_list.get(itemPosition));
+        bundle.putSerializable("applicationSettings", applicationSettings);
+        WatchNowFirstFragment fragment = new WatchNowFirstFragment();
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
+    }
 }

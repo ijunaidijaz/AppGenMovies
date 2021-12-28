@@ -74,6 +74,7 @@ public class WatchNowSecondFragment extends Fragment {
                 myAdapter = new GridViewAdapter(getContext(), R.layout.gridview_style, (ArrayList) songsList);
             }
             binding.gridView1.setAdapter(myAdapter);
+            binding.gridView1.smoothScrollToPosition(0);
             binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
 //                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
                 itemPosition = songsList.get(position).getId();

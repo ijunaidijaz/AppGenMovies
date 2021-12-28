@@ -1,149 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/videoListLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/white"
-    android:orientation="vertical">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <FrameLayout
-        android:id="@+id/container_video_fragment"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/container_gridView"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/videoListLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible"
+            android:background="@color/white"
+            android:fillViewport="true"
+            android:orientation="vertical">
 
-
-            >
-
-            <include
-                layout="@layout/search_bar_layout"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp" />
+                android:layout_height="wrap_content">
 
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:fillViewport="true"
-                android:nestedScrollingEnabled="true"
-
-                >
-
-                <RelativeLayout
+                <FrameLayout
+                    android:id="@+id/container_video_fragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/silderview"
+                    <LinearLayout
+                        android:id="@+id/container_gridView"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginVertical="5dp"
-                        ads:cardCornerRadius="10dp">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="visible"
 
-                        <com.smarteist.autoimageslider.SliderView
-                            android:id="@+id/slider"
+
+                        >
+
+                        <include
+                            layout="@layout/search_bar_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp" />
+
+
+                        <ScrollView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:nestedScrollingEnabled="true" />
-                    </androidx.cardview.widget.CardView>
+                            android:background="@color/white"
+                            android:fillViewport="true"
+                            android:nestedScrollingEnabled="true"
 
-                    <com.google.android.gms.ads.AdView
-                        android:id="@+id/myAddJu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/silderview"
-                        android:visibility="gone"
-                        ads:adSize="SMART_BANNER"
-                        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                            >
 
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
-                        />
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/silderview"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="250dp"
+                                    android:layout_marginHorizontal="10dp"
+                                    android:layout_marginVertical="5dp"
+                                    ads:cardCornerRadius="10dp">
 
-                    <TextView
-                        android:id="@+id/description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/myAddJu"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginBottom="3dp"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="12sp">
+                                    <com.smarteist.autoimageslider.SliderView
+                                        android:id="@+id/slider"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:nestedScrollingEnabled="true" />
+                                </androidx.cardview.widget.CardView>
 
-                    </TextView>
-
-
-                    <GridView
-                        android:id="@+id/gridView1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/description"
-                        android:horizontalSpacing="0dp"
-                        android:nestedScrollingEnabled="true"
-
-                        />
-
-                </RelativeLayout>
-
-            </ScrollView>
-
-        </LinearLayout>
+                                <com.google.android.gms.ads.AdView
+                                    android:id="@+id/myAddJu"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/silderview"
+                                    android:visibility="gone"
+                                    ads:adSize="SMART_BANNER"
+                                    ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
 
 
-    </FrameLayout>
+                                    />
+
+                                <TextView
+                                    android:id="@+id/description"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/myAddJu"
+                                    android:layout_marginStart="3dp"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:layout_marginBottom="3dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp">
+
+                                </TextView>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/description"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Genre:"
+                                        android:paddingHorizontal="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="18dp"
+                                        android:textStyle="bold" />
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/categoryOneRv"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+
+                                        />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="10dp"
+                                        android:text="Newly Released:"
+                                        android:layout_marginTop="10dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="18dp"
+                                        android:textStyle="bold" />
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/categoryTwoRv"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="10dp"
+                                        android:text="Hd Videos"
+                                        android:layout_marginTop="10dp"
+
+                                        android:textColor="@color/black"
+                                        android:textSize="18dp"
+                                        android:textStyle="bold" />
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/gridView1"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+
+                                        />
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                        </ScrollView>
+
+                    </LinearLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/facebookBannerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:visibility="gone">
+                </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/facebook_banner_container"
+
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:id="@+id/facebookBannerLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical"
-            android:visibility="gone"
-
-            />
-
-        <LinearLayout
-            android:id="@+id/DailyMotion_banner_container"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:visibility="gone">
 
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
+            <LinearLayout
+                android:id="@+id/facebook_banner_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                ads:adSize="SMART_BANNER"
-                ads:adUnitId="@string/ADMOB_INTER_ID"
-
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:visibility="gone"
 
                 />
-        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/DailyMotion_banner_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone">
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ads:adSize="SMART_BANNER"
+                    ads:adUnitId="@string/ADMOB_INTER_ID"
+
+
+                    />
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
-
-</RelativeLayout>
-</androidx.core.widget.NestedScrollView>
+</layout>

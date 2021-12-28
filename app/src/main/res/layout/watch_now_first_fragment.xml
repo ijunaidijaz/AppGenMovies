@@ -95,14 +95,13 @@
             android:textColor="@color/black"
             android:textSize="17dp"
             android:text="Movies From Similar Genre" />
-        <GridView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gridView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/description"
             android:horizontalSpacing="0dp"
-            android:nestedScrollingEnabled="false"
-
+            android:nestedScrollingEnabled="true"
             />
     </LinearLayout>
 </layout>

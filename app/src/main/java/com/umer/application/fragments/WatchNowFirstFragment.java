@@ -8,17 +8,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdListener;
 import com.umer.application.R;
 import com.umer.application.activities.GridViewActivity;
 import com.umer.application.adapters.GridViewAdapter;
+import com.umer.application.adapters.MoviesAdapter;
 import com.umer.application.adapters.VideoListAdapter;
-import com.umer.application.databinding.MovieListFragmentBinding;
+import com.umer.application.adapters.viewHolders.MoviesViewHolder;
+import com.umer.application.callbacks.MoviesCallback;
 import com.umer.application.databinding.WatchNowFirstFragmentBinding;
 import com.umer.application.models.ApplicationSettings;
 import com.umer.application.models.BaseResponse;
@@ -27,11 +29,9 @@ import com.umer.application.models.singlePost;
 import com.umer.application.networks.Network;
 import com.umer.application.networks.NetworkCall;
 import com.umer.application.networks.OnNetworkResponse;
-import com.umer.application.utils.AdsTypes;
 import com.umer.application.utils.Constants;
 import com.umer.application.utils.RequestCodes;
 import com.umer.application.utils.functions;
-import com.umer.application.viewModels.MovieListViewModel;
 import com.umer.application.viewModels.WatchNowFirstViewModel;
 
 import java.io.Serializable;
@@ -41,14 +41,14 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse {
+public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse, MoviesCallback {
     private WatchNowFirstViewModel mViewModel;
     WatchNowFirstFragmentBinding binding;
     private VideoListAdapter mAdapter;
     private String keyword, imageURL, colorString, admob_Inter_Id, facebook_Inter_Id;
     private int limit, adds;
     private boolean isYoutube;
-    int itemPosition = 0;
+    int itemID = 0;
     int clickCount = 0;
     private boolean isPlayList;
     List<Songs_list> songsList = new ArrayList<>();
@@ -73,7 +73,7 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
             binding.movieTitle.setText(song.getTitle());
             binding.rating.setText(song.getType());
             binding.movieTitle.setText(song.getTitle());
-            binding.gridView1.setNumColumns(applicationSettings.getRowDisplay());
+//            binding.gridView1.setNumColumns(applicationSettings.getRowDisplay());
             binding.header.headerBar.setBackgroundColor(Color.parseColor(applicationSettings.getActionBarColor()));
 
             songsList = (List<Songs_list>) getArguments().getSerializable("VideosList");
@@ -84,13 +84,8 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
             } else {
                 myAdapter = new GridViewAdapter(getContext(), R.layout.gridview_style, (ArrayList) songsList);
             }
-            binding.gridView1.setAdapter(myAdapter);
-            binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
-//                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
-                itemPosition = songsList.get(position).getId();
-                ((GridViewActivity)getActivity()).getSinglePost(itemPosition);
+            setMoviesAdapter(songsList);
 
-            });
             binding.watchNow.setOnClickListener(v -> {
                 openWatchNowSecondFragment(song);
             });
@@ -135,7 +130,7 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
     }
 
     public void openSinglePost(int position, int clickCount) {
-        itemPosition = position;
+        itemID = position;
 //        if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.admobAds) {
 //            if (admobInterstitialAd.isLoaded()) {
 //                admobInterstitialAd.show();
@@ -200,5 +195,18 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
                 applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                 getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
+    }
+    public void setMoviesAdapter(List<Songs_list> lists) {
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), applicationSettings.getRowDisplay());
+        MoviesAdapter adapter = new MoviesAdapter(getContext(), lists, this);
+        binding.gridView1.setLayoutManager(linearLayoutManager);
+        binding.gridView1.setAdapter(adapter);
+        binding.gridView1.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public void onMovieClick(Songs_list songs_list, MoviesViewHolder viewHolder, int position) {
+        itemID = songsList.get(position).getId();
+        ((GridViewActivity)getActivity()).getSinglePost(itemID);
     }
 }
