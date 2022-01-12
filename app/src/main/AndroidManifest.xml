@@ -17,6 +17,7 @@
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true">
         <activity android:name=".activities.WebViewActivity"
+            android:configChanges = "orientation"
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
         </activity>
@@ -27,13 +28,14 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/ADMOB_APP_ID"
+            android:value="@string/MY_APP_ID"
             />
 
 
         <activity
             android:name=".activities.YoutubeVideoPlayer"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden" />
         <activity
             android:name=".activities.GridViewActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"

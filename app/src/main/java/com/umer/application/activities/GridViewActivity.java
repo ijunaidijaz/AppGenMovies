@@ -88,6 +88,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     TextView description;
     GridView gridView1;
     ArrayList<Songs_list> songsList;
+    ArrayList<Songs_list> categoryList;
     ArrayList<AppSlider> appSliders;
     LinearLayout container_gridView, DailyMotion_banner_container, facebook_banner_container;
     RelativeLayout actionBar, bannerLayout;
@@ -119,10 +120,16 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         DailyMotion_banner_container = findViewById(R.id.DailyMotion_banner_container);
         // Initialize the Audience Network SDK
         instance = this;
+        initViews();
+
         bannerLayout.setVisibility(View.VISIBLE);
-        facebook_banner_container.setVisibility(View.VISIBLE);
-        facebookBannerAds();
-        facebookInterstitialAds();
+        DailyMotion_banner_container.setVisibility(View.VISIBLE);
+        admobBannerAds();
+        admobInterstitialAds();
+//        bannerLayout.setVisibility(View.VISIBLE);
+//        facebook_banner_container.setVisibility(View.VISIBLE);
+//        facebookBannerAds();
+//        facebookInterstitialAds();
 
 //        if (applicationSettings.getAdds() == AdsTypes.admobAds){
 //            bannerLayout.setVisibility(View.VISIBLE);
@@ -136,12 +143,28 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 //            facebookBannerAds();
 //            facebookInterstitialAds();
 //
+//        } else if (applicationSettings.getAdds() == AdsTypes.fyberAds) {
+//            bannerLayout.setVisibility(View.VISIBLE);
+//            facebook_banner_container.setVisibility(View.VISIBLE);
+//            facebookBannerAds();
+//            facebookInterstitialAds();
+//
 //        }
 
 
-        initViews();
+
         functions.GlideImageLoaderWithPlaceholder(this, imageView_searchBar, Constants.BASE_URL_IMAGES + applicationSettings.getLog());
         setListeners();
+        if (applicationSettings.getAppSubCategories() != null && !applicationSettings.getAppSubCategories().isEmpty()) {
+            binding.firstSubCatTitle.setText(applicationSettings.getAppSubCategories().get(0).getName());
+            getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(0).getId(),RequestCodes.API.GET_POST_BY_CATEGORY);
+           if (applicationSettings.getAppSubCategories().size()>1){
+               binding.secondSubCatTitle.setText(applicationSettings.getAppSubCategories().get(1).getName());
+               getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(1).getId(),RequestCodes.API.GET_POST_BY_CATEGORY_2);
+
+           }
+
+        }
         getAllPosts();
 
 
@@ -195,7 +218,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                     search_EditText.setVisibility(View.VISIBLE);
                 } else {
                     openVideoFragment(search_EditText.getText().toString(), "", false, 20,
-                            applicationSettings.isYoutubePost(), applicationSettings.getAdds(), applicationSettings.getActionBarColor(),
+                            applicationSettings.getIsYoutubePost(), applicationSettings.getAdds(), applicationSettings.getActionBarColor(),
                             applicationSettings.getLog(), getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
                 }
                 break;
@@ -218,7 +241,17 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                 .setCallback(this)
                 .autoLoading(getSupportFragmentManager())
                 .setTag(RequestCodes.API.GET_ALL_POSTS)
-                .enque(new Network().apis().getAllPosts(getResources().getString(R.string.PACKAGE_NAME)))
+                .enque(new Network().apis().getAllPosts(getResources().getString(R.string.TEST_PACKAGE_NAME)))
+                .execute();
+
+    }
+
+    private void getPostByCategory(Integer categoryId, Integer subcategoryId, Integer RequestCode) {
+        NetworkCall.make()
+                .setCallback(this)
+                .autoLoading(getSupportFragmentManager())
+                .setTag(RequestCode)
+                .enque(new Network().apis().getPostsByCategory(categoryId, subcategoryId, 100, 1))
                 .execute();
 
     }
@@ -250,8 +283,8 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                         myAdapter = new GridViewAdapter(this, R.layout.gridview_style, songsList);
                     }
                     setMoviesAdapter(songsList);
-                    setCategoryOneAdapter(songsList);
-                    setCategoryTwoAdapter(songsList);
+//                    setCategoryOneAdapter(songsList);
+//                    setCategoryTwoAdapter(songsList);
 //                    gridView1.setAdapter(myAdapter);
 //                    gridView1.setOnItemClickListener((parent, view, position, id) -> {
 ////                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
@@ -275,7 +308,20 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                     singlePostResponseHandling(singlePost1);
                 }
                 break;
-
+            case RequestCodes.API.GET_POST_BY_CATEGORY:
+                if (response.body() != null) {
+                    List<Songs_list> songs_list = new ArrayList<>();
+                    songs_list.addAll((ArrayList<Songs_list>) response.body());
+                    setCategoryOneAdapter(songs_list);
+                }
+                break;
+            case RequestCodes.API.GET_POST_BY_CATEGORY_2:
+                if (response.body() != null) {
+                    List<Songs_list> songs_list = new ArrayList<>();
+                    songs_list.addAll((ArrayList<Songs_list>) response.body());
+                    setCategoryTwoAdapter(songs_list);
+                }
+                break;
             default:
                 break;
         }
@@ -355,6 +401,50 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         admobInterstitialAd = new InterstitialAd(this);
         admobInterstitialAd.setAdUnitId(getResources().getString(R.string.ADMOB_INTER_ID));
         admobInterstitialAd.loadAd(new AdRequest.Builder().build());
+        AdRequest adRequest = new AdRequest.Builder().build();
+        admobInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                if (clickCount == applicationSettings.getAdMobLimit()) {
+                    clickCount = 0;
+                }
+//                admobInterstitialAds();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                admobInterstitialAds();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                admobInterstitialAd.show();
+//                admobInterstitialAds();
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+            }
+        });
     }
 
     public void facebookBannerAds() {
@@ -551,9 +641,9 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         getSupportFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
     }
 
-    public void openWebUrl(String url) {
+    public void openWebUrl(singlePost singlePost) {
         Intent i = new Intent(this, WebViewActivity.class);
-        i.putExtra("WEBURL", url);
+        i.putExtra("WEBURL", singlePost.getBaseApi().getUrl());
         startActivity(i);
     }
 
@@ -618,13 +708,13 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                 //playlist should be in string
                 if (isSingleVideoFrag) {
                     openVideoFragment("", singlePost1.getBaseApi().getCode(),
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
                             applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                             getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
                 } else {
                     if (isCategory) {
                         openMovieListFragment(singlePost1.getKeyword(), "",
-                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
                                 applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                                 getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
@@ -635,13 +725,13 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
             } else {
                 if (isSingleVideoFrag) {
                     openVideoFragment(singlePost1.getKeyword(), "",
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
                             applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                             getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
                 } else {
                     if (isCategory) {
                         openMovieListFragment(singlePost1.getKeyword(), "",
-                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
                                 applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                                 getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
@@ -661,21 +751,21 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                     admobInterstitialAd.setAdListener(new AdListener() {
                         @Override
                         public void onAdClosed() {
-                            openWebUrl(singlePost1.getBaseApi().getUrl());
+                            openWebUrl(singlePost1);
                         }
                     });
                 } else {
                     if (isSingleVideoFrag) {
-                        openWebUrl(singlePost1.getBaseApi().getUrl());
+                        openWebUrl(singlePost1);
                     } else {
                         if (isCategory) {
                             openMovieListFragment(singlePost1.getKeyword(), "",
-                                    singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                    singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
                                     applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                                     getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
                         } else {
-                            openWatchNowFirstFragment(songsList);
+                            openWatchNowFirstFragment(categoryList);
                         }
                     }
                 }
@@ -683,30 +773,30 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 //                showFacebookInterstitialAds();
 //                facebookInterstitialAds();
                 if (isSingleVideoFrag) {
-                    openWebUrl(singlePost1.getBaseApi().getUrl());
+                    openWebUrl(singlePost1);
                 } else {
                     if (isCategory) {
                         openMovieListFragment(singlePost1.getKeyword(), "",
-                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
                                 applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                                 getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
                     } else {
-                        openWatchNowFirstFragment(songsList);
+                        openWatchNowFirstFragment(categoryList);
                     }
                 }
             } else {
                 if (isSingleVideoFrag) {
-                    openWebUrl(singlePost1.getBaseApi().getUrl());
+                    openWebUrl(singlePost1);
                 } else {
                     if (isCategory) {
                         openMovieListFragment(singlePost1.getKeyword(), "",
-                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
                                 applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                                 getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
                     } else {
-                        openWatchNowFirstFragment(songsList);
+                        openWatchNowFirstFragment(categoryList);
                     }
                 }
             }
@@ -900,24 +990,28 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         isCategory = false;
         itemId = songsList.get(position).getId();
         clickCount++;
-        if (songsList.get(position).getRedirectApp().isEmpty()) {
-            openSinglePost(itemId, clickCount);
-        } else {
-            openAppOnPlayStore(songsList.get(position).getRedirectApp());
-        }
+        openSinglePost(itemId, clickCount);
+//        if (songsList.get(position).getRedirectApp().isEmpty()) {
+//            openSinglePost(itemId, clickCount);
+//        } else {
+//            openAppOnPlayStore(songsList.get(position).getRedirectApp());
+//        }
     }
 
     @Override
-    public void onCategoryClick(Songs_list songs_list, CategoryViewHolder viewHolder, int position) {
+    public void onCategoryClick(Songs_list songs_list, CategoryViewHolder viewHolder, int position,List<Songs_list> allItems) {
         isCategory = true;
         this.itemPosition = position;
         itemId = songsList.get(position).getId();
         clickCount++;
-        if (songsList.get(position).getRedirectApp().isEmpty()) {
-            openSinglePost(itemId, clickCount);
-        } else {
-            openAppOnPlayStore(songsList.get(position).getRedirectApp());
-        }
+        categoryList=new ArrayList<>();
+        categoryList.addAll(allItems);
+        openSinglePost(itemId, clickCount);
+//        if (songsList.get(position).getRedirectApp().isEmpty()) {
+//            openSinglePost(itemId, clickCount);
+//        } else {
+//            openAppOnPlayStore(songsList.get(position).getRedirectApp());
+//        }
     }
 
     public void openWatchNowFirstFragment(List<Songs_list> songs_list) {

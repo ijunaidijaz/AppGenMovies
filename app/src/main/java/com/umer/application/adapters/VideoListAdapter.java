@@ -79,7 +79,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
         holder.mTitleTV.setText(item.title);
         Glide.with(mContext)
                 .load(item.thumbnail_url)
-                .thumbnail(Glide.with(mContext.getApplicationContext()).load(R.drawable.loading))
+                .thumbnail(Glide.with(mContext.getApplicationContext()).load(R.drawable.loader))
                 .centerCrop()
                 .into(holder.mImageView);
 

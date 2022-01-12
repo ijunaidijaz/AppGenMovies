@@ -8,5 +8,7 @@ public class RequestCodes {
         public static final int GET_SINGLE_POST = 3;
         public static final int GET_APPLICATION_SLIDER = 4;
 
+        public static final int GET_POST_BY_CATEGORY = 5;
+        public static final int GET_POST_BY_CATEGORY_2 = 6;
     }
 }

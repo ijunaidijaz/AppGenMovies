@@ -1,25 +1,21 @@
 package com.umer.application.fragments;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.umer.application.R;
 import com.umer.application.adapters.VideoListAdapter;
-import com.umer.application.models.YoutubeVideoItem;
 import com.umer.application.models.dailymotionSearchHelper;
 import com.umer.application.networks.ApiServices;
 import com.umer.application.utils.Constants;
@@ -29,26 +25,22 @@ import com.umer.application.utils.functions;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.umer.application.utils.Constants.DAILYMOTION_BASE_URL;
-
 public class VideoListFragment extends Fragment {
 
 
     private VideoListAdapter mAdapter;
-    private String keyword , imageURL , colorString , admob_Inter_Id , facebook_Inter_Id;
-    private int limit , adds;
+    private String keyword, imageURL, colorString, admob_Inter_Id, facebook_Inter_Id;
+    private int limit, adds;
     private boolean isYoutube;
-    private boolean isPlayList ;
-    private ImageView imageView , backBtn;
-    private RelativeLayout header ;
+    private boolean isPlayList;
+    private ImageView imageView, backBtn;
+    private RelativeLayout header;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +57,7 @@ public class VideoListFragment extends Fragment {
         imageView = v.findViewById(R.id.image_view);
         header = v.findViewById(R.id.headerBar);
 
-        backBtn.setOnClickListener(v1 -> getFragmentManager().beginTransaction().remove(VideoListFragment.this).commit());
+        backBtn.setOnClickListener(v1 -> getActivity().onBackPressed());
 
         if (getArguments() != null) {
             imageURL = getArguments().getString("appIcon");
@@ -76,17 +68,16 @@ public class VideoListFragment extends Fragment {
             facebook_Inter_Id = getArguments().getString("FACEBOOK_INTER_ID");
 
 
-            if (getArguments().getBoolean("isPLAYLIST")){
+            if (getArguments().getBoolean("isPLAYLIST")) {
                 keyword = getArguments().getString("PLAYLIST_ID");
-            }
-            else {
+            } else {
                 keyword = getArguments().getString("KEYWORD");
             }
 
             limit = getArguments().getInt("LIMIT");
             isYoutube = getArguments().getBoolean("isYoutube");
-            isPlayList = getArguments().getBoolean("isPLAYLIST") ;
-            adds = getArguments().getInt("ADDS" , -1);
+            isPlayList = getArguments().getBoolean("isPLAYLIST");
+            adds = getArguments().getInt("ADDS", -1);
 
         }
         RecyclerView videoListRecyclerView = v.findViewById(R.id.recyclerView_videoList);
@@ -94,15 +85,15 @@ public class VideoListFragment extends Fragment {
 
         videoListRecyclerView.setLayoutManager(manager);
 
-        mAdapter = new VideoListAdapter(getActivity(),isYoutube,adds, null , admob_Inter_Id , facebook_Inter_Id);
+        mAdapter = new VideoListAdapter(getActivity(), isYoutube, adds, null, admob_Inter_Id, facebook_Inter_Id);
 
         videoListRecyclerView.setAdapter(mAdapter);
 
-        if (isYoutube){
+        if (isYoutube) {
             startLoadingYoutubeVideos();
-        } else if(!isPlayList && !isYoutube){
+        } else if (!isPlayList && !isYoutube) {
             getDailyMotionVideos(keyword);
-        }else {
+        } else {
             startLoadingDailyMotionPlayList(getArguments().getString("PLAYLIST_ID"));
         }
 
@@ -119,35 +110,35 @@ public class VideoListFragment extends Fragment {
 
     }
 
-    private void startLoadingDailyMotionPlayList(String playListId){
+    private void startLoadingDailyMotionPlayList(String playListId) {
         DailyMotionSearchHelper dailyMotionSearchHelper = new DailyMotionSearchHelper(getContext());
         dailyMotionSearchHelper.searchDailyMotion(playListId, videos -> {
-            mAdapter.setItems(videos);
-            mAdapter.notifyDataSetChanged();
-        }
+                    mAdapter.setItems(videos);
+                    mAdapter.notifyDataSetChanged();
+                }
         );
 
     }
 
-    private void getDailyMotionVideos(String keyWord){
+    private void getDailyMotionVideos(String keyWord) {
+        keyWord = keyWord + " full movie";
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
 
-            Gson gson = new GsonBuilder()
-                    .setLenient()
-                    .create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.DAILYMOTION_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.DAILYMOTION_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build();
-
-            ApiServices getDailyMotionVideos = retrofit.create(ApiServices.class);
+        ApiServices getDailyMotionVideos = retrofit.create(ApiServices.class);
         Call<dailymotionSearchHelper> dailymotionSearchHelperCall = getDailyMotionVideos.getDailyMotionVideos(
-                "id,thumbnail_url%2Ctitle" , "pk",keyWord , limit);
+                "id,thumbnail_url%2Ctitle", "pk", keyWord, 20);
         dailymotionSearchHelperCall.enqueue(new Callback<dailymotionSearchHelper>() {
             @Override
             public void onResponse(Call<dailymotionSearchHelper> call, Response<dailymotionSearchHelper> response) {
                 dailymotionSearchHelper daily = response.body();
-                mAdapter.setItems(daily.getSongs_List());
+                if (daily != null) mAdapter.setItems(daily.getSongs_List());
 
             }
 

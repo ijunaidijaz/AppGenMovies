@@ -24,7 +24,7 @@ public class MainApp extends Application {
         MobileAds.initialize(getApplicationContext(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
-
+Toast.makeText(getAppContext(),initializationStatus.toString(),Toast.LENGTH_SHORT).show();
                 //Showing a simple Toast Message to the user when The Google AdMob Sdk Initialization is Completed
 
             }

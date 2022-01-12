@@ -34,7 +34,41 @@ public class singlePost implements Serializable {
     @SerializedName("BaseApi")
     @Expose
     private BaseApi baseApi;
+    @SerializedName("ServerLink1")
+    @Expose
+    private String ServerLink1;
+    @SerializedName("ServerLink2")
+    @Expose
+    private String ServerLink2;
 
+    public String getServerLink1() {
+        return ServerLink1;
+    }
+
+    public void setServerLink1(String serverLink1) {
+        ServerLink1 = serverLink1;
+    }
+
+    public String getServerLink2() {
+        return ServerLink2;
+    }
+
+    public void setServerLink2(String serverLink2) {
+        ServerLink2 = serverLink2;
+    }
+
+    public String getServerLink4() {
+        return ServerLink4;
+    }
+
+    public void setServerLink4(String serverLink4) {
+        ServerLink4 = serverLink4;
+    }
+
+    @SerializedName("ServerLink3")
+    @Expose
+    private String ServerLink4
+            ;
     public String getTitle() {
         return title;
     }

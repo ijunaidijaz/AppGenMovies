@@ -90,6 +90,7 @@ public class WatchNowSecondFragment extends Fragment {
 
 
         }
+        binding.gridView1.smoothScrollToPosition(0);
         return binding.getRoot();
     }
     public void openServerLinkFragment(Songs_list songs_list) {

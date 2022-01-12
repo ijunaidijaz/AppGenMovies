@@ -22,7 +22,7 @@ public class functions {
         url = urlSlashChange(url);
         Glide.with(context)
                 .load(url)
-                .thumbnail(Glide.with(context.getApplicationContext()).load(R.drawable.loading))
+                .thumbnail(Glide.with(context.getApplicationContext()).load(R.drawable.loader))
                 .into(imageView);
     }
 

@@ -95,6 +95,7 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
 
 
         }
+        binding.gridView1.smoothScrollToPosition(0);
         return binding.getRoot();
     }
 
@@ -191,7 +192,7 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
 
     public void singlePostResponseHandling(singlePost singlePost1) {
         openMovieListFragment(singlePost1.getKeyword(), "",
-                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.isYoutubePost(),
+                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
                 applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
                 getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 

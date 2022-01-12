@@ -87,6 +87,7 @@ public class ServerLinksFragment extends Fragment {
 
 
         }
+        binding.gridView1.smoothScrollToPosition(0);
         return binding.getRoot();
     }
 

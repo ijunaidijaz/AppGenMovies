@@ -41,7 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        holder.setData(context, itemList.get(position), holder, position,callback);
+        holder.setData(context, itemList.get(position), holder, position,callback,itemList);
     }
 
     @Override
