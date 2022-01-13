@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,10 @@ import android.view.ViewGroup;
 import com.umer.application.R;
 import com.umer.application.activities.GridViewActivity;
 import com.umer.application.adapters.GridViewAdapter;
+import com.umer.application.adapters.MoviesAdapter;
 import com.umer.application.adapters.VideoListAdapter;
+import com.umer.application.adapters.viewHolders.MoviesViewHolder;
+import com.umer.application.callbacks.MoviesCallback;
 import com.umer.application.databinding.ServerLinksFragmentBinding;
 import com.umer.application.databinding.WatchNowSecondFragmentBinding;
 import com.umer.application.models.ApplicationSettings;
@@ -28,7 +32,7 @@ import com.umer.application.viewModels.ServerLinksViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerLinksFragment extends Fragment {
+public class ServerLinksFragment extends Fragment implements MoviesCallback {
 
     private ServerLinksViewModel mViewModel;
     ServerLinksFragmentBinding binding;
@@ -61,7 +65,7 @@ public class ServerLinksFragment extends Fragment {
             functions.GlideImageLoaderWithPlaceholder(getContext(), binding.imageView, Constants.BASE_URL_IMAGES + song.getUrl());
             binding.movieTitle.setText(song.getTitle());
 
-            binding.gridView1.setNumColumns(applicationSettings.getRowDisplay());
+//            binding.gridView1.setNumColumns(applicationSettings.getRowDisplay());
             binding.header.headerBar.setBackgroundColor(Color.parseColor(applicationSettings.getActionBarColor()));
 
             songsList = (List<Songs_list>) getArguments().getSerializable("VideosList");
@@ -72,14 +76,16 @@ public class ServerLinksFragment extends Fragment {
             } else {
                 myAdapter = new GridViewAdapter(getContext(), R.layout.gridview_style, (ArrayList) songsList);
             }
-            binding.gridView1.setAdapter(myAdapter);
-            binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
-//                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
-                itemPosition = songsList.get(position).getId();
-                ((GridViewActivity) getActivity()).getSinglePost(itemPosition);
-
-            });
+            setMoviesAdapter(songsList);
+//            binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
+////                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
+//                itemPosition = songsList.get(position).getId();
+//                ((GridViewActivity) getActivity()).getSinglePost(itemPosition);
+//
+//            });
             binding.serverLink1.setOnClickListener(v -> {
+                ((GridViewActivity)getActivity()).clickCount++;
+                ((GridViewActivity)getActivity()).loadAds();
                 ((GridViewActivity) getActivity()).openSinglePost(song.getId(), clickCount,true);
             });
             imageURL = applicationSettings.getLog();
@@ -89,7 +95,20 @@ public class ServerLinksFragment extends Fragment {
         }
         binding.gridView1.smoothScrollToPosition(0);
         return binding.getRoot();
+
+    }
+    public void setMoviesAdapter(List<Songs_list> lists) {
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), applicationSettings.getRowDisplay());
+        MoviesAdapter adapter = new MoviesAdapter(getContext(), lists, this);
+        binding.gridView1.setLayoutManager(linearLayoutManager);
+        binding.gridView1.setAdapter(adapter);
+        binding.gridView1.smoothScrollToPosition(0);
     }
 
+    @Override
+    public void onMovieClick(Songs_list songs_list, MoviesViewHolder viewHolder, int position) {
+        int itemID = songsList.get(position).getId();
+        ((GridViewActivity)getActivity()).getSinglePost(itemID);
+    }
 
 }

@@ -96,7 +96,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     private AdView facebookAdView;
     private com.google.android.gms.ads.AdView admobAdView, myAdView;
     ApplicationSettings applicationSettings;
-    int clickCount = 0;
+    public int clickCount = 0;
     int mClickCount = 0;
     private InterstitialAd admobInterstitialAd;
     private com.facebook.ads.InterstitialAd facebookInterstitialAd;
@@ -121,15 +121,13 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         // Initialize the Audience Network SDK
         instance = this;
         initViews();
-
-        bannerLayout.setVisibility(View.VISIBLE);
-        DailyMotion_banner_container.setVisibility(View.VISIBLE);
-        admobBannerAds();
-        admobInterstitialAds();
-//        bannerLayout.setVisibility(View.VISIBLE);
-//        facebook_banner_container.setVisibility(View.VISIBLE);
-//        facebookBannerAds();
-//        facebookInterstitialAds();
+        applicationSettings.setAdds(2);
+        applicationSettings.setAdMobLimit("2");
+//        loadAds();
+       bannerLayout.setVisibility(View.VISIBLE);
+            facebook_banner_container.setVisibility(View.VISIBLE);
+            facebookBannerAds();
+         facebookInterstitialAds();
 
 //        if (applicationSettings.getAdds() == AdsTypes.admobAds){
 //            bannerLayout.setVisibility(View.VISIBLE);
@@ -152,17 +150,16 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 //        }
 
 
-
         functions.GlideImageLoaderWithPlaceholder(this, imageView_searchBar, Constants.BASE_URL_IMAGES + applicationSettings.getLog());
         setListeners();
         if (applicationSettings.getAppSubCategories() != null && !applicationSettings.getAppSubCategories().isEmpty()) {
             binding.firstSubCatTitle.setText(applicationSettings.getAppSubCategories().get(0).getName());
-            getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(0).getId(),RequestCodes.API.GET_POST_BY_CATEGORY);
-           if (applicationSettings.getAppSubCategories().size()>1){
-               binding.secondSubCatTitle.setText(applicationSettings.getAppSubCategories().get(1).getName());
-               getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(1).getId(),RequestCodes.API.GET_POST_BY_CATEGORY_2);
+            getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(0).getId(), RequestCodes.API.GET_POST_BY_CATEGORY);
+            if (applicationSettings.getAppSubCategories().size() > 1) {
+                binding.secondSubCatTitle.setText(applicationSettings.getAppSubCategories().get(1).getName());
+                getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(1).getId(), RequestCodes.API.GET_POST_BY_CATEGORY_2);
 
-           }
+            }
 
         }
         getAllPosts();
@@ -257,6 +254,8 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void getSinglePost(int id) {
+        clickCount++;
+        loadAds();
         NetworkCall.make()
                 .setCallback(this)
                 .autoLoading(getSupportFragmentManager())
@@ -357,7 +356,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onAdClosed() {
                 super.onAdClosed();
-                if (clickCount == applicationSettings.getAdMobLimit()) {
+                if (clickCount >= applicationSettings.getAdMobLimit()) {
                     clickCount = 0;
                 }
                 admobInterstitialAds();
@@ -382,6 +381,9 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
+                if (clickCount >= applicationSettings.getAdMobLimit()) {
+                    clickCount = 0;
+                }
                 admobInterstitialAds();
             }
 
@@ -406,7 +408,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onAdClosed() {
                 super.onAdClosed();
-                if (clickCount == applicationSettings.getAdMobLimit()) {
+                if (clickCount >= applicationSettings.getAdMobLimit()) {
                     clickCount = 0;
                 }
 //                admobInterstitialAds();
@@ -431,6 +433,9 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
+                if (clickCount >= applicationSettings.getAdMobLimit()) {
+                    clickCount = 0;
+                }
                 admobInterstitialAd.show();
 //                admobInterstitialAds();
             }
@@ -448,16 +453,18 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void facebookBannerAds() {
-        facebookAdView = new AdView(this, getResources().getString(R.string.FACEBOOK_BANNER_ID), AdSize.BANNER_HEIGHT_50);
+        if (facebookAdView == null) {
+            facebookAdView = new AdView(this, getResources().getString(R.string.FACEBOOK_BANNER_ID), AdSize.BANNER_HEIGHT_50);
 //        "IMG_16_9_APP_INSTALL#1197001037304304_1197772060560535"
-        // Find the Ad Container
-        LinearLayout adContainer = (LinearLayout) findViewById(R.id.facebook_banner_container);
+            // Find the Ad Container
+            LinearLayout adContainer = (LinearLayout) findViewById(R.id.facebook_banner_container);
 
-        // Add the ad view to your activity layout
-        adContainer.addView(facebookAdView);
+            // Add the ad view to your activity layout
+            adContainer.addView(facebookAdView);
 
-        // Request an ad
-        facebookAdView.loadAd();
+            // Request an ad
+            facebookAdView.loadAd();
+        }
     }
 
 
@@ -468,7 +475,9 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onAdLoaded(Ad ad) {
-
+        if (clickCount >= applicationSettings.getAdMobLimit()) {
+            clickCount = 0;
+        }
     }
 
     @Override
@@ -530,6 +539,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         facebookInterstitialAd.setAdListener(new AbstractAdListener() {
             public void onAdLoaded(Ad ad) {
 //                adfacebook = ad;
+                facebookInterstitialAd.show();
             }
         });
         final Handler handler = new Handler();
@@ -539,7 +549,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                 // Do something after 5s = 5000ms
                 facebookInterstitialAd.loadAd();
             }
-        }, 5000);
+        }, 3000);
 
         facebookInterstitialAd.setAdListener(new InterstitialAdListener() {
             @Override
@@ -567,6 +577,9 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                 // Show the ad
                 //  interstitial.loadAd();
                 facebookInterstitialAd.show();
+                if (clickCount >= applicationSettings.getAdMobLimit()) {
+                    clickCount = 0;
+                }
 //                adfacebook = ad;
             }
 
@@ -990,6 +1003,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         isCategory = false;
         itemId = songsList.get(position).getId();
         clickCount++;
+        loadAds();
         openSinglePost(itemId, clickCount);
 //        if (songsList.get(position).getRedirectApp().isEmpty()) {
 //            openSinglePost(itemId, clickCount);
@@ -999,12 +1013,13 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    public void onCategoryClick(Songs_list songs_list, CategoryViewHolder viewHolder, int position,List<Songs_list> allItems) {
+    public void onCategoryClick(Songs_list songs_list, CategoryViewHolder viewHolder, int position, List<Songs_list> allItems) {
         isCategory = true;
         this.itemPosition = position;
         itemId = songsList.get(position).getId();
         clickCount++;
-        categoryList=new ArrayList<>();
+        loadAds();
+        categoryList = new ArrayList<>();
         categoryList.addAll(allItems);
         openSinglePost(itemId, clickCount);
 //        if (songsList.get(position).getRedirectApp().isEmpty()) {
@@ -1022,5 +1037,28 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         WatchNowFirstFragment fragment = new WatchNowFirstFragment();
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
+    }
+
+    public void loadAds() {
+        if (clickCount >= applicationSettings.getAdMobLimit()) {
+            if (applicationSettings.getAdds() == AdsTypes.admobAds) {
+                bannerLayout.setVisibility(View.VISIBLE);
+                DailyMotion_banner_container.setVisibility(View.VISIBLE);
+                admobBannerAds();
+                admobInterstitialAds();
+            } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
+                bannerLayout.setVisibility(View.VISIBLE);
+                facebook_banner_container.setVisibility(View.VISIBLE);
+                facebookBannerAds();
+                facebookInterstitialAds();
+
+            } else if (applicationSettings.getAdds() == AdsTypes.fyberAds) {
+                bannerLayout.setVisibility(View.VISIBLE);
+                facebook_banner_container.setVisibility(View.VISIBLE);
+                facebookBannerAds();
+                facebookInterstitialAds();
+
+            }
+        }
     }
 }

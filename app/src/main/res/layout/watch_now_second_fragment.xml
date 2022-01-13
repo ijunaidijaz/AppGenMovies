@@ -85,14 +85,11 @@
             android:textColor="@color/black"
             android:textSize="17dp"
             android:text="Most Viewed Movies" />
-        <GridView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gridView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/description"
-            android:horizontalSpacing="0dp"
-            android:nestedScrollingEnabled="false"
-
             />
     </LinearLayout>
 </layout>

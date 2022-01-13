@@ -1,7 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-
+//apply plugin: 'applovin-quality-service'
+//applovin {
+//    apiKey "YOUR_AD_REVIEW_KEY_HERE"
+//}
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.2"
@@ -79,9 +82,10 @@ dependencies {
 //    implementation("androidx.work:work-runtime-ktx:$work_version") {
 //        force = true
 //    }
-    def fyberMarketplaceVersion = '8.0.0'
-    implementation "com.fyber:marketplace-sdk:${fyberMarketplaceVersion}"
-
+//    def fyberMarketplaceVersion = '8.0.0'
+//    implementation "com.fyber:marketplace-sdk:${fyberMarketplaceVersion}"
+    implementation 'com.startapp:inapp-sdk:4.9.+'
+//    implementation 'com.applovin:applovin-sdk:+'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 }

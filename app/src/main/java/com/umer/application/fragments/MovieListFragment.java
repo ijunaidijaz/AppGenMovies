@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.umer.application.R;
+import com.umer.application.activities.GridViewActivity;
 import com.umer.application.adapters.GridViewAdapter;
 import com.umer.application.adapters.MoviesAdapter;
 import com.umer.application.adapters.VideoListAdapter;
@@ -186,6 +187,8 @@ public class MovieListFragment extends Fragment implements MoviesCallback {
     }
 
     public void openWatchNowFirstFragment(Songs_list songs_list) {
+        ((GridViewActivity)getActivity()).clickCount++;
+        ((GridViewActivity)getActivity()).loadAds();
         Bundle bundle = new Bundle();
         bundle.putSerializable("VideosList", (Serializable) songsList);
         bundle.putSerializable("selectedVideo", songs_list);
@@ -199,5 +202,6 @@ public class MovieListFragment extends Fragment implements MoviesCallback {
     public void onMovieClick(Songs_list songs_list, MoviesViewHolder viewHolder, int position) {
         itemPosition = songsList.get(position).getId();
         openWatchNowFirstFragment(songsList.get(position));
+
     }
 }

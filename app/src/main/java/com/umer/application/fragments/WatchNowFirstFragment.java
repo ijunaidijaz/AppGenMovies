@@ -87,6 +87,8 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
             setMoviesAdapter(songsList);
 
             binding.watchNow.setOnClickListener(v -> {
+                ((GridViewActivity)getActivity()).clickCount++;
+                ((GridViewActivity)getActivity()).loadAds();
                 openWatchNowSecondFragment(song);
             });
 
@@ -191,6 +193,8 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
     }
 
     public void singlePostResponseHandling(singlePost singlePost1) {
+        ((GridViewActivity)getActivity()).clickCount++;
+        ((GridViewActivity)getActivity()).loadAds();
         openMovieListFragment(singlePost1.getKeyword(), "",
                 singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
                 applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
