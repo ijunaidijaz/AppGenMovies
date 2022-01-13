@@ -10,6 +10,7 @@
     //ADMOB ID's
 <!--    <string name="ADMOB_APP_ID">ca-app-pub-3489810328478410~304093714</string>-->
     <string name="ADMOB_APP_ID">ca-app-pub-2830201261334544~2516166051</string>
+    <string name="STARTAPP_APP_ID">200468252</string>
     <string name="APPLOVIN_SDK_KEY">U3WzVWmlM4is2Md6zUTzSbFCygBe7812TP5rCB4PaDuXcmhDezTJVIUaPF0UiPnoTvZGTWWOR8DKTL7ytmuc-5</string>
 <!--    <string name="ADMOB_BANNER_ID">ca-app-pub-3489810328478410/935607688</string>-->
     <string name="ADMOB_BANNER_ID">ca-app-pub-3940256099942544/6300978111</string>

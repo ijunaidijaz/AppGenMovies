@@ -7,6 +7,8 @@ import android.widget.Toast;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.startapp.sdk.adsbase.StartAppSDK;
+import com.umer.application.R;
 
 public class MainApp extends Application {
     public static MainApp INSTANCE;
@@ -21,6 +23,7 @@ public class MainApp extends Application {
         INSTANCE=this;
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+//        StartAppSDK.init(getAppContext(), getResources().getString(R.string.STARTAPP_APP_ID), false);
         MobileAds.initialize(getApplicationContext(), new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {

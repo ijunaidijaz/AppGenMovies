@@ -41,6 +41,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
+import com.startapp.sdk.adsbase.StartAppAd;
 import com.umer.application.R;
 import com.umer.application.adapters.CategoryAdapter;
 import com.umer.application.adapters.GridViewAdapter;
@@ -124,10 +125,11 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         applicationSettings.setAdds(2);
         applicationSettings.setAdMobLimit("2");
 //        loadAds();
-       bannerLayout.setVisibility(View.VISIBLE);
-            facebook_banner_container.setVisibility(View.VISIBLE);
-            facebookBannerAds();
-         facebookInterstitialAds();
+//        StartAppAd.showAd(this);
+//       bannerLayout.setVisibility(View.VISIBLE);
+//            facebook_banner_container.setVisibility(View.VISIBLE);
+//            facebookBannerAds();
+//         facebookInterstitialAds();
 
 //        if (applicationSettings.getAdds() == AdsTypes.admobAds){
 //            bannerLayout.setVisibility(View.VISIBLE);
