@@ -122,7 +122,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         // Initialize the Audience Network SDK
         instance = this;
         initViews();
-        applicationSettings.setAdds(2);
+        applicationSettings.setAdds(3);
         applicationSettings.setAdMobLimit("2");
 //        loadAds();
 //        StartAppAd.showAd(this);
@@ -1054,12 +1054,12 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                 facebookBannerAds();
                 facebookInterstitialAds();
 
-            } else if (applicationSettings.getAdds() == AdsTypes.fyberAds) {
-                bannerLayout.setVisibility(View.VISIBLE);
-                facebook_banner_container.setVisibility(View.VISIBLE);
-                facebookBannerAds();
-                facebookInterstitialAds();
-
+            } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
+                bannerLayout.setVisibility(View.GONE);
+                binding.startAppBannerLayout.setVisibility(View.VISIBLE);
+                facebook_banner_container.setVisibility(View.GONE);
+                StartAppAd.showAd(this);
+                clickCount=0;
             }
         }
     }
