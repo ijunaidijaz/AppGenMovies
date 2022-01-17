@@ -88,6 +88,16 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback {
                 ((GridViewActivity)getActivity()).loadAds();
                 ((GridViewActivity) getActivity()).openSinglePost(song.getId(), clickCount,true);
             });
+            binding.serverLink2.setOnClickListener(v -> {
+                ((GridViewActivity)getActivity()).clickCount++;
+                ((GridViewActivity)getActivity()).loadAds();
+                ((GridViewActivity) getActivity()).openSinglePost(song.getId(), clickCount,true);
+            });
+            binding.serverLink3.setOnClickListener(v -> {
+                ((GridViewActivity)getActivity()).clickCount++;
+                ((GridViewActivity)getActivity()).loadAds();
+                ((GridViewActivity) getActivity()).openSinglePost(song.getId(), clickCount,true);
+            });
             imageURL = applicationSettings.getLog();
             functions.GlideImageLoaderWithPlaceholder(getContext(), binding.header.imageView, Constants.BASE_URL_IMAGES + imageURL);
 

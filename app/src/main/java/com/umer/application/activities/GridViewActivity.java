@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -27,6 +28,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.applovin.mediation.MaxAd;
+import com.applovin.mediation.MaxAdFormat;
+import com.applovin.mediation.MaxAdViewAdListener;
+import com.applovin.mediation.MaxError;
+import com.applovin.mediation.ads.MaxAdView;
+import com.applovin.mediation.ads.MaxInterstitialAd;
+import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkConfiguration;
+import com.applovin.sdk.AppLovinSdkUtils;
 import com.facebook.ads.AbstractAdListener;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
@@ -107,6 +117,8 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     static GridViewActivity instance;
     String inFragment = "";
     TestingGridViewBinding binding;
+    MaxAdView maxAdView;
+    MaxInterstitialAd maxinterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,35 +134,8 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         // Initialize the Audience Network SDK
         instance = this;
         initViews();
-        applicationSettings.setAdds(3);
-        applicationSettings.setAdMobLimit("2");
-//        loadAds();
-//        StartAppAd.showAd(this);
-//       bannerLayout.setVisibility(View.VISIBLE);
-//            facebook_banner_container.setVisibility(View.VISIBLE);
-//            facebookBannerAds();
-//         facebookInterstitialAds();
-
-//        if (applicationSettings.getAdds() == AdsTypes.admobAds){
-//            bannerLayout.setVisibility(View.VISIBLE);
-//            DailyMotion_banner_container.setVisibility(View.VISIBLE);
-//            admobBannerAds();
-//            admobInterstitialAds();
-//        }
-//        else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-//            bannerLayout.setVisibility(View.VISIBLE);
-//            facebook_banner_container.setVisibility(View.VISIBLE);
-//            facebookBannerAds();
-//            facebookInterstitialAds();
-//
-//        } else if (applicationSettings.getAdds() == AdsTypes.fyberAds) {
-//            bannerLayout.setVisibility(View.VISIBLE);
-//            facebook_banner_container.setVisibility(View.VISIBLE);
-//            facebookBannerAds();
-//            facebookInterstitialAds();
-//
-//        }
-
+        applicationSettings.setAdds(2);
+        applicationSettings.setAdMobLimit("3");
 
         functions.GlideImageLoaderWithPlaceholder(this, imageView_searchBar, Constants.BASE_URL_IMAGES + applicationSettings.getLog());
         setListeners();
@@ -165,6 +150,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
         }
         getAllPosts();
+        clickCount=0;
 
 
     }
@@ -534,69 +520,69 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 //        });
 //
 //        facebookInterstitialAd.loadAd();
-        AdSettings.setTestAdType(AdSettings.TestAdType.IMG_16_9_APP_INSTALL);
-        AdSettings.getTestAdType();
-        AdSettings.setDebugBuild(true);
-        facebookInterstitialAd = new com.facebook.ads.InterstitialAd(this, getResources().getString(R.string.FACEBOOK_INTER_ID));
-        facebookInterstitialAd.setAdListener(new AbstractAdListener() {
-            public void onAdLoaded(Ad ad) {
-//                adfacebook = ad;
-                facebookInterstitialAd.show();
-            }
-        });
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 5s = 5000ms
-                facebookInterstitialAd.loadAd();
-            }
-        }, 3000);
-
-        facebookInterstitialAd.setAdListener(new InterstitialAdListener() {
-            @Override
-            public void onInterstitialDisplayed(Ad ad) {
-                // Interstitial ad displayed callback
-                Log.e("TAG", "Interstitial ad displayed.");
-            }
-
-            @Override
-            public void onInterstitialDismissed(Ad ad) {
-                // Interstitial dismissed callback
-                Log.e("TAG", "Interstitial ad dismissed.");
-            }
-
-            @Override
-            public void onError(Ad ad, AdError adError) {
-                // Ad error callback
-                Log.e("TAG", "Interstitial ad failed to load: " + adError.getErrorMessage());
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                // Interstitial ad is loaded and ready to be displayed
-                Log.d("TAG", "Interstitial ad is loaded and ready to be displayed!");
-                // Show the ad
-                //  interstitial.loadAd();
-                facebookInterstitialAd.show();
-                if (clickCount >= applicationSettings.getAdMobLimit()) {
-                    clickCount = 0;
-                }
-//                adfacebook = ad;
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-                // Ad clicked callback
-                Log.d("TAG", "Interstitial ad clicked!");
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-                // Ad impression logged callback
-                Log.d("TAG", "Interstitial ad impression logged!");
-            }
-        });
+//        AdSettings.setTestAdType(AdSettings.TestAdType.IMG_16_9_APP_INSTALL);
+//        AdSettings.getTestAdType();
+//        AdSettings.setDebugBuild(true);
+//        facebookInterstitialAd = new com.facebook.ads.InterstitialAd(this, getResources().getString(R.string.FACEBOOK_INTER_ID));
+//        facebookInterstitialAd.setAdListener(new AbstractAdListener() {
+//            public void onAdLoaded(Ad ad) {
+////                adfacebook = ad;
+//                facebookInterstitialAd.show();
+//            }
+//        });
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // Do something after 5s = 5000ms
+//                facebookInterstitialAd.loadAd();
+//            }
+//        }, 3000);
+//
+//        facebookInterstitialAd.setAdListener(new InterstitialAdListener() {
+//            @Override
+//            public void onInterstitialDisplayed(Ad ad) {
+//                // Interstitial ad displayed callback
+//                Log.e("TAG", "Interstitial ad displayed.");
+//            }
+//
+//            @Override
+//            public void onInterstitialDismissed(Ad ad) {
+//                // Interstitial dismissed callback
+//                Log.e("TAG", "Interstitial ad dismissed.");
+//            }
+//
+//            @Override
+//            public void onError(Ad ad, AdError adError) {
+//                // Ad error callback
+//                Log.e("TAG", "Interstitial ad failed to load: " + adError.getErrorMessage());
+//            }
+//
+//            @Override
+//            public void onAdLoaded(Ad ad) {
+//                // Interstitial ad is loaded and ready to be displayed
+//                Log.d("TAG", "Interstitial ad is loaded and ready to be displayed!");
+//                // Show the ad
+//                //  interstitial.loadAd();
+//                facebookInterstitialAd.show();
+//                if (clickCount >= applicationSettings.getAdMobLimit()) {
+//                    clickCount = 0;
+//                }
+////                adfacebook = ad;
+//            }
+//
+//            @Override
+//            public void onAdClicked(Ad ad) {
+//                // Ad clicked callback
+//                Log.d("TAG", "Interstitial ad clicked!");
+//            }
+//
+//            @Override
+//            public void onLoggingImpression(Ad ad) {
+//                // Ad impression logged callback
+//                Log.d("TAG", "Interstitial ad impression logged!");
+//            }
+//        });
 
     }
 
@@ -838,7 +824,8 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
             }
 
         } else if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-            showFacebookInterstitialAds();
+//            showFacebookInterstitialAds();
+            loadAds();
         } else {
             getSinglePost(position);
 
@@ -864,7 +851,8 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
             }
 
         } else if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-            showFacebookInterstitialAds();
+//            showFacebookInterstitialAds();
+            loadAds();
         } else {
             getSinglePost(position);
 
@@ -1041,6 +1029,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         getSupportFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
     }
 
+
     public void loadAds() {
         if (clickCount >= applicationSettings.getAdMobLimit()) {
             if (applicationSettings.getAdds() == AdsTypes.admobAds) {
@@ -1049,18 +1038,135 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                 admobBannerAds();
                 admobInterstitialAds();
             } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-                bannerLayout.setVisibility(View.VISIBLE);
-                facebook_banner_container.setVisibility(View.VISIBLE);
-                facebookBannerAds();
-                facebookInterstitialAds();
+                bannerLayout.setVisibility(View.GONE);
+                facebook_banner_container.setVisibility(View.GONE);
+//                facebookBannerAds();
+//                facebookInterstitialAds();
+                loadMaxBannerAd();
 
             } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
                 bannerLayout.setVisibility(View.GONE);
                 binding.startAppBannerLayout.setVisibility(View.VISIBLE);
                 facebook_banner_container.setVisibility(View.GONE);
                 StartAppAd.showAd(this);
-                clickCount=0;
+                clickCount = 0;
             }
         }
+    }
+
+    private void loadMaxBannerAd() {
+        maxAdView = new MaxAdView(getResources().getString(R.string.APPLOVIN_BANNER_ID), this);
+
+        // Stretch to the width of the screen for banners to be fully functional
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+
+        // Get the adaptive banner height.
+        int heightDp = MaxAdFormat.BANNER.getAdaptiveSize(this).getHeight();
+        int heightPx = AppLovinSdkUtils.dpToPx(this, heightDp);
+        RelativeLayout.LayoutParams lay = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, heightPx);
+        lay.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        maxAdView.setLayoutParams(lay);
+        maxAdView.setExtraParameter("adaptive_banner", "true");
+
+        // Set background or background color for banners to be fully functional
+//        maxAdView.setBackgroundColor( R.color.background_color );
+
+        ViewGroup rootView = findViewById(android.R.id.content);
+        rootView.addView(maxAdView);
+//
+//        // Load the ad
+        maxAdView.setListener(new MaxAdViewAdListener() {
+            @Override
+            public void onAdExpanded(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdCollapsed(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdLoaded(MaxAd ad) {
+                createInterstitialAd();
+            }
+
+            @Override
+            public void onAdDisplayed(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdHidden(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdClicked(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdLoadFailed(String adUnitId, MaxError error) {
+
+            }
+
+            @Override
+            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+
+            }
+        });
+
+        maxAdView.loadAd();
+    }
+
+    void createInterstitialAd() {
+        maxinterstitialAd = new MaxInterstitialAd(getResources().getString(R.string.APPLOVIN_INTER_ID), this);
+        // Load the first ad
+        maxinterstitialAd.loadAd();
+        maxinterstitialAd.setListener(new MaxAdViewAdListener() {
+            @Override
+            public void onAdExpanded(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdCollapsed(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdLoaded(MaxAd ad) {
+                if (maxinterstitialAd.isReady()) {
+                    maxinterstitialAd.showAd();
+                    clickCount = 0;
+                }
+            }
+
+            @Override
+            public void onAdDisplayed(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdHidden(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdClicked(MaxAd ad) {
+
+            }
+
+            @Override
+            public void onAdLoadFailed(String adUnitId, MaxError error) {
+
+            }
+
+            @Override
+            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+
+            }
+        });
     }
 }

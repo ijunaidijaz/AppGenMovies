@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto">
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:maxads="http://schemas.android.com/tools">
 
     <data>
 
@@ -222,6 +223,13 @@
                 android:visibility="visible" />
 
         </RelativeLayout>
-
+<!--        <com.applovin.mediation.ads.MaxAdView-->
+<!--            android:id="@+id/maxBanAdView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            maxads:adUnitId="@string/ADMOB_BANNER_ID"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:visibility="visible">-->
+<!--        </com.applovin.mediation.ads.MaxAdView>-->
     </RelativeLayout>
 </layout>

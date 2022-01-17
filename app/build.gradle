@@ -85,7 +85,7 @@ dependencies {
 //    def fyberMarketplaceVersion = '8.0.0'
 //    implementation "com.fyber:marketplace-sdk:${fyberMarketplaceVersion}"
     implementation 'com.startapp:inapp-sdk:4.9.+'
-//    implementation 'com.applovin:applovin-sdk:+'
+    implementation 'com.applovin:applovin-sdk:+'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 }

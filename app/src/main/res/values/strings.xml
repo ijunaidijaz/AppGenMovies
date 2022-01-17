@@ -32,6 +32,12 @@
     <string name="TEST_PACKAGE_NAME">test.app.com</string>
     <string name="YOUTUBE_API_KEY">AIzaSyDT77zvdQIeFdZ7GT3xnXWLBgJCXXKw8n0</string>
 
+<!--   //APP LOVIN-->
+<!--    [1/13, 11:59] umar mushtaq: Banner Ad : aa8acade928dd27f-->
+<!--    [1/13, 12:00] umar mushtaq: Inter Ad : 348a595deb89d223-->
+    <string name="APPLOVIN_BANNER_ID">aa8acade928dd27f</string>
+    <string name="APPLOVIN_INTER_ID">348a595deb89d223</string>
+
 
 
 
