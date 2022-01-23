@@ -3,6 +3,7 @@ package com.umer.application.activities;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,14 +18,19 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.MobileAds;
 import com.umer.application.R;
+import com.umer.application.app.MainApp;
 import com.umer.application.models.AppSlider;
 import com.umer.application.models.ApplicationSettings;
 import com.umer.application.models.BaseResponse;
@@ -60,6 +66,9 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
 //        backgroundImage = findViewById(R.id.background_image);
         internetError = findViewById(R.id.internet_Error);
         tryAgain = findViewById(R.id.tryAgain);
+        if (!isNetworkAvailable()){
+            onButtonShowPopupWindowClick();
+        }
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         isInternetConnected();
         if (!isConnected) {
@@ -168,5 +177,62 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
         }
         return isConnected;
     }
+    public void onButtonShowPopupWindowClick() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.exit_popup_window);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Window window = dialog.getWindow();
+        dialog.setCancelable(false);
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+        window.setAttributes(wlp);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        TextView appName = dialog.findViewById(R.id.title);
+        Button exit = dialog.findViewById(R.id.exit_btn);
+        Button cancel = dialog.findViewById(R.id.cancel_btn);
+        ImageView ratingImage = dialog.findViewById(R.id.rateAppIcon);
+        TextView ratingText = dialog.findViewById(R.id.rateAppText);
+        View line = dialog.findViewById(R.id.line);
+        appName.setText("No Internet!");
+        cancel.setVisibility(View.GONE);
+        exit.setText("Ok");
+        // create the popup window
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        // dismiss the popup window when touched
+
+        exit.setOnClickListener(v1 -> {
+            finish();
+        });
+    }
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) MainApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+//        boolean success = false;
+//        new Thread(() -> {
+//            //Do whatever
+//            try {
+//                URL url = new URL("https://google.com");
+//                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//                connection.setConnectTimeout(10000);
+//                connection.connect();
+//                success = connection.getResponseCode() == 200;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
+//
+//        return success;
+    }
+
 
 }

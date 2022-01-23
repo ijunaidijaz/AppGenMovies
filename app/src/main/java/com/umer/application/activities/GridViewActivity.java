@@ -134,7 +134,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         // Initialize the Audience Network SDK
         instance = this;
         initViews();
-        applicationSettings.setAdds(2);
+//        applicationSettings.setAdds(2);
         applicationSettings.setAdMobLimit("3");
 
         functions.GlideImageLoaderWithPlaceholder(this, imageView_searchBar, Constants.BASE_URL_IMAGES + applicationSettings.getLog());
@@ -658,8 +658,8 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
             }
         } else if (inFragment.equals("inFragment")) {
             super.onBackPressed();
-            admobInterstitialAds();
-            facebookInterstitialAds();
+//            admobInterstitialAds();
+//            facebookInterstitialAds();
             clickCount = 0;
             inFragment = "";
         } else if (inFragment.equals("")) {
