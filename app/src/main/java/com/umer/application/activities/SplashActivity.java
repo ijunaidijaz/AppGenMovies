@@ -32,6 +32,9 @@ import com.umer.application.networks.NetworkCall;
 import com.umer.application.networks.OnNetworkResponse;
 import com.umer.application.utils.RequestCodes;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -132,9 +135,6 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
 
                 if (applicationSettings != null) {
                     applicationSettings.saveApplicationSettings(getApplicationContext(), applicationSettings);
-
-//                    backgroundImage.setVisibility(View.VISIBLE);
-//                    functions.GlideImageLoaderWithPlaceholder(SplashActivity.this, backgroundImage, Constants.BASE_URL_IMAGES + applicationSettings.getSplashScreen());
                     new Handler().postDelayed(() -> {
                         Intent splashIntent = new Intent(SplashActivity.this, GridViewActivity.class);
                         if (!appSlider.get(0).getUrl().isEmpty() && applicationSettings != null) {
@@ -148,7 +148,7 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
                             startActivity(splashIntent);
                             finish();
                         }
-                    }, 3000);
+                    }, 2000);
                 }
                 break;
 
@@ -215,12 +215,6 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
         appName.setText("No Internet!");
         cancel.setVisibility(View.GONE);
         exit.setText("Ok");
-        // create the popup window
-
-        // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window tolken
-        // dismiss the popup window when touched
-
         exit.setOnClickListener(v1 -> {
             finish();
         });

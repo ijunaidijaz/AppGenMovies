@@ -77,15 +77,9 @@ import retrofit2.Response;
 public class GridViewActivity extends AppCompatActivity implements  OnNetworkResponse {
 
     public int clickCount = 0;
-    ImageView imageView_searchBar, search_button, search_backBtn;
-    SliderView sliderView;
-    EditText search_EditText;
-    TextView description;
-    GridView gridView1;
     ArrayList<Songs_list> songsList;
     ArrayList<Songs_list> categoryList, categoryTwoList = new ArrayList<>();
     public static ApplicationSettings applicationSettings;
-    int mClickCount = 0;
     int itemId = 0;
     int itemPosition;
     boolean isSingleVideoFrag = false, isCategory = false;
@@ -95,10 +89,8 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
     MaxAdView maxAdView;
     String categoryName;
     MaxInterstitialAd maxinterstitialAd;
-    private AdView facebookAdView;
-    private com.google.android.gms.ads.AdView admobAdView, myAdView;
+    private com.google.android.gms.ads.AdView admobAdView;
     private InterstitialAd admobInterstitialAd;
-    private com.facebook.ads.InterstitialAd facebookInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
