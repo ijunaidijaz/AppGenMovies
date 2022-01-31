@@ -24,8 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdFormat;
@@ -34,23 +32,14 @@ import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdkUtils;
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.smarteist.autoimageslider.IndicatorAnimations;
-import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.startapp.sdk.adsbase.StartAppAd;
 import com.umer.application.R;
-import com.umer.application.adapters.CategoryAdapter;
-import com.umer.application.adapters.CategoryTwoAdapter;
-import com.umer.application.adapters.GridViewAdapter;
-import com.umer.application.adapters.MoviesAdapter;
-import com.umer.application.adapters.SliderAdapter;
 import com.umer.application.adapters.viewHolders.CategoryTwoViewHolder;
 import com.umer.application.adapters.viewHolders.CategoryViewHolder;
 import com.umer.application.adapters.viewHolders.MoviesViewHolder;
@@ -58,6 +47,7 @@ import com.umer.application.callbacks.CategoryCallback;
 import com.umer.application.callbacks.CategoryTwoCallback;
 import com.umer.application.callbacks.MoviesCallback;
 import com.umer.application.databinding.TestingGridViewBinding;
+import com.umer.application.fragments.HomeFragment;
 import com.umer.application.fragments.MovieListFragment;
 import com.umer.application.fragments.ServerLinksFragment;
 import com.umer.application.fragments.VideoListFragment;
@@ -72,11 +62,8 @@ import com.umer.application.networks.Network;
 import com.umer.application.networks.NetworkCall;
 import com.umer.application.networks.OnNetworkResponse;
 import com.umer.application.utils.AdsTypes;
-import com.umer.application.utils.Constants;
 import com.umer.application.utils.RequestCodes;
-import com.umer.application.utils.functions;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -87,7 +74,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class GridViewActivity extends AppCompatActivity implements View.OnClickListener, OnNetworkResponse, com.facebook.ads.AdListener, MoviesCallback, CategoryCallback, CategoryTwoCallback {
+public class GridViewActivity extends AppCompatActivity implements  OnNetworkResponse {
 
     public int clickCount = 0;
     ImageView imageView_searchBar, search_button, search_backBtn;
@@ -97,11 +84,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     GridView gridView1;
     ArrayList<Songs_list> songsList;
     ArrayList<Songs_list> categoryList, categoryTwoList = new ArrayList<>();
-    ArrayList<AppSlider> appSliders;
-    LinearLayout container_gridView, DailyMotion_banner_container, facebook_banner_container;
-    RelativeLayout actionBar, bannerLayout;
-    FrameLayout container_video_fragment;
-    ApplicationSettings applicationSettings;
+    public static ApplicationSettings applicationSettings;
     int mClickCount = 0;
     int itemId = 0;
     int itemPosition;
@@ -124,110 +107,9 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         setContentView(binding.getRoot());
         AudienceNetworkAds.initialize(this);
         applicationSettings = (ApplicationSettings) getIntent().getSerializableExtra("applicationSettings");
-        appSliders = (ArrayList<AppSlider>) getIntent().getSerializableExtra("ApplicationSlider");
-        bannerLayout = findViewById(R.id.facebookBannerLayout);
-        facebook_banner_container = findViewById(R.id.facebook_banner_container);
-        DailyMotion_banner_container = findViewById(R.id.DailyMotion_banner_container);
-        initViews();
-        scrollToTop();
-        functions.GlideImageLoaderWithPlaceholder(this, imageView_searchBar, Constants.BASE_URL_IMAGES + applicationSettings.getLog());
-        setListeners();
-        if (applicationSettings.getAppSubCategories() != null && !applicationSettings.getAppSubCategories().isEmpty()) {
-            binding.firstSubCatTitle.setText(applicationSettings.getAppSubCategories().get(0).getName());
-            getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(0).getId(), RequestCodes.API.GET_POST_BY_CATEGORY);
-            if (applicationSettings.getAppSubCategories().size() > 1) {
-                binding.secondSubCatTitle.setText(applicationSettings.getAppSubCategories().get(1).getName());
-                getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(1).getId(), RequestCodes.API.GET_POST_BY_CATEGORY_2);
-            }
-        }
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            getAllPosts();
-            loadBanners();
-        }, 1500);
-//        applicationSettings.setAdds(3);
-//        applicationSettings.setAdMobLimit("1");
-        loadAds();
-        clickCount = 0;
-
-
-    }
-
-    public void initViews() {
-        sliderView = findViewById(R.id.slider);
-        description = findViewById(R.id.description);
-        description.setText(applicationSettings.getDiscraption());
-        imageView_searchBar = findViewById(R.id.image_view);
-        actionBar = findViewById(R.id.actionBar);
-        actionBar.setBackgroundColor(Color.parseColor(applicationSettings.getActionBarColor()));
-        search_button = findViewById(R.id.search_btn);
-        search_EditText = findViewById(R.id.search_et);
-        search_backBtn = findViewById(R.id.search_backBtn);
-        myAdView = findViewById(R.id.myAddJu);
-        container_gridView = findViewById(R.id.container_gridView);
-        container_video_fragment = findViewById(R.id.container_video_fragment);
-        setSlider();
-
-    }
-
-    public void setSlider() {
-        SliderAdapter adapter = new SliderAdapter(this, appSliders, applicationSettings);
-        sliderView.setSliderAdapter(adapter);
-        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-        sliderView.setIndicatorSelectedColor(Color.WHITE);
-        sliderView.setIndicatorUnselectedColor(Color.GRAY);
-        sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
-        sliderView.startAutoCycle();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.search_btn:
-
-                if (search_EditText.getText().toString().isEmpty()) {
-                    imageView_searchBar.setVisibility(View.GONE);
-                    search_backBtn.setVisibility(View.VISIBLE);
-                    search_EditText.setVisibility(View.VISIBLE);
-                } else {
-                    openVideoFragment(search_EditText.getText().toString(), "", false, 20,
-                            applicationSettings.getIsYoutubePost(), applicationSettings.getAdds(), applicationSettings.getActionBarColor(),
-                            applicationSettings.getLog(), getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
-                }
-                break;
-
-            case R.id.search_backBtn:
-                imageView_searchBar.setVisibility(View.VISIBLE);
-                search_backBtn.setVisibility(View.GONE);
-                search_EditText.setVisibility(View.GONE);
-                break;
-        }
-    }
-
-    private void setListeners() {
-        search_button.setOnClickListener(this);
-        search_backBtn.setOnClickListener(this);
-    }
-
-    private void getAllPosts() {
-        NetworkCall.make()
-                .setCallback(this)
-                .autoLoading(getSupportFragmentManager())
-                .setTag(RequestCodes.API.GET_ALL_POSTS)
-                .enque(new Network().apis().getAllPosts(getResources().getString(R.string.TEST_PACKAGE_NAME)))
-                .execute();
-
-    }
-
-    private void getPostByCategory(Integer categoryId, Integer subcategoryId, Integer RequestCode) {
-        NetworkCall.make()
-                .setCallback(this)
-                .autoLoading(getSupportFragmentManager())
-                .setTag(RequestCode)
-                .enque(new Network().apis().getPostsByCategory(categoryId, subcategoryId, 100, 1))
-                .execute();
+        fragmentTrx(new HomeFragment(), null, "HomeFragment");
+        applicationSettings.setAdds(1);
+        applicationSettings.setAdMobLimit("2");
 
     }
 
@@ -246,33 +128,10 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onSuccess(Call call, Response response, Object tag) {
         switch ((int) tag) {
-            case RequestCodes.API.GET_ALL_POSTS:
-                if (response.body() != null) {
-                    songsList = new ArrayList<>();
-                    songsList = (ArrayList<Songs_list>) response.body();
-                    GridViewAdapter myAdapter;
-                    setMoviesAdapter(songsList);
-
-                }
-                break;
             case RequestCodes.API.GET_SINGLE_POST:
                 if (response.body() != null) {
                     singlePost singlePost1 = (singlePost) response.body();
                     singlePostResponseHandling(singlePost1);
-                }
-                break;
-            case RequestCodes.API.GET_POST_BY_CATEGORY:
-                if (response.body() != null) {
-                    List<Songs_list> songs_list = new ArrayList<>();
-                    songs_list.addAll((ArrayList<Songs_list>) response.body());
-                    setCategoryOneAdapter(songs_list);
-                }
-                break;
-            case RequestCodes.API.GET_POST_BY_CATEGORY_2:
-                if (response.body() != null) {
-                    List<Songs_list> songs_list = new ArrayList<>();
-                    songs_list.addAll((ArrayList<Songs_list>) response.body());
-                    setCategoryTwoAdapter(songs_list);
                 }
                 break;
             default:
@@ -300,48 +159,6 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         admobAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         admobAdView.loadAd(adRequest);
-        admobAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                if (clickCount >= applicationSettings.getAdMobLimit()) {
-                    clickCount = 0;
-                }
-            }
-
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                super.onAdLeftApplication();
-            }
-
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                if (clickCount >= applicationSettings.getAdMobLimit()) {
-                    clickCount = 0;
-                }
-            }
-
-            @Override
-            public void onAdClicked() {
-                super.onAdClicked();
-            }
-
-            @Override
-            public void onAdImpression() {
-                super.onAdImpression();
-            }
-        });
     }
 
     public void admobInterstitialAds() {
@@ -387,30 +204,6 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-
-    @Override
-    public void onError(Ad ad, AdError adError) {
-
-    }
-
-    @Override
-    public void onAdLoaded(Ad ad) {
-    }
-
-    @Override
-    public void onAdClicked(Ad ad) {
-
-    }
-
-    @Override
-    public void onLoggingImpression(Ad ad) {
-
-    }
-
-    public void facebookInterstitialAds() {
-
-    }
-
     public void fragmentTrx(Fragment fragment, Bundle bundle, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container_video_fragment, fragment, tag);
@@ -420,6 +213,51 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         transaction.attach(fragment);
         transaction.commitAllowingStateLoss();
 
+    }
+
+    public void popBackStack() {
+        FragmentManager fm = getLastFragmentManagerWithBack(getSupportFragmentManager());
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+
+        }
+    }
+    public void clearAllFragmentStack() {
+        FragmentManager fm = getLastFragmentManagerWithBack(getSupportFragmentManager());
+        if (fm.getBackStackEntryCount() > 0) {
+            for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+                fm.popBackStack();
+            }
+        }
+    }
+
+    private FragmentManager getLastFragmentManagerWithBack(FragmentManager fm) {
+        FragmentManager fmLast = fm;
+        List<Fragment> fragments = fm.getFragments();
+        for (Fragment f : fragments) {
+            if ((f.getChildFragmentManager() != null) && (f.getChildFragmentManager().getBackStackEntryCount() > 0)) {
+                fmLast = f.getFragmentManager();
+                FragmentManager fmChild = getLastFragmentManagerWithBack(f.getChildFragmentManager());
+                if (fmChild != fmLast)
+                    fmLast = fmChild;
+            }
+        }
+        return fmLast;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.container_video_fragment);
+            if (f instanceof MovieListFragment || f instanceof WatchNowFirstFragment || f instanceof WatchNowSecondFragment
+                    || f instanceof VideoListFragment || f instanceof ServerLinksFragment) {
+                popBackStack();
+            } else {
+                onButtonShowPopupWindowClick();
+            }
+        } else {
+            onBackPressed();
+        }
     }
 
     public void openVideoFragment(String keyword, String playListId, boolean isPlayList,
@@ -467,47 +305,6 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         startActivity(i);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            Fragment f = getSupportFragmentManager().findFragmentById(R.id.container_video_fragment);
-            if (f instanceof MovieListFragment || f instanceof WatchNowFirstFragment || f instanceof WatchNowSecondFragment
-                    || f instanceof VideoListFragment || f instanceof ServerLinksFragment) {
-                popBackStack();
-            }
-        } else if (inFragment.equals("inFragment")) {
-            super.onBackPressed();
-            clickCount = 0;
-            inFragment = "";
-        } else if (inFragment.equals("")) {
-            onButtonShowPopupWindowClick();
-            clickCount = 0;
-        }
-    }
-
-    public void popBackStack() {
-        FragmentManager fm = getLastFragmentManagerWithBack(getSupportFragmentManager());
-        if (fm.getBackStackEntryCount() > 0) {
-            fm.popBackStack();
-
-        }
-    }
-
-    private FragmentManager getLastFragmentManagerWithBack(FragmentManager fm) {
-        FragmentManager fmLast = fm;
-        List<Fragment> fragments = fm.getFragments();
-        for (Fragment f : fragments) {
-            if ((f.getChildFragmentManager() != null) && (f.getChildFragmentManager().getBackStackEntryCount() > 0)) {
-                fmLast = f.getFragmentManager();
-                FragmentManager fmChild = getLastFragmentManagerWithBack(f.getChildFragmentManager());
-                if (fmChild != fmLast)
-                    fmLast = fmChild;
-            }
-        }
-        return fmLast;
-    }
-
-
     public void singlePostResponseHandling(singlePost singlePost1) {
 
         if (singlePost1.getRedirectApp().isEmpty() && !singlePost1.isRedirectLink()) {
@@ -547,7 +344,6 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
                     }
                 }
             }
-
         } else if (!singlePost1.getRedirectApp().isEmpty()) {
             openAppOnPlayStore(singlePost1.getRedirectApp());
         } else if (singlePost1.isRedirectLink()) {
@@ -606,25 +402,7 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     public void openSinglePost(int position, int clickCount, boolean isVideoFrag) {
         isSingleVideoFrag = true;
         itemId = position;
-        if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.admobAds) {
-            if (admobInterstitialAd.isLoaded()) {
-                admobInterstitialAd.show();
-                admobInterstitialAd.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdClosed() {
-                        getSinglePost(position);
-
-                    }
-                });
-            } else {
-                getSinglePost(position);
-            }
-
-        } else if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-        } else {
-            getSinglePost(position);
-
-        }
+        getSinglePost(position);
     }
 
     public void openSinglePostWithoutAdd(int position) {
@@ -632,7 +410,6 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void onButtonShowPopupWindowClick() {
-
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -687,85 +464,36 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         inFragment = result;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
+//    public void setMoviesAdapter(List<Songs_list> lists) {
+//        GridLayoutManager linearLayoutManager = new GridLayoutManager(this, applicationSettings.getRowDisplay());
+//        MoviesAdapter adapter = new MoviesAdapter(this, lists, this);
+//        binding.gridView1.setLayoutManager(linearLayoutManager);
+//        binding.gridView1.setAdapter(adapter);
+//    }
 
+//    public void setCategoryOneAdapter(List<Songs_list> lists) {
+//        categoryList = (ArrayList<Songs_list>) lists;
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+//        CategoryAdapter adapter = new CategoryAdapter(this, categoryList, this);
+//        binding.categoryOneRv.setLayoutManager(linearLayoutManager);
+//        binding.categoryOneRv.setAdapter(adapter);
+//    }
 
-    public void setMoviesAdapter(List<Songs_list> lists) {
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(this, applicationSettings.getRowDisplay());
-        MoviesAdapter adapter = new MoviesAdapter(this, lists, this);
-        binding.gridView1.setLayoutManager(linearLayoutManager);
-        binding.gridView1.setAdapter(adapter);
-    }
+//    public void setCategoryTwoAdapter(List<Songs_list> lists) {
+//        categoryTwoList = (ArrayList<Songs_list>) lists;
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+//        CategoryTwoAdapter adapter = new CategoryTwoAdapter(this, categoryTwoList, this);
+//        binding.categoryTwoRv.setLayoutManager(linearLayoutManager);
+//        binding.categoryTwoRv.setAdapter(adapter);
+//    }
 
-    public void setCategoryOneAdapter(List<Songs_list> lists) {
-        categoryList = (ArrayList<Songs_list>) lists;
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        CategoryAdapter adapter = new CategoryAdapter(this, categoryList, this);
-        binding.categoryOneRv.setLayoutManager(linearLayoutManager);
-        binding.categoryOneRv.setAdapter(adapter);
-    }
-
-    public void setCategoryTwoAdapter(List<Songs_list> lists) {
-        categoryTwoList = (ArrayList<Songs_list>) lists;
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        CategoryTwoAdapter adapter = new CategoryTwoAdapter(this, categoryTwoList, this);
-        binding.categoryTwoRv.setLayoutManager(linearLayoutManager);
-        binding.categoryTwoRv.setAdapter(adapter);
-    }
-
-    @Override
-    public void onMovieClick(Songs_list songs_list, MoviesViewHolder viewHolder, int position) {
-        this.itemPosition = position;
-        isCategory = false;
-        itemId = songsList.get(position).getId();
-        clickCount++;
-        scrollToTop();
-        openSinglePost(itemId, clickCount);
-        showAd();
-    }
 
     public void scrollToTop() {
-        binding.nestedScrollView.fullScroll(View.FOCUS_UP);
+//        binding.nestedScrollView.fullScroll(View.FOCUS_UP);
     }
 
-    @Override
-    public void onCategoryClick(Songs_list songs_list, CategoryViewHolder viewHolder, int position, List<Songs_list> allItems) {
-        categoryName = applicationSettings.getAppSubCategories().get(0).getName();
-        isCategory = true;
-        this.itemPosition = position;
-        categoryList = new ArrayList<>();
-        categoryList.addAll(allItems);
-        itemId = categoryList.get(position).getId();
-        clickCount++;
-        scrollToTop();
-        openSinglePost(itemId, clickCount);
-        final Handler handler = new Handler();
-    }
 
-    @Override
-    public void onCategoryTowClick(Songs_list songs_list, CategoryTwoViewHolder viewHolder, int position, List<Songs_list> allItems) {
-        categoryName = applicationSettings.getAppSubCategories().get(1).getName();
-        isCategory = true;
-        this.itemPosition = position;
-        categoryTwoList = new ArrayList<>();
-        categoryTwoList.addAll(allItems);
-        itemId = categoryTwoList.get(position).getId();
-        clickCount++;
-        scrollToTop();
-        openSinglePost(itemId, clickCount);
-        showAd();
-
-    }
 
     public void openWatchNowFirstFragment(List<Songs_list> songs_list) {
         Bundle bundle = new Bundle();
@@ -778,19 +506,19 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
     public void loadBanners() {
         if (applicationSettings.getAdds() == AdsTypes.admobAds) {
-            bannerLayout.setVisibility(View.VISIBLE);
-            DailyMotion_banner_container.setVisibility(View.VISIBLE);
+            binding.facebookBannerLayout.setVisibility(View.VISIBLE);
+            binding.DailyMotionBannerContainer.setVisibility(View.VISIBLE);
             binding.maxBanner.setVisibility(View.GONE);
             admobBannerAds();
         } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-            bannerLayout.setVisibility(View.GONE);
-            facebook_banner_container.setVisibility(View.GONE);
+            binding.facebookBannerLayout.setVisibility(View.GONE);
+            binding.facebookBannerContainer.setVisibility(View.GONE);
             binding.maxBanner.setVisibility(View.VISIBLE);
             loadMaxBannerAd();
         } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
-            bannerLayout.setVisibility(View.GONE);
+            binding.facebookBannerLayout.setVisibility(View.GONE);
             binding.startAppBannerLayout.setVisibility(View.VISIBLE);
-            facebook_banner_container.setVisibility(View.GONE);
+            binding.facebookBannerContainer.setVisibility(View.GONE);
             binding.maxBanner.setVisibility(View.GONE);
         }
     }
@@ -822,10 +550,8 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
     private void loadMaxBannerAd() {
         maxAdView = new MaxAdView(getResources().getString(R.string.APPLOVIN_BANNER_ID), this);
-
         // Stretch to the width of the screen for banners to be fully functional
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
-
         // Get the adaptive banner height.
         int heightDp = MaxAdFormat.BANNER.getAdaptiveSize(this).getHeight();
         int heightPx = AppLovinSdkUtils.dpToPx(this, heightDp);
@@ -833,56 +559,10 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
         lay.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         maxAdView.setLayoutParams(lay);
         maxAdView.setExtraParameter("adaptive_banner", "true");
-
         // Set background or background color for banners to be fully functional
 //        maxAdView.setBackgroundColor( R.color.background_color );
-
 //        ViewGroup rootView = findViewById(android.R.id.contentMax);
         binding.maxBanner.addView(maxAdView);
-//
-//        // Load the ad
-        maxAdView.setListener(new MaxAdViewAdListener() {
-            @Override
-            public void onAdExpanded(MaxAd ad) {
-
-            }
-
-            @Override
-            public void onAdCollapsed(MaxAd ad) {
-
-            }
-
-            @Override
-            public void onAdLoaded(MaxAd ad) {
-
-            }
-
-            @Override
-            public void onAdDisplayed(MaxAd ad) {
-
-            }
-
-            @Override
-            public void onAdHidden(MaxAd ad) {
-
-            }
-
-            @Override
-            public void onAdClicked(MaxAd ad) {
-
-            }
-
-            @Override
-            public void onAdLoadFailed(String adUnitId, MaxError error) {
-
-            }
-
-            @Override
-            public void onAdDisplayFailed(MaxAd ad, MaxError error) {
-
-            }
-        });
-
         maxAdView.loadAd();
     }
 
@@ -903,10 +583,6 @@ public class GridViewActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onAdLoaded(MaxAd ad) {
-//                clickCount = 0;
-//                if (maxinterstitialAd.isReady()) {
-//                    maxinterstitialAd.showAd();
-//                }
             }
 
             @Override

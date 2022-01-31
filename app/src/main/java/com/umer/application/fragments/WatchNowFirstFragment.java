@@ -62,7 +62,7 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
         mViewModel = new ViewModelProvider(this).get(WatchNowFirstViewModel.class);
         binding = WatchNowFirstFragmentBinding.inflate(inflater, container, false);
         ((GridViewActivity) getActivity()).scrollToTop();
-        binding.header.backbtnHeader.setOnClickListener(v1 -> getParentFragmentManager().beginTransaction().remove(WatchNowFirstFragment.this).commit());
+        binding.header.backbtnHeader.setOnClickListener(v1 -> getActivity().onBackPressed());
 
         if (getArguments() != null) {
             applicationSettings = (ApplicationSettings) getArguments().getSerializable("applicationSettings");
@@ -105,57 +105,10 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
         bundle.putSerializable("selectedVideo", songs_list);
         bundle.putSerializable("applicationSettings", applicationSettings);
         WatchNowSecondFragment fragment = new WatchNowSecondFragment();
-//        ((GridViewActivity)getActivity()).scrollToTop();
         ((GridViewActivity) getActivity()).fragmentTrx(fragment, bundle, "Second");
-//        fragment.setArguments(bundle);
-//        getParentFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
-    }
+  }
 
-    public void openMovieListFragment(String keyword, String playListId, boolean isPlayList,
-                                      int limit, boolean isYoutube, int Adds, String color, String imageUrl,
-                                      String admob_interID, String faebook_interID) {
-        Bundle bundle = new Bundle();
-        bundle.putString("KEYWORD", keyword);
-        bundle.putString("PLAYLIST_ID", playListId);
-        bundle.putBoolean("isPLAYLIST", isPlayList);
-        bundle.putInt("LIMIT", limit);
-        bundle.putBoolean("isYoutube", isYoutube);
-        bundle.putInt("ADDS", Adds);
-        bundle.putString("Color", color);
-        bundle.putString("appIcon", imageUrl);
-        bundle.putString("ADMOB_INTER_ID", admob_interID);
-        bundle.putString("FACEBOOK_INTER_ID", faebook_interID);
-        bundle.putSerializable("VideosList", (Serializable) songsList);
-        bundle.putSerializable("applicationSettings", applicationSettings);
-        MovieListFragment fragment = new MovieListFragment();
-        fragment.setArguments(bundle);
-        getParentFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
-    }
 
-    public void openSinglePost(int position, int clickCount) {
-        itemID = position;
-//        if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.admobAds) {
-//            if (admobInterstitialAd.isLoaded()) {
-//                admobInterstitialAd.show();
-//                admobInterstitialAd.setAdListener(new AdListener() {
-//                    @Override
-//                    public void onAdClosed() {
-//                        getSinglePost(position);
-//
-//                    }
-//                });
-//            } else {
-////              Toast.makeText(GridViewActivity.this, "interstitial ads not loaded", Toast.LENGTH_SHORT).show();
-//                getSinglePost(position);
-//            }
-//
-//        } else if (clickCount == applicationSettings.getAdMobLimit() && applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-//            showFacebookInterstitialAds();
-//        } else {
-//            getSinglePost(position);
-//
-//        }
-    }
 
 
     @Override

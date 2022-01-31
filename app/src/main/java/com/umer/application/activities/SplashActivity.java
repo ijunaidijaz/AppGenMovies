@@ -141,6 +141,7 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             splashIntent.putExtra("applicationSettings", applicationSettings);
                             splashIntent.putExtra("ApplicationSlider", appSlider);
+                            applicationSettings.saveSlider(appSlider);
                             editor.putString("App_Header_color", applicationSettings.getActionBarColor());
                             editor.putString("Logo", applicationSettings.getLog());
                             editor.apply();

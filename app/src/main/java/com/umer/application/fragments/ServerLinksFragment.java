@@ -65,8 +65,7 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
 
         binding = ServerLinksFragmentBinding.inflate(inflater, container, false);
         ((GridViewActivity) getActivity()).scrollToTop();
-        binding.header.backbtnHeader.setOnClickListener(v1 -> getParentFragmentManager().beginTransaction().remove(ServerLinksFragment.this).commit());
-
+        binding.header.backbtnHeader.setOnClickListener(v1 -> getActivity().onBackPressed());
         if (getArguments() != null) {
             applicationSettings = (ApplicationSettings) getArguments().getSerializable("applicationSettings");
             Songs_list song = (Songs_list) getArguments().getSerializable("selectedVideo");

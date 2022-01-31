@@ -8,10 +8,12 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 import com.umer.application.app.MainApp;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ApplicationSettings implements Serializable {
@@ -740,8 +742,22 @@ public class ApplicationSettings implements Serializable {
         SharedPreferences sharedPreferences = context.getSharedPreferences("ApplicationSlider", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("ApplicationSlider", "");
-        List<AppSlider> obj = gson.fromJson(json, (Type) AppSlider.class);
-        return obj;
+        Type type = new TypeToken<List<AppSlider>>() {
+        }.getType();
+        List<AppSlider> list = gson.fromJson(json, type);
+        return list;
+    }
+
+    public void saveSlider(ArrayList<AppSlider> appSlider) {
+        SharedPreferences mPrefs = MainApp.getAppContext().getSharedPreferences("ApplicationSlider", MODE_PRIVATE);
+        //set variables of 'myObject', etc.
+
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(appSlider);
+        prefsEditor.putString("ApplicationSlider", json);
+        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
     public class PostCategory implements Serializable {

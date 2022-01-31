@@ -64,8 +64,7 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback, 
         mViewModel = new ViewModelProvider(this).get(WatchNowSecondViewModel.class);
         binding = WatchNowSecondFragmentBinding.inflate(inflater, container, false);
         ((GridViewActivity) getActivity()).scrollToTop();
-        binding.header.backbtnHeader.setOnClickListener(v1 -> getParentFragmentManager().beginTransaction().remove(WatchNowSecondFragment.this).commit());
-
+        binding.header.backbtnHeader.setOnClickListener(v1 -> getActivity().onBackPressed());
         if (getArguments() != null) {
             applicationSettings = (ApplicationSettings) getArguments().getSerializable("applicationSettings");
             Songs_list song = (Songs_list) getArguments().getSerializable("selectedVideo");
@@ -85,12 +84,6 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback, 
             }
             setMoviesAdapter(songsList);
             binding.gridView1.smoothScrollToPosition(0);
-//            binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
-////                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
-//                itemPosition = songsList.get(position).getId();
-//                ((GridViewActivity)getActivity()).getSinglePost(itemPosition);
-//
-//            });
             binding.watchNow.setOnClickListener(v -> {
                 ((GridViewActivity) getActivity()).clickCount++;
                 ((GridViewActivity) getActivity()).showAd();

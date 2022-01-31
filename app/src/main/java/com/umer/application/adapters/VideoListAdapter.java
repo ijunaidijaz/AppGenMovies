@@ -21,6 +21,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.umer.application.R;
 import com.umer.application.activities.DailyMotionVideoPlayer;
+import com.umer.application.activities.GridViewActivity;
 import com.umer.application.activities.YoutubeVideoPlayer;
 import com.umer.application.models.YoutubeVideoItem;
 
@@ -31,7 +32,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
     boolean isYoutube;
     int Adds;
     String id, admob_InterID, facebook_InterID;
-    private Context mContext;
+    public Context mContext;
     private ArrayList<YoutubeVideoItem> mItems = new ArrayList<>();
     private InterstitialAd admobInterstitialAd;
     private com.facebook.ads.InterstitialAd facebookInterstitialAd;
@@ -193,6 +194,8 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
                 @Override
                 public void onClick(View view) {
                     YoutubeVideoItem i = mItems.get(getAdapterPosition());
+                    ((GridViewActivity)mContext).clickCount++;
+                    ((GridViewActivity)mContext).showAd();
                     id = i.id;
                     if (isYoutube) {
 

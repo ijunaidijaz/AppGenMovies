@@ -66,118 +66,23 @@ public class MovieListFragment extends Fragment implements MoviesCallback {
         mViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
         binding = MovieListFragmentBinding.inflate(inflater, container, false);
         ((GridViewActivity) getActivity()).scrollToTop();
-        binding.headerBar.backbtnHeader.setOnClickListener(v1 -> getParentFragmentManager().beginTransaction().remove(MovieListFragment.this).commit());
-
+        binding.headerBar.backbtnHeader.setOnClickListener(v1 -> getActivity().onBackPressed());
         if (getArguments() != null) {
             applicationSettings = (ApplicationSettings) getArguments().getSerializable("applicationSettings");
-//            binding.gridView1.setNumColumns(applicationSettings.getRowDisplay());
             binding.headerBar.headerBar.setBackgroundColor(Color.parseColor(applicationSettings.getActionBarColor()));
             binding.listTitle.setText((String) getArguments().get("TITLE"));
             songsList = (List<Songs_list>) getArguments().getSerializable("VideosList");
-            GridViewAdapter myAdapter;
-            if (applicationSettings.getRowDisplay() == 1) {
-                myAdapter = new GridViewAdapter(getContext(), R.layout.grid_view_style_single_post, (ArrayList) songsList);
-
-            } else {
-                myAdapter = new GridViewAdapter(getContext(), R.layout.gridview_style, (ArrayList) songsList);
-            }
-//            binding.gridView1.setAdapter(myAdapter);
             setMoviesAdapter(songsList);
-//            binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
-////                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
-//
-//
-//            });
 
             imageURL = getArguments().getString("appIcon");
             functions.GlideImageLoaderWithPlaceholder(getContext(), binding.headerBar.imageView, Constants.BASE_URL_IMAGES + imageURL);
-//            colorString = getArguments().getString("Color");
-//            binding.headerBar.headerBar.setBackgroundColor(Color.parseColor(colorString));
-//            admob_Inter_Id = getArguments().getString("ADMOB_INTER_ID");
-//            facebook_Inter_Id = getArguments().getString("FACEBOOK_INTER_ID");
-//
-//
-//            if (getArguments().getBoolean("isPLAYLIST")) {
-//                keyword = getArguments().getString("PLAYLIST_ID");
-//            } else {
-//                keyword = getArguments().getString("KEYWORD");
-//            }
-//
-//            limit = getArguments().getInt("LIMIT");
-//            isYoutube = getArguments().getBoolean("isYoutube");
-//            isPlayList = getArguments().getBoolean("isPLAYLIST");
-//            adds = getArguments().getInt("ADDS", -1);
 
         }
-//        RecyclerView videoListRecyclerView = binding.getRoot().findViewById(R.id.movies_rv);
-//        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-//
-//        videoListRecyclerView.setLayoutManager(manager);
-//
-//        mAdapter = new VideoListAdapter(getActivity(), isYoutube, adds, null, admob_Inter_Id, facebook_Inter_Id);
-//
-//        videoListRecyclerView.setAdapter(mAdapter);
-//
-//        if (isYoutube) {
-//            startLoadingYoutubeVideos();
-//        } else if (!isPlayList && !isYoutube) {
-//            getDailyMotionVideos(keyword);
-//        } else {
-//            startLoadingDailyMotionPlayList(getArguments().getString("PLAYLIST_ID"));
-//        }
         binding.gridView1.smoothScrollToPosition(0);
         return binding.getRoot();
     }
 
-    private void startLoadingYoutubeVideos() {
 
-        YoutubeSearchHelper searchHelper = new YoutubeSearchHelper(getContext());
-        searchHelper.searchYoutube(keyword, isPlayList, videos -> {
-            mAdapter.setItems(videos);
-            mAdapter.notifyDataSetChanged();
-        });
-
-    }
-
-    private void startLoadingDailyMotionPlayList(String playListId) {
-        DailyMotionSearchHelper dailyMotionSearchHelper = new DailyMotionSearchHelper(getContext());
-        dailyMotionSearchHelper.searchDailyMotion(playListId, videos -> {
-                    mAdapter.setItems(videos);
-                    mAdapter.notifyDataSetChanged();
-                }
-        );
-
-    }
-
-    private void getDailyMotionVideos(String keyWord) {
-
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.DAILYMOTION_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        ApiServices getDailyMotionVideos = retrofit.create(ApiServices.class);
-        Call<dailymotionSearchHelper> dailymotionSearchHelperCall = getDailyMotionVideos.getDailyMotionVideos(
-                "id,thumbnail_url%2Ctitle", "pk", keyWord, limit);
-        dailymotionSearchHelperCall.enqueue(new Callback<dailymotionSearchHelper>() {
-            @Override
-            public void onResponse(Call<dailymotionSearchHelper> call, Response<dailymotionSearchHelper> response) {
-                dailymotionSearchHelper daily = response.body();
-                mAdapter.setItems(daily.getSongs_List());
-
-            }
-
-            @Override
-            public void onFailure(Call<dailymotionSearchHelper> call, Throwable t) {
-
-            }
-        });
-
-    }
 
     public void setMoviesAdapter(List<Songs_list> lists) {
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), applicationSettings.getRowDisplay());
