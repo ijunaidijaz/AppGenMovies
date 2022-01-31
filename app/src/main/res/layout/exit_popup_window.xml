@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/blur_background"
 
     >
@@ -12,47 +12,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:elevation="10dp"
         android:background="@color/white"
-        app:cardCornerRadius="10dp"
-        >
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp"
             android:background="@color/white"
-            >
-        <TextView
-            android:id="@+id/appName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            android:text="HINDI SONGS . MT"/>
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/appName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="HINDI SONGS . MT"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
 
-        <View
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_margin="5dp"
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_margin="5dp"
 
-            >
+                >
 
-        </View>
+            </View>
 
-        <TextView
-android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:text="Are you sure, You want to exit?"/>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Are you sure, You want to exit?"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/rateAppIcon"
@@ -65,11 +64,12 @@ android:id="@+id/title"
                 >
 
             </ImageView>
+
             <TextView
                 android:id="@+id/rateAppText"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Rate Our App"
                 android:textColor="@color/rating_text_color"
 
@@ -78,44 +78,43 @@ android:id="@+id/title"
             </TextView>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_gravity="center"
-                >
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/exit_btn"
                     android:layout_width="120dp"
                     android:layout_height="50dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/round_corner"
                     android:text="Exit"
-                    android:textStyle="bold"
                     android:textAllCaps="false"
-                    android:layout_margin="10dp"
-                    android:textSize="20sp"
                     android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
 
                     >
 
                 </Button>
+
                 <View
                     android:layout_width="10dp"
-                    android:layout_height="10dp"/>
+                    android:layout_height="10dp" />
 
                 <Button
                     android:id="@+id/cancel_btn"
                     android:layout_width="120dp"
                     android:layout_height="50dp"
                     android:layout_margin="10dp"
+                    android:background="@drawable/round_corner"
                     android:text="Cancel"
                     android:textAllCaps="false"
-                    android:background="@drawable/round_corner"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
                     android:textColor="@color/white"
-                    >
+                    android:textSize="20sp"
+                    android:textStyle="bold">
 
 
                 </Button>
@@ -123,10 +122,8 @@ android:id="@+id/title"
             </LinearLayout>
 
 
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 
 
 </RelativeLayout>

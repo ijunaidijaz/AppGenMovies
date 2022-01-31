@@ -40,6 +40,9 @@ public class singlePost implements Serializable {
     @SerializedName("ServerLink2")
     @Expose
     private String ServerLink2;
+    @SerializedName("ServerLink3")
+    @Expose
+    private String ServerLink4;
 
     public String getServerLink1() {
         return ServerLink1;
@@ -65,10 +68,6 @@ public class singlePost implements Serializable {
         ServerLink4 = serverLink4;
     }
 
-    @SerializedName("ServerLink3")
-    @Expose
-    private String ServerLink4
-            ;
     public String getTitle() {
         return title;
     }

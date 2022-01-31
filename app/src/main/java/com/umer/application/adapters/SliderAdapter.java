@@ -22,25 +22,22 @@ import com.umer.application.activities.GridViewActivity;
 import com.umer.application.activities.WebViewActivity;
 import com.umer.application.models.AppSlider;
 import com.umer.application.models.ApplicationSettings;
-
 import com.umer.application.utils.AdsTypes;
 import com.umer.application.utils.Constants;
-
-
 import com.umer.application.utils.functions;
 
 import java.util.List;
 
 
-public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterVH>  {
+public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapterVH> {
 
-    private Context context;
     List<AppSlider> images;
     int clickCount = 0;
     ApplicationSettings applicationSettings;
+    String webURL;
+    private Context context;
     private InterstitialAd admobInterstitialAd;
     private com.facebook.ads.InterstitialAd facebookInterstitialAd;
-    String webURL ;
 
 
     public SliderAdapter(Context context, List<AppSlider> images, ApplicationSettings applicationSettings) {
@@ -48,7 +45,6 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         this.images = images;
         this.applicationSettings = applicationSettings;
         AudienceNetworkAds.initialize(context);
-
 
 
     }
@@ -62,9 +58,9 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, int position) {
         if (applicationSettings.getAdds() == AdsTypes.admobAds) {
-            admobInterstitialAds();
+//            admobInterstitialAds();
         } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-            facebookInterstitialAds();
+//            facebookInterstitialAds();
         }
 
         Log.e("Urls Images", "" + Constants.BASE_URL_IMAGES + images.get(position).getUrl());
@@ -79,7 +75,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
                 //Ads active and open any normal post
                 if (images.get(position).getRedirectApp().isEmpty() && images.get(position).getWebUrl().isEmpty()) {
-                    GridViewActivity.getInstance().openSinglePost(images.get(position).getId(), clickCount);
+                    ((GridViewActivity) context).openSinglePost(images.get(position).getId(), clickCount);
                 }
                 // ads are active or not open Google play Store without adds
                 else if (images.get(position).getWebUrl().isEmpty()) {
@@ -99,7 +95,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
                                 }
                             });
-                        }else {
+                        } else {
                             admobInterstitialAds();
                             openWebUrl(images.get(position).getWebUrl());
 
@@ -123,7 +119,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 // --------------------------------When there is no Ads Active this flow will work -----------------------------
                 else if (applicationSettings.getAdds() == AdsTypes.notActiveAds) {
                     if (images.get(position).getRedirectApp().equals("") && images.get(position).getWebUrl().isEmpty()) {
-                        GridViewActivity.getInstance().openSinglePostWithoutAdd(images.get(position).getId());
+                        ((GridViewActivity) context).openSinglePostWithoutAdd(images.get(position).getId());
                     } else if (images.get(position).getRedirectApp().equals("")) {
                         openWebUrl(images.get(position).getWebUrl());
                     } else {
@@ -141,18 +137,6 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     public int getCount() {
 //slider view count could be dynamic size
         return images.size();
-    }
-
-    class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
-
-        View itemView;
-        ImageView imageViewBackground;
-
-        public SliderAdapterVH(View itemView) {
-            super(itemView);
-            imageViewBackground = itemView.findViewById(R.id.sliding_images);
-            this.itemView = itemView;
-        }
     }
 
     public void openAppOnPlayStore(String appPackageName) {
@@ -230,6 +214,17 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         facebookInterstitialAds();
     }
 
+    class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
+
+        View itemView;
+        ImageView imageViewBackground;
+
+        public SliderAdapterVH(View itemView) {
+            super(itemView);
+            imageViewBackground = itemView.findViewById(R.id.sliding_images);
+            this.itemView = itemView;
+        }
+    }
 
 
 }

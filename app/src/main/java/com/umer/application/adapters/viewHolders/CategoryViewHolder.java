@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.umer.application.R;
 import com.umer.application.callbacks.CategoryCallback;
-import com.umer.application.callbacks.MoviesCallback;
 import com.umer.application.models.Songs_list;
 import com.umer.application.utils.Constants;
 import com.umer.application.utils.functions;
@@ -38,9 +37,9 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
 
 
     public void setData(Context context, Songs_list item, CategoryViewHolder holder, int position, CategoryCallback callback, List<Songs_list> itemList) {
-        functions.GlideImageLoaderWithPlaceholder(context , imageView , Constants.BASE_URL_IMAGES+item.getUrl());
+        functions.GlideImageLoaderWithPlaceholder(context, imageView, Constants.BASE_URL_IMAGES + item.getUrl());
         parent.setOnClickListener(v -> {
-            callback.onCategoryClick(item, holder, position,itemList);
+            callback.onCategoryClick(item, holder, position, itemList);
         });
     }
 }

@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.umer.application.app.MainApp;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class ApplicationSettings implements Serializable {
@@ -433,6 +435,18 @@ public class ApplicationSettings implements Serializable {
     @Expose
     private List<AppSubCategory> appSubCategories = null;
 
+    public static void saveApplicationSettings(Context context, ApplicationSettings obj) {
+        SharedPreferences mPrefs = MainApp.getAppContext().getSharedPreferences("Application_Settings", MODE_PRIVATE);
+        //set variables of 'myObject', etc.
+
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(obj);
+        prefsEditor.putString("MyObject", json);
+        prefsEditor.commit();
+        prefsEditor.apply();
+    }
+
     public Boolean getIsYoutubePost() {
         return isYoutubePost;
     }
@@ -545,8 +559,6 @@ public class ApplicationSettings implements Serializable {
         this.adMobInterstitialId = adMobInterstitialId;
     }
 
-
-
     public Integer getRowDisplay() {
         return rowDisplay;
     }
@@ -562,8 +574,6 @@ public class ApplicationSettings implements Serializable {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
-
-
 
     public String getYouTubeApiKey() {
         return youTubeApiKey;
@@ -588,8 +598,6 @@ public class ApplicationSettings implements Serializable {
     public void setIncludeHeader(Boolean includeHeader) {
         this.includeHeader = includeHeader;
     }
-
-
 
     public String getGrideViewPost() {
         return grideViewPost;
@@ -638,7 +646,6 @@ public class ApplicationSettings implements Serializable {
     public void setFyberBannerAdId(String fyberBannerAdId) {
         this.fyberBannerAdId = fyberBannerAdId;
     }
-
 
     public Boolean getYoutubePost() {
         return isYoutubePost;
@@ -712,7 +719,6 @@ public class ApplicationSettings implements Serializable {
         this.postCategory = postCategory;
     }
 
-
     public List<AppSubCategory> getAppSubCategories() {
         return appSubCategories;
     }
@@ -720,16 +726,6 @@ public class ApplicationSettings implements Serializable {
     public void setAppSubCategories(List<AppSubCategory> appSubCategories) {
         this.appSubCategories = appSubCategories;
 
-    }
-
-    public static void saveApplicationSettings(Context context, ApplicationSettings obj) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("Application_Settings", MODE_PRIVATE);
-        //set variables of 'myObject', etc.
-
-        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(obj);
-        prefsEditor.apply();
     }
 
     public ApplicationSettings retrieveApplicationSettings(Context context) {
@@ -740,8 +736,15 @@ public class ApplicationSettings implements Serializable {
         return obj;
     }
 
+    public List<AppSlider> getSlider(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("ApplicationSlider", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("ApplicationSlider", "");
+        List<AppSlider> obj = gson.fromJson(json, (Type) AppSlider.class);
+        return obj;
+    }
 
-    public class PostCategory implements Serializable{
+    public class PostCategory implements Serializable {
 
         @SerializedName("Id")
         @Expose
@@ -765,7 +768,6 @@ public class ApplicationSettings implements Serializable {
         public void setName(String name) {
             this.name = name;
         }
-
 
 
     }

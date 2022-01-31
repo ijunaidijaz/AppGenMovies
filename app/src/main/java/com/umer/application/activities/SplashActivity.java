@@ -1,14 +1,9 @@
 package com.umer.application.activities;
 
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -16,7 +11,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -24,24 +18,19 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.ads.MobileAds;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.umer.application.R;
 import com.umer.application.app.MainApp;
 import com.umer.application.models.AppSlider;
 import com.umer.application.models.ApplicationSettings;
 import com.umer.application.models.BaseResponse;
-import com.umer.application.models.Songs_list;
 import com.umer.application.networks.Network;
 import com.umer.application.networks.NetworkCall;
 import com.umer.application.networks.OnNetworkResponse;
-import com.umer.application.utils.APIToken;
-import com.umer.application.utils.Constants;
 import com.umer.application.utils.RequestCodes;
-import com.umer.application.utils.functions;
 
 import java.util.ArrayList;
 
@@ -50,14 +39,36 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity implements OnNetworkResponse {
 
-    public static final String MyPREFERENCES = "MyPrefs" ;
-    ImageView backgroundImage ;
-    LinearLayout internetError ;
+    public static final String MyPREFERENCES = "MyPrefs";
+    ImageView backgroundImage;
+    LinearLayout internetError;
     boolean isConnected = false;
     ApplicationSettings applicationSettings;
-    ArrayList<AppSlider>  appSlider ;
+    ArrayList<AppSlider> appSlider;
     SharedPreferences sharedpreferences;
-    Button tryAgain ;
+    Button tryAgain;
+
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) MainApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+//        boolean success = false;
+//        new Thread(() -> {
+//            //Do whatever
+//            try {
+//                URL url = new URL("https://google.com");
+//                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//                connection.setConnectTimeout(10000);
+//                connection.connect();
+//                success = connection.getResponseCode() == 200;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
+//
+//        return success;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +77,7 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
 //        backgroundImage = findViewById(R.id.background_image);
         internetError = findViewById(R.id.internet_Error);
         tryAgain = findViewById(R.id.tryAgain);
-        if (!isNetworkAvailable()){
+        if (!isNetworkAvailable()) {
             onButtonShowPopupWindowClick();
         }
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -80,7 +91,7 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
         tryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent t= new Intent(SplashActivity.this,SplashActivity.class);
+                Intent t = new Intent(SplashActivity.this, SplashActivity.class);
                 startActivity(t);
                 finish();
             }
@@ -126,12 +137,12 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
 //                    functions.GlideImageLoaderWithPlaceholder(SplashActivity.this, backgroundImage, Constants.BASE_URL_IMAGES + applicationSettings.getSplashScreen());
                     new Handler().postDelayed(() -> {
                         Intent splashIntent = new Intent(SplashActivity.this, GridViewActivity.class);
-                        if (!appSlider.get(0).getUrl().isEmpty() && applicationSettings!=null) {
+                        if (!appSlider.get(0).getUrl().isEmpty() && applicationSettings != null) {
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             splashIntent.putExtra("applicationSettings", applicationSettings);
                             splashIntent.putExtra("ApplicationSlider", appSlider);
-                            editor.putString("App_Header_color" , applicationSettings.getActionBarColor());
-                            editor.putString("Logo" , applicationSettings.getLog());
+                            editor.putString("App_Header_color", applicationSettings.getActionBarColor());
+                            editor.putString("Logo", applicationSettings.getLog());
                             editor.apply();
                             startActivity(splashIntent);
                             finish();
@@ -177,6 +188,7 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
         }
         return isConnected;
     }
+
     public void onButtonShowPopupWindowClick() {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -211,27 +223,6 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
         exit.setOnClickListener(v1 -> {
             finish();
         });
-    }
-    public static boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) MainApp.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-//        boolean success = false;
-//        new Thread(() -> {
-//            //Do whatever
-//            try {
-//                URL url = new URL("https://google.com");
-//                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//                connection.setConnectTimeout(10000);
-//                connection.connect();
-//                success = connection.getResponseCode() == 200;
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }).start();
-//
-//        return success;
     }
 
 

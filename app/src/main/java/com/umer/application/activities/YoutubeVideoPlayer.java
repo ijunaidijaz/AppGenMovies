@@ -1,7 +1,5 @@
 package com.umer.application.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.WindowManager;
 
@@ -11,21 +9,20 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.umer.application.R;
 import com.umer.application.models.ApplicationSettings;
-import com.umer.application.utils.Constants;
 
-public class YoutubeVideoPlayer extends YouTubeBaseActivity{
-    YouTubePlayerView youtubeVideoView ;
-    YouTubePlayer.OnInitializedListener onInitializedListener ;
-    String videoId ;
-    ApplicationSettings applicationSettings ;
+public class YoutubeVideoPlayer extends YouTubeBaseActivity {
+    YouTubePlayerView youtubeVideoView;
+    YouTubePlayer.OnInitializedListener onInitializedListener;
+    String videoId;
+    ApplicationSettings applicationSettings = new ApplicationSettings();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_youtube_video_player);
-        applicationSettings = (ApplicationSettings) getIntent().getSerializableExtra("applicationSettings");
+        applicationSettings = applicationSettings.retrieveApplicationSettings(getApplicationContext());
         Bundle bundle = getIntent().getExtras();
         videoId = bundle.getString("VIDEO_URL");
 
@@ -47,7 +44,6 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity{
 
 //        youtubeVideoView.initialize(getResources().getString(R.string.YOUTUBE_API_KEY), onInitializedListener);
         youtubeVideoView.initialize(applicationSettings.getYouTubeApiKey(), onInitializedListener);
-
 
 
     }

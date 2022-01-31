@@ -9,8 +9,6 @@
         android:id="@+id/dm_player_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        >
-    </com.dailymotion.android.player.sdk.PlayerWebView>
+        android:layout_centerInParent="true"></com.dailymotion.android.player.sdk.PlayerWebView>
 
 </RelativeLayout>

@@ -2,55 +2,48 @@ package com.umer.application.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.AudienceNetworkAds;
 import com.facebook.ads.InterstitialAdListener;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.umer.application.R;
 import com.umer.application.activities.DailyMotionVideoPlayer;
-import com.umer.application.activities.GridViewActivity;
 import com.umer.application.activities.YoutubeVideoPlayer;
-import com.umer.application.models.ApplicationSettings;
 import com.umer.application.models.YoutubeVideoItem;
-import com.umer.application.utils.AdsTypes;
 
 import java.util.ArrayList;
 
 public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.ViewHolder> {
 
+    boolean isYoutube;
+    int Adds;
+    String id, admob_InterID, facebook_InterID;
     private Context mContext;
     private ArrayList<YoutubeVideoItem> mItems = new ArrayList<>();
-    boolean isYoutube ;
-    int Adds ;
-    String id , admob_InterID , facebook_InterID ;
     private InterstitialAd admobInterstitialAd;
     private com.facebook.ads.InterstitialAd facebookInterstitialAd;
 
 
-
-    public VideoListAdapter(Context c,boolean isYoutube,int adds ,  @Nullable ArrayList<YoutubeVideoItem> items ,
-                            String admob_InterID , String facebook_InterID) {
+    public VideoListAdapter(Context c, boolean isYoutube, int adds, @Nullable ArrayList<YoutubeVideoItem> items,
+                            String admob_InterID, String facebook_InterID) {
 
         mContext = c;
-        this.isYoutube = isYoutube ;
+        this.isYoutube = isYoutube;
         setItems(items);
-        this.Adds = adds ;
+        this.Adds = adds;
         this.admob_InterID = admob_InterID;
         this.facebook_InterID = facebook_InterID;
         AudienceNetworkAds.initialize(mContext);
@@ -62,8 +55,8 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_single_video, parent, false);
-        admobInterstitialAds();
-        facebookInterstitialAds();
+//        admobInterstitialAds();
+//        facebookInterstitialAds();
 
 
         ViewHolder v = new ViewHolder(view);
@@ -103,94 +96,15 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
         notifyDataSetChanged();
     }
 
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView mTitleTV;
-        private ImageView mImageView;
-
-
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            mTitleTV = itemView.findViewById(R.id.songTitle);
-            mImageView = itemView.findViewById(R.id.single_image_view);
-            admobInterstitialAds();
-            admobInterstitialAd.isLoaded();
-
-            mImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    YoutubeVideoItem i = mItems.get(getAdapterPosition());
-                            id = i.id ;
-                    if (Adds == AdsTypes.admobAds && isYoutube) {
-                        if (admobInterstitialAd.isLoaded()) {
-                            admobInterstitialAd.show();
-                            admobInterstitialAd.setAdListener(new AdListener() {
-                                @Override
-                                public void onAdClosed() {
-
-                                    Intent intent = new Intent(mContext, YoutubeVideoPlayer.class);
-                                    intent.putExtra("VIDEO_URL", i.id);
-                                    mContext.startActivity(intent);
-                                }
-                            });
-                        }else {
-                            admobInterstitialAds();
-                            admobInterstitialAd.isLoaded();
-
-                            Intent intent = new Intent(mContext, YoutubeVideoPlayer.class);
-                            intent.putExtra("VIDEO_URL", i.id);
-                            mContext.startActivity(intent);
-                        }
-                    }
-                        else if (Adds == AdsTypes.admobAds && !isYoutube){
-                            if (admobInterstitialAd.isLoaded()) {
-                                admobInterstitialAd.show();
-                                admobInterstitialAd.setAdListener(new AdListener() {
-                                    @Override
-                                    public void onAdClosed() {
-
-                                        Intent intent = new Intent(mContext, DailyMotionVideoPlayer.class);
-                                        intent.putExtra("VIDEO_URL", i.id);
-                                        mContext.startActivity(intent);
-                                    }
-                                });
-                        }else {
-                                admobInterstitialAds();
-                                Intent intent = new Intent(mContext, DailyMotionVideoPlayer.class);
-                                intent.putExtra("VIDEO_URL", i.id);
-                                mContext.startActivity(intent);
-                            }
-                    }
-                        else if (Adds == AdsTypes.facebooksAds && isYoutube || Adds == AdsTypes.facebooksAds && !isYoutube ){
-                            showFacebookInterstitialAds();
-                        }
-                        else if (Adds == AdsTypes.notActiveAds){
-                        if (isYoutube) {
-                            Intent intent = new Intent(mContext, YoutubeVideoPlayer.class);
-                            intent.putExtra("VIDEO_URL", id);
-                            mContext.startActivity(intent);
-                        }else {
-                            Intent intent = new Intent(mContext, DailyMotionVideoPlayer.class);
-                            intent.putExtra("VIDEO_URL", id);
-                            mContext.startActivity(intent);
-                        }
-                    }
-                }
-            });
-        }
-    }
-    public void admobInterstitialAds()
-    {
+    public void admobInterstitialAds() {
         admobInterstitialAd = new InterstitialAd(mContext);
         admobInterstitialAd.setAdUnitId(admob_InterID);
 //        "ca-app-pub-3940256099942544/1033173712"
         admobInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
+
     public void facebookInterstitialAds() {
-        facebookInterstitialAd = new com.facebook.ads.InterstitialAd(mContext, facebook_InterID );
+        facebookInterstitialAd = new com.facebook.ads.InterstitialAd(mContext, facebook_InterID);
 //        "IMG_16_9_APP_INSTALL#1197001037304304_1197857703885304"
         facebookInterstitialAd.setAdListener(new InterstitialAdListener() {
             @Override
@@ -201,15 +115,15 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
             @Override
             public void onInterstitialDismissed(Ad ad) {
 
-                    if (isYoutube) {
-                        Intent intent = new Intent(mContext, YoutubeVideoPlayer.class);
-                        intent.putExtra("VIDEO_URL", id);
-                        mContext.startActivity(intent);
-                }else {
-                        Intent intent = new Intent(mContext, DailyMotionVideoPlayer.class);
-                        intent.putExtra("VIDEO_URL", id);
-                        mContext.startActivity(intent);
-                    }
+                if (isYoutube) {
+                    Intent intent = new Intent(mContext, YoutubeVideoPlayer.class);
+                    intent.putExtra("VIDEO_URL", id);
+                    mContext.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, DailyMotionVideoPlayer.class);
+                    intent.putExtra("VIDEO_URL", id);
+                    mContext.startActivity(intent);
+                }
 
             }
 
@@ -245,7 +159,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
                 Intent intent = new Intent(mContext, YoutubeVideoPlayer.class);
                 intent.putExtra("VIDEO_URL", id);
                 mContext.startActivity(intent);
-            }else {
+            } else {
                 Intent intent = new Intent(mContext, DailyMotionVideoPlayer.class);
                 intent.putExtra("VIDEO_URL", id);
                 mContext.startActivity(intent);
@@ -259,5 +173,68 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
             // Show the ad
             facebookInterstitialAd.show();
         facebookInterstitialAds();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView mTitleTV;
+        private ImageView mImageView;
+
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            mTitleTV = itemView.findViewById(R.id.songTitle);
+            mImageView = itemView.findViewById(R.id.single_image_view);
+//            admobInterstitialAds();
+//            admobInterstitialAd.isLoaded();
+
+            mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    YoutubeVideoItem i = mItems.get(getAdapterPosition());
+                    id = i.id;
+                    if (isYoutube) {
+
+                        Intent intent = new Intent(mContext, YoutubeVideoPlayer.class);
+                        intent.putExtra("VIDEO_URL", i.id);
+                        mContext.startActivity(intent);
+
+                    } else {
+                        Intent intent = new Intent(mContext, DailyMotionVideoPlayer.class);
+                        intent.putExtra("VIDEO_URL", i.id);
+                        mContext.startActivity(intent);
+
+                    }
+//                        if (Adds == AdsTypes.admobAds && isYoutube) {
+//
+//                        Intent intent = new Intent(mContext, YoutubeVideoPlayer.class);
+//                        intent.putExtra("VIDEO_URL", i.id);
+//                        mContext.startActivity(intent);
+//
+//                    } else if (Adds == AdsTypes.admobAds && !isYoutube) {
+//                        Intent intent = new Intent(mContext, DailyMotionVideoPlayer.class);
+//                        intent.putExtra("VIDEO_URL", i.id);
+//                        mContext.startActivity(intent);
+//
+//
+//                    } else if (Adds == AdsTypes.facebooksAds && isYoutube || Adds == AdsTypes.facebooksAds && !isYoutube) {
+////                        showFacebookInterstitialAds();
+//                    } else if (Adds == AdsTypes.startAppAds && isYoutube ) {
+////                        showFacebookInterstitialAds();
+//                    }else if (Adds == AdsTypes.notActiveAds) {
+//                        if (isYoutube) {
+//                            Intent intent = new Intent(mContext, YoutubeVideoPlayer.class);
+//                            intent.putExtra("VIDEO_URL", id);
+//                            mContext.startActivity(intent);
+//                        } else {
+//                            Intent intent = new Intent(mContext, DailyMotionVideoPlayer.class);
+//                            intent.putExtra("VIDEO_URL", id);
+//                            mContext.startActivity(intent);
+//                        }
+//                    }
+                }
+            });
+        }
     }
 }

@@ -19,11 +19,10 @@ import retrofit2.Response;
 public class NetworkCall {
 
 
-
+    public ViewDialog viewDialog;
     private Object taggedObject;
     private OnNetworkResponse callback;
     private Call request;
-    public ViewDialog viewDialog;
 
 
     private NetworkCall() {
@@ -48,6 +47,7 @@ public class NetworkCall {
         this.taggedObject = tag;
         return this;
     }
+
     public NetworkCall autoLoading(FragmentManager manager) {
         this.viewDialog = new ViewDialog();
         if (viewDialog.isVisible() && viewDialog.isResumed()) {
@@ -67,7 +67,7 @@ public class NetworkCall {
                     Log.e("CallBack Method", "=" + call.request().url().toString());
                     callback.onSuccess(call, response, taggedObject);
 
-                }else if (response.body() == null || !BaseResponse.isSuccess(response)) {
+                } else if (response.body() == null || !BaseResponse.isSuccess(response)) {
                     Log.e("CallBack Method", "=" + call.request().url().toString());
                 }
             }

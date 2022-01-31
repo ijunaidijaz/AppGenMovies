@@ -92,9 +92,8 @@ public class AppSlider implements Serializable {
     }
 
     public String getRedirectApp() {
-        if (redirectApp==null)
-        {
-            redirectApp="";
+        if (redirectApp == null) {
+            redirectApp = "";
         }
         return redirectApp;
     }
@@ -104,9 +103,8 @@ public class AppSlider implements Serializable {
     }
 
     public String getWebUrl() {
-        if (webUrl==null)
-        {
-            webUrl="";
+        if (webUrl == null) {
+            webUrl = "";
         }
         return webUrl;
     }

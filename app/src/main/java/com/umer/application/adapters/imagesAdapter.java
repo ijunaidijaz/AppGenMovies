@@ -1,20 +1,16 @@
 package com.umer.application.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.umer.application.R;
-import com.umer.application.activities.GridViewActivity;
 import com.umer.application.models.AppSlider;
 import com.umer.application.utils.Constants;
 import com.umer.application.utils.functions;
@@ -22,7 +18,7 @@ import com.umer.application.utils.functions;
 import java.util.ArrayList;
 
 public class imagesAdapter extends PagerAdapter {
-    private Context mContext ;
+    private Context mContext;
     private ArrayList<AppSlider> sliderArrayList;
     private LayoutInflater layoutInflater;
 
@@ -77,7 +73,6 @@ public class imagesAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((LinearLayout) object);
     }
-
 
 
     @Override

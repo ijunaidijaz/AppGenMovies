@@ -1,8 +1,5 @@
 package com.umer.application.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -16,23 +13,25 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
 import com.umer.application.R;
 import com.umer.application.models.ApplicationSettings;
-import com.umer.application.networks.NetworkCall;
 import com.umer.application.utils.Constants;
 import com.umer.application.utils.ViewDialog;
 import com.umer.application.utils.functions;
 
 public class WebViewActivity extends AppCompatActivity {
 
-    WebView browser ;
-    String URL , Log , barColor;
-    ApplicationSettings applicationSettings ;
-    ImageView search_btn , imageView_searchBar, imageView;
-    RelativeLayout actionBar ;
-    SharedPreferences prefs;
-    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String MyPREFERENCES = "MyPrefs";
     public ViewDialog viewDialog;
+    WebView browser;
+    String URL, Log, barColor;
+    ApplicationSettings applicationSettings;
+    ImageView search_btn, imageView_searchBar, imageView;
+    RelativeLayout actionBar;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +40,8 @@ public class WebViewActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         autoLoading(getSupportFragmentManager());
         prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-        Log = prefs.getString("Logo" , "");
-        barColor = prefs.getString("App_Header_color" , "");
+        Log = prefs.getString("Logo", "");
+        barColor = prefs.getString("App_Header_color", "");
         browser = (WebView) findViewById(R.id.webView);
         imageView_searchBar = findViewById(R.id.image_view);
         search_btn = findViewById(R.id.search_btn);
@@ -70,7 +69,7 @@ public class WebViewActivity extends AppCompatActivity {
             public void run() {
                 cancelLoading();
             }
-        },7000);
+        }, 7000);
     }
 
 
@@ -84,6 +83,21 @@ public class WebViewActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    public void cancelLoading() {
+        if (viewDialog != null && viewDialog.isVisible() && viewDialog.isResumed()) {
+            viewDialog.dismiss();
+        }
+    }
+
+    public void autoLoading(FragmentManager manager) {
+        this.viewDialog = new ViewDialog();
+        if (viewDialog.isVisible() && viewDialog.isResumed()) {
+            viewDialog.dismiss();
+        } else {
+            viewDialog.show(manager, Constants.tagViewDialog);
+        }
+//        return this;
+    }
 
     public class WebViewController extends WebViewClient {
 
@@ -93,21 +107,6 @@ public class WebViewActivity extends AppCompatActivity {
             view.loadUrl(url);
             return true;
         }
-    }
-
-    public void cancelLoading() {
-        if (viewDialog != null && viewDialog.isVisible() && viewDialog.isResumed()) {
-            viewDialog.dismiss();
-        }
-    }
-    public void autoLoading(FragmentManager manager) {
-        this.viewDialog = new ViewDialog();
-        if (viewDialog.isVisible() && viewDialog.isResumed()) {
-            viewDialog.dismiss();
-        } else {
-            viewDialog.show(manager, Constants.tagViewDialog);
-        }
-//        return this;
     }
 
 }

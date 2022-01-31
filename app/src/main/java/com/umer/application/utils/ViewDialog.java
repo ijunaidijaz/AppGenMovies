@@ -18,7 +18,7 @@ import com.umer.application.R;
 
 import java.util.Objects;
 
-public class ViewDialog extends DialogFragment{
+public class ViewDialog extends DialogFragment {
     public static ViewDialog instance;
 
     public static ViewDialog getInstance() {

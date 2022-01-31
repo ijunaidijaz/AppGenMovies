@@ -2,16 +2,11 @@ package com.umer.application.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.umer.application.models.ApplicationSettings;
 import com.umer.application.models.YoutubeVideoItem;
-import com.umer.application.models.dailymotionSearchHelper;
-import com.umer.application.networks.ApiServices;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,17 +20,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class DailyMotionSearchHelper {
-    Context mContext;
-    ApplicationSettings applicationSettings;
     private static String DAILY_MOTION_URL_FRONT_PART;
     private static String DAILY_MOTION_URL_BACK_PART;
+    Context mContext;
+    ApplicationSettings applicationSettings;
+    private OnDailyMotionSearchCompleteListener dailyListener;
 
     public DailyMotionSearchHelper(Context mContext) {
         this.mContext = mContext;
@@ -44,8 +34,6 @@ public class DailyMotionSearchHelper {
         DAILY_MOTION_URL_BACK_PART = "/videos?fields=id,title,thumbnail_240_url";
 
     }
-
-    private OnDailyMotionSearchCompleteListener dailyListener;
 
     public final URL getRequestUrl(String searchFor) {
 
@@ -87,6 +75,10 @@ public class DailyMotionSearchHelper {
 
         SearchTask st = new SearchTask();
         st.execute(url);
+    }
+
+    public interface OnDailyMotionSearchCompleteListener {
+        void onDailyMotionSearchComplete(ArrayList<YoutubeVideoItem> videos);
     }
 
     private class SearchTask extends AsyncTask<URL, Void, ArrayList<YoutubeVideoItem>> {
@@ -133,7 +125,7 @@ public class DailyMotionSearchHelper {
                     JSONObject o2 = a1.getJSONObject(i);
                     videoId = o2.getString("id");
                     title = o2.getString("title");
-                    String thumbnail_URL = o2.getString("thumbnail_240_url") ;
+                    String thumbnail_URL = o2.getString("thumbnail_240_url");
                     YoutubeVideoItem video = new YoutubeVideoItem(videoId, thumbnail_URL, title);
 
                     videos.add(video);
@@ -154,10 +146,6 @@ public class DailyMotionSearchHelper {
 
         }
 
-    }
-
-    public interface OnDailyMotionSearchCompleteListener {
-        void onDailyMotionSearchComplete(ArrayList<YoutubeVideoItem> videos);
     }
 
 }

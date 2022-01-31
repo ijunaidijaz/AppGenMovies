@@ -19,8 +19,8 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
 
     private final Context context;
-    private List<Songs_list> itemList;
     MoviesCallback callback;
+    private List<Songs_list> itemList;
 
     public MoviesAdapter(Context context, List<Songs_list> itemList, MoviesCallback callback) {
         this.context = context;
@@ -39,7 +39,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MoviesViewHolder holder, int position) {
-        holder.setData(context, itemList.get(position), holder, position,callback);
+        holder.setData(context, itemList.get(position), holder, position, callback);
     }
 
     @Override

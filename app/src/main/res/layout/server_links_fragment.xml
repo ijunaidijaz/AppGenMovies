@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/white"
+        android:orientation="vertical"
         tools:context=".fragments.ServerLinksFragment">
 
         <include
@@ -33,26 +33,28 @@
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@color/black"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    android:src="@color/black" />
             </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/movieTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Movie Name"
-                android:textColor="@color/black"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="5sp"
+                android:text="Movie Name"
+                android:textColor="@color/black"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <Button
                 android:id="@+id/serverLink1"
                 android:layout_width="match_parent"
@@ -63,6 +65,7 @@
                 android:elevation="5dp"
                 android:text="Server Link 1"
                 android:textColor="@color/white" />
+
             <Button
                 android:id="@+id/serverLink2"
                 android:layout_width="match_parent"
@@ -73,6 +76,7 @@
                 android:elevation="5dp"
                 android:text="Server Link 2"
                 android:textColor="@color/white" />
+
             <Button
                 android:id="@+id/serverLink3"
                 android:layout_width="match_parent"
@@ -83,6 +87,7 @@
                 android:elevation="5dp"
                 android:text="Server Link 3"
                 android:textColor="@color/white" />
+
             <Button
                 android:id="@+id/serverLink4"
                 android:layout_width="match_parent"
@@ -92,8 +97,8 @@
                 android:background="@drawable/round_bg"
                 android:elevation="5dp"
                 android:text="Server Link 4"
-                android:visibility="gone"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView
@@ -102,10 +107,11 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
-            android:textStyle="bold"
+            android:text="Genre List:"
             android:textColor="@color/black"
             android:textSize="17dp"
-            android:text="Genre List:" />
+            android:textStyle="bold" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gridView1"
             android:layout_width="match_parent"

@@ -1,18 +1,16 @@
 package com.umer.application.fragments;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.umer.application.R;
 import com.umer.application.activities.GridViewActivity;
@@ -21,32 +19,40 @@ import com.umer.application.adapters.MoviesAdapter;
 import com.umer.application.adapters.VideoListAdapter;
 import com.umer.application.adapters.viewHolders.MoviesViewHolder;
 import com.umer.application.callbacks.MoviesCallback;
-import com.umer.application.databinding.WatchNowFirstFragmentBinding;
 import com.umer.application.databinding.WatchNowSecondFragmentBinding;
 import com.umer.application.models.ApplicationSettings;
+import com.umer.application.models.BaseResponse;
 import com.umer.application.models.Songs_list;
+import com.umer.application.models.singlePost;
+import com.umer.application.networks.Network;
+import com.umer.application.networks.NetworkCall;
+import com.umer.application.networks.OnNetworkResponse;
 import com.umer.application.utils.Constants;
+import com.umer.application.utils.RequestCodes;
 import com.umer.application.utils.functions;
-import com.umer.application.viewModels.WatchNowFirstViewModel;
 import com.umer.application.viewModels.WatchNowSecondViewModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WatchNowSecondFragment extends Fragment implements MoviesCallback {
+import retrofit2.Call;
+import retrofit2.Response;
 
-    private WatchNowSecondViewModel mViewModel;
+public class WatchNowSecondFragment extends Fragment implements MoviesCallback, OnNetworkResponse {
+
     WatchNowSecondFragmentBinding binding;
+    int itemPosition = 0;
+    int clickCount = 0;
+    int itemID = 0, position = 0;
+    List<Songs_list> songsList = new ArrayList<>();
+    ApplicationSettings applicationSettings;
+    private WatchNowSecondViewModel mViewModel;
     private VideoListAdapter mAdapter;
     private String keyword, imageURL, colorString, admob_Inter_Id, facebook_Inter_Id;
     private int limit, adds;
     private boolean isYoutube;
-    int itemPosition=0;
-    int clickCount=0;
     private boolean isPlayList;
-    List<Songs_list> songsList = new ArrayList<>();
-    ApplicationSettings applicationSettings;
 
     public static WatchNowSecondFragment newInstance() {
         return new WatchNowSecondFragment();
@@ -57,7 +63,7 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback {
                              @Nullable Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(WatchNowSecondViewModel.class);
         binding = WatchNowSecondFragmentBinding.inflate(inflater, container, false);
-
+        ((GridViewActivity) getActivity()).scrollToTop();
         binding.header.backbtnHeader.setOnClickListener(v1 -> getParentFragmentManager().beginTransaction().remove(WatchNowSecondFragment.this).commit());
 
         if (getArguments() != null) {
@@ -86,12 +92,12 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback {
 //
 //            });
             binding.watchNow.setOnClickListener(v -> {
-                ((GridViewActivity)getActivity()).clickCount++;
-                ((GridViewActivity)getActivity()).loadAds();
+                ((GridViewActivity) getActivity()).clickCount++;
+                ((GridViewActivity) getActivity()).showAd();
                 openServerLinkFragment(song);
             });
 
-            imageURL =  applicationSettings.getLog();
+            imageURL = applicationSettings.getLog();
             functions.GlideImageLoaderWithPlaceholder(getContext(), binding.header.imageView, Constants.BASE_URL_IMAGES + imageURL);
 
 
@@ -99,6 +105,7 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback {
         binding.gridView1.smoothScrollToPosition(0);
         return binding.getRoot();
     }
+
     public void openServerLinkFragment(Songs_list songs_list) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("VideosList", (Serializable) songsList);
@@ -108,6 +115,7 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback {
         fragment.setArguments(bundle);
         getParentFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
     }
+
     public void setMoviesAdapter(List<Songs_list> lists) {
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), applicationSettings.getRowDisplay());
         MoviesAdapter adapter = new MoviesAdapter(getContext(), lists, this);
@@ -118,7 +126,60 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback {
 
     @Override
     public void onMovieClick(Songs_list songs_list, MoviesViewHolder viewHolder, int position) {
-        int itemID = songsList.get(position).getId();
-        ((GridViewActivity)getActivity()).getSinglePost(itemID);
+        this.position = position;
+        itemID = songsList.get(position).getId();
+        getSinglePost(itemID);
+    }
+
+    public void getSinglePost(int id) {
+        ((GridViewActivity) getActivity()).clickCount++;
+        ((GridViewActivity) getActivity()).showAd();
+        NetworkCall.make()
+                .setCallback(this)
+                .autoLoading(getParentFragmentManager())
+                .setTag(RequestCodes.API.GET_SINGLE_POST)
+                .enque(new Network().apis().getSinglePost(id))
+                .execute();
+
+    }
+
+    @Override
+    public void onSuccess(Call call, Response response, Object tag) {
+        switch ((int) tag) {
+            case RequestCodes.API.GET_SINGLE_POST:
+//                Toast.makeText(this, "Successful get Single posts", Toast.LENGTH_SHORT).show();
+                if (response.body() != null) {
+                    singlePost singlePost1 = (singlePost) response.body();
+                    singlePostResponseHandling(singlePost1);
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onFailure(Call call, BaseResponse response, Object tag) {
+        switch ((int) tag) {
+            case RequestCodes.API.GET_ALL_POSTS:
+            case RequestCodes.API.GET_SINGLE_POST:
+//                Toast.makeText(this, "UnSuccessful" + response.message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void singlePostResponseHandling(singlePost singlePost1) {
+        openWatchNowSecondFragment(songsList.get(position));
+
+    }
+
+    public void openWatchNowSecondFragment(Songs_list songs_list) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("VideosList", (Serializable) songsList);
+        bundle.putSerializable("selectedVideo", songs_list);
+        bundle.putSerializable("applicationSettings", applicationSettings);
+        WatchNowSecondFragment fragment = new WatchNowSecondFragment();
+        fragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
     }
 }

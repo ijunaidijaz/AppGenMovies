@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class YoutubeVideoItem implements Serializable {
-    
+
     @SerializedName("id")
     @Expose
     public String id;

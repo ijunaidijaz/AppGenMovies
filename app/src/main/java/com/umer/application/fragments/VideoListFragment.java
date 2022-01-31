@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.umer.application.R;
+import com.umer.application.activities.GridViewActivity;
 import com.umer.application.adapters.VideoListAdapter;
 import com.umer.application.models.dailymotionSearchHelper;
 import com.umer.application.networks.ApiServices;
@@ -42,6 +43,11 @@ public class VideoListFragment extends Fragment {
     private ImageView imageView, backBtn;
     private RelativeLayout header;
 
+    public static VideoListFragment newInstance() {
+        VideoListFragment fragment = new VideoListFragment();
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -56,7 +62,7 @@ public class VideoListFragment extends Fragment {
         backBtn = v.findViewById(R.id.backbtn_header);
         imageView = v.findViewById(R.id.image_view);
         header = v.findViewById(R.id.headerBar);
-
+        ((GridViewActivity) getActivity()).scrollToTop();
         backBtn.setOnClickListener(v1 -> getActivity().onBackPressed());
 
         if (getArguments() != null) {

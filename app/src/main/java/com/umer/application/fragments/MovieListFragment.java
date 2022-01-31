@@ -44,17 +44,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieListFragment extends Fragment implements MoviesCallback {
 
-    private MovieListViewModel mViewModel;
     MovieListFragmentBinding binding;
+    int itemPosition = 0;
+    int clickCount = 0;
+    List<Songs_list> songsList = new ArrayList<>();
+    ApplicationSettings applicationSettings;
+    private MovieListViewModel mViewModel;
     private VideoListAdapter mAdapter;
     private String keyword, imageURL, colorString, admob_Inter_Id, facebook_Inter_Id;
     private int limit, adds;
     private boolean isYoutube;
-    int itemPosition = 0;
-    int clickCount = 0;
     private boolean isPlayList;
-    List<Songs_list> songsList = new ArrayList<>();
-    ApplicationSettings applicationSettings;
 
     public static MovieListFragment newInstance() {
         return new MovieListFragment();
@@ -65,14 +65,14 @@ public class MovieListFragment extends Fragment implements MoviesCallback {
                              @Nullable Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
         binding = MovieListFragmentBinding.inflate(inflater, container, false);
-
+        ((GridViewActivity) getActivity()).scrollToTop();
         binding.headerBar.backbtnHeader.setOnClickListener(v1 -> getParentFragmentManager().beginTransaction().remove(MovieListFragment.this).commit());
 
         if (getArguments() != null) {
             applicationSettings = (ApplicationSettings) getArguments().getSerializable("applicationSettings");
 //            binding.gridView1.setNumColumns(applicationSettings.getRowDisplay());
             binding.headerBar.headerBar.setBackgroundColor(Color.parseColor(applicationSettings.getActionBarColor()));
-
+            binding.listTitle.setText((String) getArguments().get("TITLE"));
             songsList = (List<Songs_list>) getArguments().getSerializable("VideosList");
             GridViewAdapter myAdapter;
             if (applicationSettings.getRowDisplay() == 1) {
@@ -187,8 +187,8 @@ public class MovieListFragment extends Fragment implements MoviesCallback {
     }
 
     public void openWatchNowFirstFragment(Songs_list songs_list) {
-        ((GridViewActivity)getActivity()).clickCount++;
-        ((GridViewActivity)getActivity()).loadAds();
+        ((GridViewActivity) getActivity()).clickCount++;
+        ((GridViewActivity) getActivity()).showAd();
         Bundle bundle = new Bundle();
         bundle.putSerializable("VideosList", (Serializable) songsList);
         bundle.putSerializable("selectedVideo", songs_list);

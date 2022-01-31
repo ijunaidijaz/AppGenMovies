@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 

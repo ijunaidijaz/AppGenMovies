@@ -9,20 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.umer.application.R;
-import com.umer.application.adapters.viewHolders.CategoryViewHolder;
-import com.umer.application.callbacks.CategoryCallback;
+import com.umer.application.adapters.viewHolders.CategoryTwoViewHolder;
+import com.umer.application.callbacks.CategoryTwoCallback;
 import com.umer.application.models.Songs_list;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
+public class CategoryTwoAdapter extends RecyclerView.Adapter<CategoryTwoViewHolder> {
 
     private final Context context;
-    CategoryCallback callback;
+    CategoryTwoCallback callback;
     private List<Songs_list> itemList;
 
-    public CategoryAdapter(Context context, List<Songs_list> itemList, CategoryCallback callback) {
+    public CategoryTwoAdapter(Context context, List<Songs_list> itemList, CategoryTwoCallback callback) {
         this.context = context;
         this.itemList = itemList;
         this.callback = callback;
@@ -31,14 +31,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
 
     @NonNull
     @Override
-    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CategoryTwoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.gridview_horizontal_style, parent, false);
-        return new CategoryViewHolder(itemView);
+        return new CategoryTwoViewHolder(itemView);
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryTwoViewHolder holder, int position) {
         holder.setData(context, itemList.get(position), holder, position, callback, itemList);
     }
 

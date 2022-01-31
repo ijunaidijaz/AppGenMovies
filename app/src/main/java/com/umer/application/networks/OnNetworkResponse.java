@@ -1,7 +1,6 @@
 package com.umer.application.networks;
 
 
-
 import com.umer.application.models.BaseResponse;
 
 import retrofit2.Call;

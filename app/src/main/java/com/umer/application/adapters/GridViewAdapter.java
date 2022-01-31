@@ -1,15 +1,13 @@
 package com.umer.application.adapters;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.umer.application.R;
-import com.umer.application.models.ApplicationSettings;
 import com.umer.application.models.Songs_list;
 import com.umer.application.utils.Constants;
 import com.umer.application.utils.functions;
@@ -37,7 +35,7 @@ public class GridViewAdapter extends ArrayAdapter {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.gridview_style, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-        functions.GlideImageLoaderWithPlaceholder(getContext() , imageView , Constants.BASE_URL_IMAGES+songsList.get(position).getUrl());
+        functions.GlideImageLoaderWithPlaceholder(getContext(), imageView, Constants.BASE_URL_IMAGES + songsList.get(position).getUrl());
         return view;
     }
 }

@@ -2,7 +2,6 @@ package com.umer.application.callbacks;
 
 
 import com.umer.application.adapters.viewHolders.CategoryViewHolder;
-import com.umer.application.adapters.viewHolders.MoviesViewHolder;
 import com.umer.application.models.Songs_list;
 
 import java.util.List;
