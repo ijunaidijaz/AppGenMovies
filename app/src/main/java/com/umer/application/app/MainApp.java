@@ -1,5 +1,6 @@
 package com.umer.application.app;
 
+import android.app.Activity;
 import android.app.Application;
 import android.os.StrictMode;
 
@@ -12,7 +13,7 @@ import com.startapp.sdk.adsbase.StartAppAd;
 
 public class MainApp extends Application {
     public static MainApp INSTANCE;
-
+    private Activity activity;
     public static MainApp getAppContext() {
         return INSTANCE;
     }
@@ -21,6 +22,7 @@ public class MainApp extends Application {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         StartAppAd.disableAutoInterstitial();
@@ -43,5 +45,12 @@ public class MainApp extends Application {
         });
 
 
+    }
+    public Activity getCurrentActivity() {
+        return activity;
+    }
+
+    public void setCurrentActivity(Activity activity) {
+        this.activity = activity;
     }
 }

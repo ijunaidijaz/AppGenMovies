@@ -1,10 +1,13 @@
 package com.umer.application.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.umer.application.R;
 import com.umer.application.activities.GridViewActivity;
+import com.umer.application.activities.WebViewActivity;
 import com.umer.application.adapters.GridViewAdapter;
 import com.umer.application.adapters.MoviesAdapter;
 import com.umer.application.adapters.VideoListAdapter;
@@ -29,6 +33,7 @@ import com.umer.application.networks.NetworkCall;
 import com.umer.application.networks.OnNetworkResponse;
 import com.umer.application.utils.Constants;
 import com.umer.application.utils.RequestCodes;
+import com.umer.application.utils.Utils;
 import com.umer.application.utils.functions;
 import com.umer.application.viewModels.ServerLinksViewModel;
 
@@ -51,8 +56,9 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
     private VideoListAdapter mAdapter;
     private String keyword, imageURL, colorString, admob_Inter_Id, facebook_Inter_Id;
     private int limit, adds;
-    private boolean isYoutube;
+    private boolean isWebLink = false;
     private boolean isPlayList;
+    String linkURL;
 
     public static ServerLinksFragment newInstance() {
         return new ServerLinksFragment();
@@ -72,37 +78,31 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
             functions.GlideImageLoaderWithPlaceholder(getContext(), binding.imageView, Constants.BASE_URL_IMAGES + song.getUrl());
             binding.movieTitle.setText(song.getTitle());
 
-//            binding.gridView1.setNumColumns(applicationSettings.getRowDisplay());
             binding.header.headerBar.setBackgroundColor(Color.parseColor(applicationSettings.getActionBarColor()));
 
             songsList = (List<Songs_list>) getArguments().getSerializable("VideosList");
-            GridViewAdapter myAdapter;
-            if (applicationSettings.getRowDisplay() == 1) {
-                myAdapter = new GridViewAdapter(getContext(), R.layout.grid_view_style_single_post, (ArrayList) songsList);
 
-            } else {
-                myAdapter = new GridViewAdapter(getContext(), R.layout.gridview_style, (ArrayList) songsList);
-            }
             setMoviesAdapter(songsList);
-//            binding.gridView1.setOnItemClickListener((parent, view, position, id) -> {
-////                        Toast.makeText(GridViewActivity.this, "Item clicked"+songsList.get(position).getId(), Toast.LENGTH_SHORT).show();
-//                itemPosition = songsList.get(position).getId();
-//                ((GridViewActivity) getActivity()).getSinglePost(itemPosition);
-//
-//            });
+
             binding.serverLink1.setOnClickListener(v -> {
-                ((GridViewActivity) getActivity()).clickCount++;
-                ((GridViewActivity) getActivity()).scrollToTop();
-                ((GridViewActivity) getActivity()).openSinglePost(song.getId(), clickCount, true);
+                isWebLink = true;
+                linkURL = "1";
+                getSinglePost(song.getId());
             });
             binding.serverLink2.setOnClickListener(v -> {
-                ((GridViewActivity) getActivity()).clickCount++;
-                ((GridViewActivity) getActivity()).scrollToTop();
-                ((GridViewActivity) getActivity()).openSinglePost(song.getId(), clickCount, true);
+                isWebLink = true;
+                linkURL = "2";
+                getSinglePost(song.getId());
             });
             binding.serverLink3.setOnClickListener(v -> {
+                isWebLink = true;
+                linkURL = "3";
+                getSinglePost(song.getId());
+            });
+            binding.serverLink4.setOnClickListener(v -> {
                 ((GridViewActivity) getActivity()).clickCount++;
                 ((GridViewActivity) getActivity()).scrollToTop();
+                ((GridViewActivity) getActivity()).isSingleVideoFrag=true;
                 ((GridViewActivity) getActivity()).openSinglePost(song.getId(), clickCount, true);
             });
             imageURL = applicationSettings.getLog();
@@ -135,7 +135,7 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
         ((GridViewActivity) getActivity()).showAd();
         NetworkCall.make()
                 .setCallback(this)
-                .autoLoading(getParentFragmentManager())
+                .autoLoadingCancel(Utils.getLoading(getActivity(), "Please wait..."))
                 .setTag(RequestCodes.API.GET_SINGLE_POST)
                 .enque(new Network().apis().getSinglePost(id))
                 .execute();
@@ -153,22 +153,25 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
         getParentFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
     }
 
-    public void singlePostResponseHandling(singlePost singlePost1) {
-        openWatchNowFirstFragment(songsList);
-
+    public void singlePostResponseHandling(singlePost singlePost) {
+        if (isWebLink) {
+            openWebUrl(singlePost);
+            new Handler().postDelayed(() -> {
+                isWebLink = false;
+            }, 1500);
+        } else openWatchNowFirstFragment(songsList);
     }
 
     @Override
     public void onSuccess(Call call, Response response, Object tag) {
         switch ((int) tag) {
             case RequestCodes.API.GET_SINGLE_POST:
-//                Toast.makeText(this, "Successful get Single posts", Toast.LENGTH_SHORT).show();
                 if (response.body() != null) {
                     singlePost singlePost1 = (singlePost) response.body();
-                    singlePostResponseHandling(singlePost1);
+                    if (isWebLink) singlePostResponseHandling(singlePost1);
+                    else openWatchNowFirstFragment(songsList);
                 }
                 break;
-
             default:
                 break;
         }
@@ -176,10 +179,20 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
 
     @Override
     public void onFailure(Call call, BaseResponse response, Object tag) {
-        switch ((int) tag) {
-            case RequestCodes.API.GET_ALL_POSTS:
-            case RequestCodes.API.GET_SINGLE_POST:
-//                Toast.makeText(this, "UnSuccessful" + response.message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "UnSuccessful" + response.message, Toast.LENGTH_SHORT).show();
+
+    }
+    public void openWebUrl(singlePost singlePost) {
+        String url = singlePost.getServerLink1();
+        if (linkURL.equalsIgnoreCase("1")) {
+            url = singlePost.getServerLink1();
+        } else if (linkURL.equalsIgnoreCase("2")) {
+            url = singlePost.getServerLink2();
+        } else if (linkURL.equalsIgnoreCase("3")) {
+            url = singlePost.getServerLink3();
         }
+        Intent i = new Intent(getActivity(), WebViewActivity.class);
+        i.putExtra("WEBURL", url);
+        startActivity(i);
     }
 }

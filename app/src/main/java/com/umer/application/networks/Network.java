@@ -1,12 +1,19 @@
 package com.umer.application.networks;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.umer.application.R;
+import com.umer.application.models.BaseResponse;
 import com.umer.application.utils.Constants;
+import com.umer.application.utils.Utils;
 
+import java.lang.annotation.Annotation;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Converter;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -93,6 +100,39 @@ public class Network {
 
     public ApiServices getApiServices() {
         return object.services;
+    }
+    public static BaseResponse parseErrorResponse(Response response) {
+        BaseResponse errorResponse = null;
+        try {
+            if (ResponseCode.isBetweenSuccessRange(response.code())) {
+                return (BaseResponse) response.body();
+            } else {
+                Converter<ResponseBody, BaseResponse> errorConverter =
+                        getInstance().getNetworkClient().responseBodyConverter(BaseResponse.class, new Annotation[0]);
+                errorResponse = errorConverter.convert(response.errorBody());
+                errorResponse.setCode(response.code());
+                if (errorResponse.getMessage() == null
+                        || errorResponse.getMessage().equalsIgnoreCase("")) {
+                    errorResponse.setMessage("Unable to communicate with " + Utils.getString(R.string.app_name) + " server, please try again.");
+                }
+                return errorResponse;
+            }
+        } catch (Exception e) {
+//            Logger.log(Logger.EXCEPTION, e);
+            errorResponse = new BaseResponse();
+            errorResponse.setCode(response.code());
+            String errorString;
+            try {
+                errorString = response.errorBody().string();
+            } catch (Exception ex) {
+                errorString = Utils.getString(R.string.exceptionInErrorResponse);
+            }
+            if (errorString == null || errorString.trim().equalsIgnoreCase("")) {
+                errorString = "Unable to communicate with " + Utils.getString(R.string.app_name) + " server, try again.";
+            }
+            errorResponse.setMessage(errorString);
+            return errorResponse;
+        }
     }
 
 }

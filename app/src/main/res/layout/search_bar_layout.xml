@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/image_view"
+        android:layout_marginLeft="5sp"
         android:src="@drawable/ic_arrow_back_black_24dp"
         android:visibility="gone" />
 
@@ -26,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/search_backBtn"
-        android:hint="Search your favrt song "
+        android:hint="Search here... "
         android:imeOptions="actionDone"
         android:inputType="text"
         android:maxLength="25"

@@ -32,9 +32,6 @@ import com.umer.application.networks.NetworkCall;
 import com.umer.application.networks.OnNetworkResponse;
 import com.umer.application.utils.RequestCodes;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -79,7 +76,7 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
         setContentView(R.layout.splash_activity);
 //        backgroundImage = findViewById(R.id.background_image);
         internetError = findViewById(R.id.internet_Error);
-        tryAgain = findViewById(R.id.tryAgain);
+        tryAgain = findViewById(R.id.exit);
         if (!isNetworkAvailable()) {
             onButtonShowPopupWindowClick();
         }
@@ -135,20 +132,24 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
 
                 if (applicationSettings != null) {
                     applicationSettings.saveApplicationSettings(getApplicationContext(), applicationSettings);
-                    new Handler().postDelayed(() -> {
-                        Intent splashIntent = new Intent(SplashActivity.this, GridViewActivity.class);
-                        if (!appSlider.get(0).getUrl().isEmpty() && applicationSettings != null) {
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
-                            splashIntent.putExtra("applicationSettings", applicationSettings);
-                            splashIntent.putExtra("ApplicationSlider", appSlider);
-                            applicationSettings.saveSlider(appSlider);
-                            editor.putString("App_Header_color", applicationSettings.getActionBarColor());
-                            editor.putString("Logo", applicationSettings.getLog());
-                            editor.apply();
-                            startActivity(splashIntent);
-                            finish();
-                        }
-                    }, 2000);
+                    if (!applicationSettings.getIsActive()) {
+                        notActiveDialog();
+                    } else {
+                        new Handler().postDelayed(() -> {
+                            Intent splashIntent = new Intent(SplashActivity.this, GridViewActivity.class);
+                            if (!appSlider.get(0).getUrl().isEmpty() && applicationSettings != null) {
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                splashIntent.putExtra("applicationSettings", applicationSettings);
+                                splashIntent.putExtra("ApplicationSlider", appSlider);
+                                applicationSettings.saveSlider(appSlider);
+                                editor.putString("App_Header_color", applicationSettings.getActionBarColor());
+                                editor.putString("Logo", applicationSettings.getLog());
+                                editor.apply();
+                                startActivity(splashIntent);
+                                finish();
+                            }
+                        }, 2000);
+                    }
                 }
                 break;
 
@@ -193,7 +194,7 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
     public void onButtonShowPopupWindowClick() {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.exit_popup_window);
+        dialog.setContentView(R.layout.no_internet_layout);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         Window window = dialog.getWindow();
         dialog.setCancelable(false);
@@ -207,14 +208,30 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(LAYOUT_INFLATER_SERVICE);
         TextView appName = dialog.findViewById(R.id.title);
-        Button exit = dialog.findViewById(R.id.exit_btn);
-        Button cancel = dialog.findViewById(R.id.cancel_btn);
-        ImageView ratingImage = dialog.findViewById(R.id.rateAppIcon);
-        TextView ratingText = dialog.findViewById(R.id.rateAppText);
-        View line = dialog.findViewById(R.id.line);
-        appName.setText("No Internet!");
-        cancel.setVisibility(View.GONE);
-        exit.setText("Ok");
+        Button exit = dialog.findViewById(R.id.exit);
+        exit.setOnClickListener(v1 -> {
+            finish();
+        });
+    }
+
+    public void notActiveDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.not_active_dialog);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Window window = dialog.getWindow();
+        dialog.setCancelable(false);
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_BLUR_BEHIND;
+        window.setAttributes(wlp);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        TextView appName = dialog.findViewById(R.id.title);
+        Button exit = dialog.findViewById(R.id.exit);
         exit.setOnClickListener(v1 -> {
             finish();
         });

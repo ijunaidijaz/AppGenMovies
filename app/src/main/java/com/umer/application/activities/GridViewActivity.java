@@ -63,6 +63,7 @@ import com.umer.application.networks.NetworkCall;
 import com.umer.application.networks.OnNetworkResponse;
 import com.umer.application.utils.AdsTypes;
 import com.umer.application.utils.RequestCodes;
+import com.umer.application.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -82,7 +83,7 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
     public static ApplicationSettings applicationSettings;
     int itemId = 0;
     int itemPosition;
-    boolean isSingleVideoFrag = false, isCategory = false;
+    public boolean isSingleVideoFrag = false, isCategory = false;
     //    static GridViewActivity instance;
     String inFragment = "";
     TestingGridViewBinding binding;
@@ -100,7 +101,7 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
         AudienceNetworkAds.initialize(this);
         applicationSettings = (ApplicationSettings) getIntent().getSerializableExtra("applicationSettings");
         fragmentTrx(new HomeFragment(), null, "HomeFragment");
-        applicationSettings.setAdds(1);
+        applicationSettings.setAdds(2);
         applicationSettings.setAdMobLimit("2");
 
     }
@@ -109,7 +110,7 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
         showAd();
         NetworkCall.make()
                 .setCallback(this)
-                .autoLoading(getSupportFragmentManager())
+                .autoLoadingCancel(Utils.getLoading(this, "Loading"))
                 .setTag(RequestCodes.API.GET_SINGLE_POST)
                 .enque(new Network().apis().getSinglePost(id))
                 .execute();
@@ -298,8 +299,12 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
     }
 
     public void singlePostResponseHandling(singlePost singlePost1) {
-
-        if (singlePost1.getRedirectApp().isEmpty() && !singlePost1.isRedirectLink()) {
+        if (isSingleVideoFrag) {
+            openVideoFragment(singlePost1.getKeyword(), singlePost1.getBaseApi().getCode(),
+                    singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
+                    applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                    getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+        }else if (singlePost1.getRedirectApp().isEmpty() && !singlePost1.isRedirectLink()) {
             if (singlePost1.getPlayList()) {
                 //playlist should be in string
                 if (isSingleVideoFrag) {
@@ -383,7 +388,10 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
             }
         }
     }
-
+//
+//    public void singlePostResponseHandling(singlePost singlePost1) {
+//
+//    }
 
     public void openSinglePost(int position, int clickCount) {
         isSingleVideoFrag = false;
@@ -479,14 +487,9 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
 //        binding.categoryTwoRv.setLayoutManager(linearLayoutManager);
 //        binding.categoryTwoRv.setAdapter(adapter);
 //    }
-
-
     public void scrollToTop() {
 //        binding.nestedScrollView.fullScroll(View.FOCUS_UP);
     }
-
-
-
     public void openWatchNowFirstFragment(List<Songs_list> songs_list) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("VideosList", (Serializable) songsList);
@@ -504,17 +507,16 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
             admobBannerAds();
         } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
             binding.facebookBannerLayout.setVisibility(View.GONE);
-            binding.facebookBannerContainer.setVisibility(View.GONE);
+//            binding.facebookBannerContainer.setVisibility(View.GONE);
             binding.maxBanner.setVisibility(View.VISIBLE);
             loadMaxBannerAd();
         } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
             binding.facebookBannerLayout.setVisibility(View.GONE);
             binding.startAppBannerLayout.setVisibility(View.VISIBLE);
-            binding.facebookBannerContainer.setVisibility(View.GONE);
+//            binding.facebookBannerContainer.setVisibility(View.GONE);
             binding.maxBanner.setVisibility(View.GONE);
         }
     }
-
     public void loadAds() {
         if (applicationSettings.getAdds() == AdsTypes.admobAds) {
             admobInterstitialAds();
@@ -522,7 +524,6 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
             maxInterstitialAd();
         }
     }
-
     public void showAd() {
         if (clickCount >= applicationSettings.getAdMobLimit()) {
             if (applicationSettings.getAdds() == AdsTypes.admobAds) {

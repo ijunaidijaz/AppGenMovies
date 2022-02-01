@@ -49,6 +49,7 @@ import com.umer.application.networks.OnNetworkResponse;
 import com.umer.application.utils.AdsTypes;
 import com.umer.application.utils.Constants;
 import com.umer.application.utils.RequestCodes;
+import com.umer.application.utils.Utils;
 import com.umer.application.utils.functions;
 import com.umer.application.viewModels.HomeViewModel;
 
@@ -120,6 +121,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
                 binding.secondSubCatTitle.setText(applicationSettings.getAppSubCategories().get(1).getName());
                 getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(1).getId(), RequestCodes.API.GET_POST_BY_CATEGORY_2);
             }
+        }else {
+            binding.firstSubCatTitle.setVisibility(View.GONE);
+            binding.secondSubCatTitle.setVisibility(View.GONE);
         }
     }
 
@@ -175,7 +179,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
     private void getAllPosts() {
         NetworkCall.make()
                 .setCallback(this)
-                .autoLoading(getParentFragmentManager())
+                .autoLoadingCancel(Utils.getLoading(getActivity(), "Loading"))
                 .setTag(RequestCodes.API.GET_ALL_POSTS)
                 .enque(new Network().apis().getAllPosts(getResources().getString(R.string.TEST_PACKAGE_NAME)))
                 .execute();
@@ -195,7 +199,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         ((GridViewActivity) getActivity()).showAd();
         NetworkCall.make()
                 .setCallback(this)
-                .autoLoading(getParentFragmentManager())
+                .autoLoadingCancel(Utils.getLoading(getActivity(), "Loading"))
                 .setTag(RequestCodes.API.GET_SINGLE_POST)
                 .enque(new Network().apis().getSinglePost(id))
                 .execute();
@@ -303,89 +307,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
 
 
     public void singlePostResponseHandling(singlePost singlePost1) {
-        if (singlePost1.getRedirectApp().isEmpty() && !singlePost1.isRedirectLink()) {
-            if (singlePost1.getPlayList()) {
-                //playlist should be in string
-                if (isSingleVideoFrag) {
-                    openVideoFragment("", singlePost1.getBaseApi().getCode(),
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
-                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
-                } else {
-                    if (isCategory) {
-                        openMovieListFragment(singlePost1.getKeyword(), "",
-                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
-                                applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                                getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
+        if (isCategory) {
+            openMovieListFragment(singlePost1.getKeyword(), "",
+                    singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
+                    applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
+                    getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
 
-                    } else {
-                        openWatchNowFirstFragment(songsList);
-                    }
-                }
-            } else {
-                if (isSingleVideoFrag) {
-                    openVideoFragment(singlePost1.getKeyword(), "",
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
-                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
-                } else {
-                    if (isCategory) {
-                        openMovieListFragment(singlePost1.getKeyword(), "",
-                                singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
-                                applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                                getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
-
-                    } else {
-                        openWatchNowFirstFragment(songsList);
-                    }
-                }
-            }
-
-        } else if (!singlePost1.getRedirectApp().isEmpty()) {
-            openAppOnPlayStore(singlePost1.getRedirectApp());
         } else if (singlePost1.isRedirectLink()) {
-            if (isSingleVideoFrag) {
-                openWebUrl(singlePost1);
-            } else {
-                if (isCategory) {
-                    openMovieListFragment(singlePost1.getKeyword(), "",
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
-                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
-
-                } else {
-                    openWatchNowFirstFragment(categoryList);
-                }
-
-            }
-        } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-            if (isSingleVideoFrag) {
-                openWebUrl(singlePost1);
-            } else {
-                if (isCategory) {
-                    openMovieListFragment(singlePost1.getKeyword(), "",
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
-                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
-
-                } else {
-                    openWatchNowFirstFragment(categoryList);
-                }
-            }
-        } else {
-            if (isSingleVideoFrag) {
-                openWebUrl(singlePost1);
-            } else {
-                if (isCategory) {
-                    openMovieListFragment(singlePost1.getKeyword(), "",
-                            singlePost1.getPlayList(), singlePost1.getLimit(), applicationSettings.getIsYoutubePost(),
-                            applicationSettings.getAdds(), applicationSettings.getActionBarColor(), applicationSettings.getLog(),
-                            getResources().getString(R.string.ADMOB_INTER_ID), getResources().getString(R.string.FACEBOOK_INTER_ID));
-
-                } else {
-                    openWatchNowFirstFragment(categoryList);
-                }
-            }
+            openWebUrl(singlePost1);
+        }else {
+            openWatchNowFirstFragment(songsList);
         }
     }
 

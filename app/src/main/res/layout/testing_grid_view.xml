@@ -33,23 +33,21 @@
             android:background="@color/transparent"
             android:visibility="gone">
 
-            <LinearLayout
-                android:id="@+id/facebook_banner_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:orientation="vertical"
-                android:visibility="gone"
 
-                />
-
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/DailyMotion_banner_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_margin="5dp"
+                android:background="@color/white"
                 android:visibility="gone">
-
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:textColor="@color/common_google_signin_btn_text_light"-->
+<!--                    android:text="Ad Space"/>-->
                 <com.google.android.gms.ads.AdView
                     android:id="@+id/adView"
                     android:layout_width="wrap_content"
@@ -59,7 +57,7 @@
 
 
                     />
-            </LinearLayout>
+            </RelativeLayout>
 
         </RelativeLayout>
 

@@ -42,7 +42,7 @@ public class singlePost implements Serializable {
     private String ServerLink2;
     @SerializedName("ServerLink3")
     @Expose
-    private String ServerLink4;
+    private String ServerLink3;
 
     public String getServerLink1() {
         return ServerLink1;
@@ -60,12 +60,12 @@ public class singlePost implements Serializable {
         ServerLink2 = serverLink2;
     }
 
-    public String getServerLink4() {
-        return ServerLink4;
+    public String getServerLink3() {
+        return ServerLink3;
     }
 
-    public void setServerLink4(String serverLink4) {
-        ServerLink4 = serverLink4;
+    public void setServerLink3(String serverLink3) {
+        ServerLink3 = serverLink3;
     }
 
     public String getTitle() {

@@ -6,7 +6,15 @@
     <string name="no_internet">You don\'t seem to have an active internet connection.</string>
     <string name="conn_try_again">Please check your connection and try again.</string>
     <string name="try_again">Try Again</string>
-
+    <string name="exceptionInErrorResponse">Exception in parsing error response.</string>
+    <string name="timeout">Request timed out</string>
+    <string name="connectException">Unable to connect host</string>
+    <string name="invalid_data">Invalid data receied.</string>
+    <string name="ssl">SSL cetificate error. Unable to handshake</string>
+    <string name="text_somethingwentwrong">Something went wrong. Please try again</string>
+    <string name="pleaseWait">Please wait ...</string>
+    <string name="key">lakjfalsjfiosdjl fowi 029u4893rji9pq3fw</string>
+    <string name="salt">sd;lfja094rjmo3wf90iewdf</string>
     //ADMOB ID's
     <!--    <string name="ADMOB_APP_ID">ca-app-pub-3489810328478410~304093714</string>-->
     <string name="ADMOB_APP_ID">ca-app-pub-2830201261334544~2516166051</string>
@@ -37,6 +45,7 @@
     <!--    [1/13, 12:00] umar mushtaq: Inter Ad : 348a595deb89d223-->
     <string name="APPLOVIN_BANNER_ID">aa8acade928dd27f</string>
     <string name="APPLOVIN_INTER_ID">348a595deb89d223</string>
+
 
 
 </resources>

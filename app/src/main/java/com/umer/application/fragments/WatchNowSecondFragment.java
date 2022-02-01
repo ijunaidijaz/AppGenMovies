@@ -29,6 +29,7 @@ import com.umer.application.networks.NetworkCall;
 import com.umer.application.networks.OnNetworkResponse;
 import com.umer.application.utils.Constants;
 import com.umer.application.utils.RequestCodes;
+import com.umer.application.utils.Utils;
 import com.umer.application.utils.functions;
 import com.umer.application.viewModels.WatchNowSecondViewModel;
 
@@ -129,7 +130,7 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback, 
         ((GridViewActivity) getActivity()).showAd();
         NetworkCall.make()
                 .setCallback(this)
-                .autoLoading(getParentFragmentManager())
+                .autoLoadingCancel(Utils.getLoading(getActivity(), "Loading"))
                 .setTag(RequestCodes.API.GET_SINGLE_POST)
                 .enque(new Network().apis().getSinglePost(id))
                 .execute();
