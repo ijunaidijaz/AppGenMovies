@@ -102,7 +102,7 @@ public class GridViewActivity extends AppCompatActivity implements  OnNetworkRes
         applicationSettings = (ApplicationSettings) getIntent().getSerializableExtra("applicationSettings");
         fragmentTrx(new HomeFragment(), null, "HomeFragment");
         applicationSettings.setAdds(2);
-        applicationSettings.setAdMobLimit("2");
+        applicationSettings.setAdMobLimit("1");
 
     }
 
