@@ -6,16 +6,17 @@
     android:layout_margin="20dp"
     android:gravity="center"
     android:layout_gravity="center_horizontal"
-    android:paddingHorizontal="100dp"
-    android:paddingVertical="50dp"
+    android:paddingHorizontal="50dp"
+    android:paddingVertical="40dp"
     android:elevation="5dp"
     android:background="@drawable/round_corner_image"
     android:orientation="vertical">
 
     <ProgressBar
-        style="?attr/indeterminateProgressStyle"
+        style="?attr/lottie_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateTint="@color/btn_color"
         android:layout_centerHorizontal="true"
         android:src="@drawable/ic_no_wifi_icon" />
 
@@ -25,10 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/image"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Showing Ad"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:textStyle="bold" />
 
     <TextView
@@ -38,7 +39,8 @@
         android:layout_below="@+id/text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="Please wait..."
+        android:gravity="center"
+        android:text="If you don't like ads then,\n click skip button. "
         android:textColor="@color/black"
         android:textSize="14sp" />
 </LinearLayout>

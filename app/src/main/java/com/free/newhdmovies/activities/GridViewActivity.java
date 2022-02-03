@@ -148,7 +148,7 @@ public class GridViewActivity extends AppCompatActivity implements OnNetworkResp
             @Override
             public void onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
-                binding.adSpace.setVisibility(View.GONE);
+//                binding.adSpace.setVisibility(View.GONE);
             }
 
             @Override
@@ -511,9 +511,6 @@ public class GridViewActivity extends AppCompatActivity implements OnNetworkResp
             loadMaxBannerAd();
         } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
             binding.facebookBannerLayout.setVisibility(View.GONE);
-            new Handler().postDelayed(() -> {
-                binding.adSpace.setVisibility(View.GONE);
-            }, 1500);
             binding.startAppBannerLayout.setVisibility(View.VISIBLE);
             binding.maxBanner.setVisibility(View.GONE);
         }
@@ -590,7 +587,7 @@ public class GridViewActivity extends AppCompatActivity implements OnNetworkResp
 
             @Override
             public void onAdLoaded(MaxAd ad) {
-                binding.adSpace.setVisibility(View.GONE);
+//                binding.adSpace.setVisibility(View.GONE);
             }
 
             @Override
