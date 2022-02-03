@@ -45,7 +45,8 @@
     <!--    [1/13, 12:00] umar mushtaq: Inter Ad : 348a595deb89d223-->
     <string name="APPLOVIN_BANNER_ID">aa8acade928dd27f</string>
     <string name="APPLOVIN_INTER_ID">348a595deb89d223</string>
-
+    <string name="msg_subscribed">subscribed</string>
+    <string name="msg_subscribe_failed">subscribe failed</string>
 
 
 </resources>

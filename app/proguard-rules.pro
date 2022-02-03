@@ -19,16 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep public class com.umer.application.activities.SplashActivity
--keep public class com.umer.application.activities.GridViewActivity
--keep public class com.umer.application.activities.DailyMotionVideoPlayer
--keep public class com.umer.application.activities.WebViewActivity
--keep public class com.umer.application.activities.YoutubeVideoPlayer
--keep public class com.umer.application.fragments.VideoListFragment
--keep public class com.umer.application.adapters.VideoListAdapter
--keep public class com.umer.application.adapters.GridViewAdapter
--keep public class com.umer.application.adapters.imagesAdapter
--keep public class com.umer.application.adapters.SliderAdapter
+-keep public class com.free.newhdmovies.activities.SplashActivity
+-keep public class com.free.newhdmovies.activities.GridViewActivity
+-keep public class com.free.newhdmovies.activities.DailyMotionVideoPlayer
+-keep public class com.free.newhdmovies.activities.WebViewActivity
+-keep public class com.free.newhdmovies.activities.YoutubeVideoPlayer
+-keep public class com.free.newhdmovies.fragments.VideoListFragment
+-keep public class com.free.newhdmovies.adapters.VideoListAdapter
+-keep public class com.free.newhdmovies.adapters.GridViewAdapter
+-keep public class com.free.newhdmovies.adapters.imagesAdapter
+-keep public class com.free.newhdmovies.adapters.SliderAdapter
 # Prevent R8 from leaving Data object members always null
 -keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "106359465503",
+    "project_id": "new-movies-7e891",
+    "storage_bucket": "new-movies-7e891.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106359465503:android:6f53d5d9851b2edca3172a",
+        "android_client_info": {
+          "package_name": "com.free.newhdmovies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106359465503-a537mbtft4klbpl7jgev29te1croh057.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0Qa6TsMRqmOuU4WnhhONmnFd57-lVszA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106359465503-a537mbtft4klbpl7jgev29te1croh057.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

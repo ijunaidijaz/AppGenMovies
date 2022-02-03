@@ -11,10 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:visibility="visible" />
-    <!--        android:src="@drawable/splash_new"-->
-    <!--        />-->
-
+        android:visibility="visible"
+            android:src="@drawable/splash"/>
     <LinearLayout
         android:id="@+id/internet_Error"
         android:layout_width="match_parent"

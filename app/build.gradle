@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 //apply plugin: 'applovin-quality-service'
 //applovin {
 //    apiKey "YOUR_AD_REVIEW_KEY_HERE"
@@ -10,7 +11,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.fun.livefbmatch"
+        applicationId "com.free.newhdmovies"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 10000
@@ -45,6 +46,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -92,6 +94,14 @@ dependencies {
 //    def nav_version = "2.4.0"
 //    implementation "androidx.navigation:navigation-fragment:$nav_version"
 //    implementation "androidx.navigation:navigation-ui:$nav_version"
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:29.0.4')
+
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+
+    // Declare the dependency for the Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-analytics'
+
 }
 
 //apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'

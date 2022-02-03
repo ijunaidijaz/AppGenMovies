@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.umer.application">
+    package="com.free.newhdmovies">
     <!-- Include required permissions for Google Mobile Ads to run. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.Ad_ID" />
     <!--    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>-->
     <application
-        android:name=".app.MainApp"
+        android:name="com.free.newhdmovies.app.MainApp"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/app_icon"
@@ -20,14 +20,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activities.WebViewActivity"
+            android:name="com.free.newhdmovies.activities.WebViewActivity"
             android:configChanges="orientation"
+            android:hardwareAccelerated="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
         </activity>
         <activity
-            android:name=".activities.DailyMotionVideoPlayer"
+            android:name="com.free.newhdmovies.activities.DailyMotionVideoPlayer"
             android:screenOrientation="landscape"
+            android:hardwareAccelerated="true"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data
@@ -36,15 +38,16 @@
 
 
         <activity
-            android:name=".activities.YoutubeVideoPlayer"
+            android:name="com.free.newhdmovies.activities.YoutubeVideoPlayer"
             android:configChanges="orientation|keyboardHidden"
+            android:hardwareAccelerated="true"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activities.GridViewActivity"
+            android:name="com.free.newhdmovies.activities.GridViewActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="com.free.newhdmovies.activities.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -63,6 +66,13 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <service
+            android:name=".services.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
