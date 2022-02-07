@@ -18,7 +18,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.free.newhdmovies.R;
-import com.free.newhdmovies.activities.GridViewActivity;
+import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.activities.WebViewActivity;
 import com.free.newhdmovies.models.AppSlider;
 import com.free.newhdmovies.models.ApplicationSettings;
@@ -75,7 +75,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 
                 //Ads active and open any normal post
                 if (images.get(position).getRedirectApp().isEmpty() && images.get(position).getWebUrl().isEmpty()) {
-                    ((GridViewActivity) context).openSinglePost(images.get(position).getId(), clickCount);
+                    ((MainActivity) context).openSinglePost(images.get(position).getId(), clickCount);
                 }
                 // ads are active or not open Google play Store without adds
                 else if (images.get(position).getWebUrl().isEmpty()) {
@@ -119,7 +119,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
 // --------------------------------When there is no Ads Active this flow will work -----------------------------
                 else if (applicationSettings.getAdds() == AdsTypes.notActiveAds) {
                     if (images.get(position).getRedirectApp().equals("") && images.get(position).getWebUrl().isEmpty()) {
-                        ((GridViewActivity) context).openSinglePostWithoutAdd(images.get(position).getId());
+                        ((MainActivity) context).openSinglePostWithoutAdd(images.get(position).getId());
                     } else if (images.get(position).getRedirectApp().equals("")) {
                         openWebUrl(images.get(position).getWebUrl());
                     } else {

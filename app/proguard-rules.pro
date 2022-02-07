@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep public class com.free.newhdmovies.activities.SplashActivity
--keep public class com.free.newhdmovies.activities.GridViewActivity
+-keep public class com.free.newhdmovies.activities.MainActivity
 -keep public class com.free.newhdmovies.activities.DailyMotionVideoPlayer
 -keep public class com.free.newhdmovies.activities.WebViewActivity
 -keep public class com.free.newhdmovies.activities.YoutubeVideoPlayer

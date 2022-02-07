@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.free.newhdmovies.R;
-import com.free.newhdmovies.activities.GridViewActivity;
+import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.adapters.GridViewAdapter;
 import com.free.newhdmovies.adapters.MoviesAdapter;
 import com.free.newhdmovies.adapters.VideoListAdapter;
@@ -62,7 +62,7 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
                              @Nullable Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(WatchNowFirstViewModel.class);
         binding = WatchNowFirstFragmentBinding.inflate(inflater, container, false);
-        ((GridViewActivity) getActivity()).scrollToTop();
+        ((MainActivity) getActivity()).scrollToTop();
         binding.header.backbtnHeader.setOnClickListener(v1 -> getActivity().onBackPressed());
 
         if (getArguments() != null) {
@@ -86,8 +86,8 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
             setMoviesAdapter(songsList);
 
             binding.watchNow.setOnClickListener(v -> {
-                ((GridViewActivity) getActivity()).clickCount++;
-                ((GridViewActivity) getActivity()).showAd();
+                ((MainActivity) getActivity()).clickCount++;
+                ((MainActivity) getActivity()).showAd();
                 openWatchNowSecondFragment(song);
             });
 
@@ -106,7 +106,7 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
         bundle.putSerializable("selectedVideo", songs_list);
         bundle.putSerializable("applicationSettings", applicationSettings);
         WatchNowSecondFragment fragment = new WatchNowSecondFragment();
-        ((GridViewActivity) getActivity()).fragmentTrx(fragment, bundle, "Second");
+        ((MainActivity) getActivity()).fragmentTrx(fragment, bundle, "Second");
   }
 
 
@@ -159,8 +159,8 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
     }
 
     public void getSinglePost(int id) {
-        ((GridViewActivity) getActivity()).clickCount++;
-        ((GridViewActivity) getActivity()).showAd();
+        ((MainActivity) getActivity()).clickCount++;
+        ((MainActivity) getActivity()).showAd();
         NetworkCall.make()
                 .setCallback(this)
                 .autoLoadingCancel(Utils.getLoading(getActivity(), "Loading"))
@@ -175,7 +175,7 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
         bundle.putSerializable("VideosList", (Serializable) songsList);
         bundle.putSerializable("selectedVideo", songs_list.get(position));
         bundle.putSerializable("applicationSettings", applicationSettings);
-        ((GridViewActivity) getActivity()).fragmentTrx(WatchNowFirstFragment.newInstance(), bundle, "Second");
+        ((MainActivity) getActivity()).fragmentTrx(WatchNowFirstFragment.newInstance(), bundle, "Second");
 //        getParentFragmentManager().beginTransaction().replace(R.id.container_video_fragment, fragment).addToBackStack(fragment.getTag()).commit();
     }
 }

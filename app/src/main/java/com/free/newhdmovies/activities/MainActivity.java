@@ -33,13 +33,13 @@ import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdkUtils;
 import com.facebook.ads.AudienceNetworkAds;
+import com.free.newhdmovies.databinding.MainActivityBinding;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.LoadAdError;
 import com.startapp.sdk.adsbase.StartAppAd;
 import com.free.newhdmovies.R;
-import com.free.newhdmovies.databinding.TestingGridViewBinding;
 import com.free.newhdmovies.fragments.HomeFragment;
 import com.free.newhdmovies.fragments.MovieListFragment;
 import com.free.newhdmovies.fragments.ServerLinksFragment;
@@ -67,7 +67,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class GridViewActivity extends AppCompatActivity implements OnNetworkResponse {
+public class MainActivity extends AppCompatActivity implements OnNetworkResponse {
 
     public static int clickCount = 0;
     ArrayList<Songs_list> songsList;
@@ -78,7 +78,7 @@ public class GridViewActivity extends AppCompatActivity implements OnNetworkResp
     public boolean isSingleVideoFrag = false, isCategory = false;
     //    static GridViewActivity instance;
     String inFragment = "";
-    TestingGridViewBinding binding;
+    MainActivityBinding binding;
     MaxAdView maxAdView;
     String categoryName;
     MaxInterstitialAd maxinterstitialAd;
@@ -89,13 +89,12 @@ public class GridViewActivity extends AppCompatActivity implements OnNetworkResp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TestingGridViewBinding.inflate(getLayoutInflater());
+        binding = MainActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         AudienceNetworkAds.initialize(this);
         applicationSettings = (ApplicationSettings) getIntent().getSerializableExtra("applicationSettings");
         fragmentTrx(new HomeFragment(), null, "HomeFragment");
-//        applicationSettings.setAdds(1);
-//        applicationSettings.setAdMobLimit("2");
+
     }
 
     public void getSinglePost(int id) {
@@ -501,18 +500,16 @@ public class GridViewActivity extends AppCompatActivity implements OnNetworkResp
 
     public void loadBanners() {
         if (applicationSettings.getAdds() == AdsTypes.admobAds) {
-            binding.facebookBannerLayout.setVisibility(View.VISIBLE);
-            binding.DailyMotionBannerContainer.setVisibility(View.VISIBLE);
             binding.maxBanner.setVisibility(View.GONE);
+            binding.adView.setVisibility(View.VISIBLE);
             admobBannerAds();
         } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-            binding.facebookBannerLayout.setVisibility(View.GONE);
             binding.maxBanner.setVisibility(View.VISIBLE);
             loadMaxBannerAd();
         } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
-            binding.facebookBannerLayout.setVisibility(View.GONE);
-            binding.startAppBannerLayout.setVisibility(View.VISIBLE);
+            binding.startAppBannerAd.setVisibility(View.VISIBLE);
             binding.maxBanner.setVisibility(View.GONE);
+            binding.adView.setVisibility(View.GONE);
         }
     }
 

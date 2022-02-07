@@ -87,7 +87,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
     }
 
     public void showAd() {
-        if (GridViewActivity.clickCount >= applicationSettings.getAdMobLimit()) {
+        if (MainActivity.clickCount >= applicationSettings.getAdMobLimit()) {
             if (applicationSettings.getAdds() == AdsTypes.admobAds) {
                 if (admobInterstitialAd.isLoaded()) {
                     showingAdDialog();
@@ -97,7 +97,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
                     }, 2000);
 
                 }
-                GridViewActivity.clickCount = 0;
+                MainActivity.clickCount = 0;
             } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
                 if (maxinterstitialAd.isReady()) {
                     showingAdDialog();
@@ -106,7 +106,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
                         maxinterstitialAd.showAd();
                     }, 2000);
                 }
-                GridViewActivity.clickCount = 0;
+                MainActivity.clickCount = 0;
 
             } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
                 showingAdDialog();
@@ -115,7 +115,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
                     StartAppAd.showAd(this);
                 }, 2000);
 
-                GridViewActivity.clickCount = 0;
+                MainActivity.clickCount = 0;
             }
             loadAds();
         }

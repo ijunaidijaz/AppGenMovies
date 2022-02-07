@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.free.newhdmovies.R;
-import com.free.newhdmovies.activities.GridViewActivity;
+import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.adapters.MoviesAdapter;
 import com.free.newhdmovies.adapters.VideoListAdapter;
 import com.free.newhdmovies.adapters.viewHolders.MoviesViewHolder;
@@ -52,7 +52,7 @@ public class MovieListFragment extends Fragment implements MoviesCallback {
                              @Nullable Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
         binding = MovieListFragmentBinding.inflate(inflater, container, false);
-        ((GridViewActivity) getActivity()).scrollToTop();
+        ((MainActivity) getActivity()).scrollToTop();
         binding.headerBar.backbtnHeader.setOnClickListener(v1 -> getActivity().onBackPressed());
         if (getArguments() != null) {
             applicationSettings = (ApplicationSettings) getArguments().getSerializable("applicationSettings");
@@ -79,8 +79,8 @@ public class MovieListFragment extends Fragment implements MoviesCallback {
     }
 
     public void openWatchNowFirstFragment(Songs_list songs_list) {
-        ((GridViewActivity) getActivity()).clickCount++;
-        ((GridViewActivity) getActivity()).showAd();
+        ((MainActivity) getActivity()).clickCount++;
+        ((MainActivity) getActivity()).showAd();
         Bundle bundle = new Bundle();
         bundle.putSerializable("VideosList", (Serializable) songsList);
         bundle.putSerializable("selectedVideo", songs_list);

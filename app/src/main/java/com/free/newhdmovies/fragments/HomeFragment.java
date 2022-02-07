@@ -24,7 +24,7 @@ import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 import com.free.newhdmovies.R;
-import com.free.newhdmovies.activities.GridViewActivity;
+import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.activities.WebViewActivity;
 import com.free.newhdmovies.adapters.CategoryAdapter;
 import com.free.newhdmovies.adapters.CategoryTwoAdapter;
@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         binding = HomeFragmentBinding.inflate(inflater, container, false);
 
         applicationSettings = applicationSettings.retrieveApplicationSettings(getActivity());
-        GridViewActivity.applicationSettings=applicationSettings;
+        MainActivity.applicationSettings=applicationSettings;
         appSliders = (ArrayList<AppSlider>) applicationSettings.getSlider(getActivity());
         initViews(binding.getRoot());
         setListeners();
@@ -171,9 +171,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
     private void loadAds() {
         new Handler().postDelayed(() -> {
             getAllPosts();
-            ((GridViewActivity) getActivity()).loadBanners();
-        }, 1000);
-        ((GridViewActivity) getActivity()).loadAds();
+            ((MainActivity) getActivity()).loadBanners();
+        }, 500);
+        ((MainActivity) getActivity()).loadAds();
     }
 
     private void getAllPosts() {
@@ -196,7 +196,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
     }
 
     public void getSinglePost(int id) {
-        ((GridViewActivity) getActivity()).showAd();
+        ((MainActivity) getActivity()).showAd();
         NetworkCall.make()
                 .setCallback(this)
                 .autoLoadingCancel(Utils.getLoading(getActivity(), "Loading"))
@@ -275,7 +275,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         bundle.putString("ADMOB_INTER_ID", admob_interID);
         bundle.putString("FACEBOOK_INTER_ID", faebook_interID);
         VideoListFragment fragment = new VideoListFragment();
-        ((GridViewActivity) getActivity()).fragmentTrx(fragment, bundle, "VideoListFragment");
+        ((MainActivity) getActivity()).fragmentTrx(fragment, bundle, "VideoListFragment");
     }
 
     public void openMovieListFragment(String keyword, String playListId, boolean isPlayList,
@@ -296,7 +296,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         bundle.putSerializable("VideosList", songsList);
         bundle.putSerializable("applicationSettings", applicationSettings);
         MovieListFragment fragment = new MovieListFragment();
-        ((GridViewActivity) getActivity()).fragmentTrx(fragment, bundle, "MovieListFragment");
+        ((MainActivity) getActivity()).fragmentTrx(fragment, bundle, "MovieListFragment");
     }
 
     public void openWebUrl(singlePost singlePost) {
@@ -364,12 +364,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         itemId = songsList.get(position).getId();
         addClick();
         scrollToTop();
-        openSinglePost(itemId, ((GridViewActivity) getActivity()).clickCount);
-        ((GridViewActivity) getActivity()).showAd();
+        openSinglePost(itemId, ((MainActivity) getActivity()).clickCount);
+        ((MainActivity) getActivity()).showAd();
     }
 
     public void scrollToTop() {
-        ((GridViewActivity) getActivity()).scrollToTop();
+        ((MainActivity) getActivity()).scrollToTop();
     }
 
     @Override
@@ -382,7 +382,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         itemId = categoryList.get(position).getId();
         addClick();
         scrollToTop();
-        openSinglePost(itemId, ((GridViewActivity) getActivity()).clickCount);
+        openSinglePost(itemId, ((MainActivity) getActivity()).clickCount);
     }
 
     @Override
@@ -395,13 +395,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         itemId = categoryTwoList.get(position).getId();
         addClick();
         scrollToTop();
-        openSinglePost(itemId, ((GridViewActivity) getActivity()).clickCount);
-        ((GridViewActivity) getActivity()).showAd();
+        openSinglePost(itemId, ((MainActivity) getActivity()).clickCount);
+        ((MainActivity) getActivity()).showAd();
 
     }
 
     private void addClick() {
-        ((GridViewActivity) getActivity()).clickCount++;
+        ((MainActivity) getActivity()).clickCount++;
     }
 
     public void openWatchNowFirstFragment(List<Songs_list> songs_list) {
@@ -410,6 +410,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         bundle.putSerializable("selectedVideo", songs_list.get(itemPosition));
         bundle.putSerializable("applicationSettings", applicationSettings);
         WatchNowFirstFragment fragment = new WatchNowFirstFragment();
-        ((GridViewActivity) getActivity()).fragmentTrx(fragment, bundle, "OpenWatchNow");
+        ((MainActivity) getActivity()).fragmentTrx(fragment, bundle, "OpenWatchNow");
     }
 }

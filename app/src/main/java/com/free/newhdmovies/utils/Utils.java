@@ -20,7 +20,7 @@ import android.os.Environment;
 import androidx.core.app.NotificationCompat;
 
 import com.free.newhdmovies.R;
-import com.free.newhdmovies.activities.GridViewActivity;
+import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.app.MainApp;
 
 import java.io.File;
@@ -125,7 +125,7 @@ public class Utils {
         NotificationManager notificationManager;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context.getApplicationContext(), "notify_001");
         Intent intent;
-        intent = new Intent(context, GridViewActivity.class);
+        intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), 12, intent, PendingIntent.FLAG_MUTABLE);
 
         builder.setContentIntent(pendingIntent);

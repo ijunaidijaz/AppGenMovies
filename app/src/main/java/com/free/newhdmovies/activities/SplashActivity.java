@@ -131,12 +131,14 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
                 applicationSettings = (ApplicationSettings) response.body();
 
                 if (applicationSettings != null) {
+//                    applicationSettings.setAdds(3);
+//                    applicationSettings.setAdMobLimit("2");
                     applicationSettings.saveApplicationSettings(getApplicationContext(), applicationSettings);
                     if (!applicationSettings.getIsActive()) {
                         notActiveDialog();
                     } else {
                         new Handler().postDelayed(() -> {
-                            Intent splashIntent = new Intent(SplashActivity.this, GridViewActivity.class);
+                            Intent splashIntent = new Intent(SplashActivity.this, MainActivity.class);
                             if (!appSlider.get(0).getUrl().isEmpty() && applicationSettings != null) {
                                 SharedPreferences.Editor editor = sharedpreferences.edit();
                                 splashIntent.putExtra("applicationSettings", applicationSettings);

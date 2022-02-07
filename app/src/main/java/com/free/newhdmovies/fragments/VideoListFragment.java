@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.free.newhdmovies.R;
-import com.free.newhdmovies.activities.GridViewActivity;
+import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.adapters.VideoListAdapter;
 import com.free.newhdmovies.models.dailymotionSearchHelper;
 import com.free.newhdmovies.networks.ApiServices;
@@ -62,7 +62,7 @@ public class VideoListFragment extends Fragment {
         backBtn = v.findViewById(R.id.backbtn_header);
         imageView = v.findViewById(R.id.image_view);
         header = v.findViewById(R.id.headerBar);
-        ((GridViewActivity) getActivity()).scrollToTop();
+        ((MainActivity) getActivity()).scrollToTop();
         backBtn.setOnClickListener(v1 -> getActivity().onBackPressed());
 
         if (getArguments() != null) {

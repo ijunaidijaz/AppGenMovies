@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.free.newhdmovies.R;
-import com.free.newhdmovies.activities.GridViewActivity;
+import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.adapters.GridViewAdapter;
 import com.free.newhdmovies.adapters.MoviesAdapter;
 import com.free.newhdmovies.adapters.VideoListAdapter;
@@ -64,7 +64,7 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback, 
                              @Nullable Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(WatchNowSecondViewModel.class);
         binding = WatchNowSecondFragmentBinding.inflate(inflater, container, false);
-        ((GridViewActivity) getActivity()).scrollToTop();
+        ((MainActivity) getActivity()).scrollToTop();
         binding.header.backbtnHeader.setOnClickListener(v1 -> getActivity().onBackPressed());
         if (getArguments() != null) {
             applicationSettings = (ApplicationSettings) getArguments().getSerializable("applicationSettings");
@@ -86,8 +86,8 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback, 
             setMoviesAdapter(songsList);
             binding.gridView1.smoothScrollToPosition(0);
             binding.watchNow.setOnClickListener(v -> {
-                ((GridViewActivity) getActivity()).clickCount++;
-                ((GridViewActivity) getActivity()).showAd();
+                ((MainActivity) getActivity()).clickCount++;
+                ((MainActivity) getActivity()).showAd();
                 openServerLinkFragment(song);
             });
 
@@ -126,8 +126,8 @@ public class WatchNowSecondFragment extends Fragment implements MoviesCallback, 
     }
 
     public void getSinglePost(int id) {
-        ((GridViewActivity) getActivity()).clickCount++;
-        ((GridViewActivity) getActivity()).showAd();
+        ((MainActivity) getActivity()).clickCount++;
+        ((MainActivity) getActivity()).showAd();
         NetworkCall.make()
                 .setCallback(this)
                 .autoLoadingCancel(Utils.getLoading(getActivity(), "Loading"))

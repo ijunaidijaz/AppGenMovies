@@ -17,7 +17,7 @@ import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.InterstitialAd;
 import com.free.newhdmovies.R;
 import com.free.newhdmovies.activities.DailyMotionVideoPlayer;
-import com.free.newhdmovies.activities.GridViewActivity;
+import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.activities.YoutubeVideoPlayer;
 import com.free.newhdmovies.models.YoutubeVideoItem;
 
@@ -112,7 +112,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
                 @Override
                 public void onClick(View view) {
                     YoutubeVideoItem i = mItems.get(getAdapterPosition());
-                    GridViewActivity.clickCount++;
+                    MainActivity.clickCount++;
 //                    ((GridViewActivity)mContext).showAd();
                     id = i.id;
                     if (isYoutube) {

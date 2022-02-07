@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".activities.GridViewActivity">
+    tools:context=".activities.MainActivity">
 
     <FrameLayout
         android:id="@+id/container_video_fragment"
@@ -87,7 +87,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/facebookBannerLayout"
+        android:id="@+id/bannerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

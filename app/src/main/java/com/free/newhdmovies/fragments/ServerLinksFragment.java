@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.free.newhdmovies.R;
-import com.free.newhdmovies.activities.GridViewActivity;
+import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.activities.WebViewActivity;
 import com.free.newhdmovies.adapters.MoviesAdapter;
 import com.free.newhdmovies.adapters.VideoListAdapter;
@@ -69,7 +69,7 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
         mViewModel = new ViewModelProvider(this).get(ServerLinksViewModel.class);
 
         binding = ServerLinksFragmentBinding.inflate(inflater, container, false);
-        ((GridViewActivity) getActivity()).scrollToTop();
+        ((MainActivity) getActivity()).scrollToTop();
         binding.header.backbtnHeader.setOnClickListener(v1 -> getActivity().onBackPressed());
         if (getArguments() != null) {
             applicationSettings = (ApplicationSettings) getArguments().getSerializable("applicationSettings");
@@ -99,10 +99,10 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
                 getSinglePost(song.getId());
             });
             binding.serverLink4.setOnClickListener(v -> {
-                ((GridViewActivity) getActivity()).clickCount++;
-                ((GridViewActivity) getActivity()).scrollToTop();
-                ((GridViewActivity) getActivity()).isSingleVideoFrag=true;
-                ((GridViewActivity) getActivity()).openSinglePost(song.getId(), clickCount, true);
+                ((MainActivity) getActivity()).clickCount++;
+                ((MainActivity) getActivity()).scrollToTop();
+                ((MainActivity) getActivity()).isSingleVideoFrag=true;
+                ((MainActivity) getActivity()).openSinglePost(song.getId(), clickCount, true);
             });
             imageURL = applicationSettings.getLog();
             functions.GlideImageLoaderWithPlaceholder(getContext(), binding.header.imageView, Constants.BASE_URL_IMAGES + imageURL);
@@ -130,8 +130,8 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
     }
 
     public void getSinglePost(int id) {
-        ((GridViewActivity) getActivity()).clickCount++;
-        ((GridViewActivity) getActivity()).showAd();
+        ((MainActivity) getActivity()).clickCount++;
+        ((MainActivity) getActivity()).showAd();
         NetworkCall.make()
                 .setCallback(this)
                 .autoLoadingCancel(Utils.getLoading(getActivity(), "Please wait..."))
