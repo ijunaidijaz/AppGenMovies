@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.AudienceNetworkAds;
-import com.facebook.ads.InterstitialAdListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -37,14 +33,14 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
     String webURL;
     private Context context;
     private InterstitialAd admobInterstitialAd;
-    private com.facebook.ads.InterstitialAd facebookInterstitialAd;
+//    private com.facebook.ads.InterstitialAd facebookInterstitialAd;
 
 
     public SliderAdapter(Context context, List<AppSlider> images, ApplicationSettings applicationSettings) {
         this.context = context;
         this.images = images;
         this.applicationSettings = applicationSettings;
-        AudienceNetworkAds.initialize(context);
+//        AudienceNetworkAds.initialize(context);
 
 
     }
@@ -85,31 +81,16 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
                 else if (images.get(position).getRedirectApp().isEmpty() && applicationSettings.getAdds() == AdsTypes.admobAds) {
                     if (clickCount == applicationSettings.getAdMobLimit()) {
 //                        admobInterstitialAds();
-                        if (admobInterstitialAd.isLoaded()) {
-                            admobInterstitialAd.show();
-                            admobInterstitialAd.setAdListener(new AdListener() {
-                                @Override
-                                public void onAdClosed() {
-                                    admobInterstitialAds();
-                                    openWebUrl(images.get(position).getWebUrl());
 
-                                }
-                            });
-                        } else {
-                            admobInterstitialAds();
                             openWebUrl(images.get(position).getWebUrl());
 
-                        }
-
                     } else {
-                        admobInterstitialAds();
                         openWebUrl(images.get(position).getWebUrl());
                     }
                 }
                 //facebook ads are Active open Web URL
                 else if (images.get(position).getRedirectApp().isEmpty() && applicationSettings.getAdds() == AdsTypes.facebooksAds) {
                     if (clickCount == applicationSettings.getAdMobLimit()) {
-                        showFacebookInterstitialAds();
 
                     } else {
                         openWebUrl(images.get(position).getWebUrl());
@@ -153,66 +134,8 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         context.startActivity(i);
     }
 
-    public void admobInterstitialAds() {
-        admobInterstitialAd = new InterstitialAd(context);
-        admobInterstitialAd.setAdUnitId(context.getResources().getString(R.string.ADMOB_INTER_ID));
-        admobInterstitialAd.loadAd(new AdRequest.Builder().build());
-    }
 
-    public void facebookInterstitialAds() {
-        facebookInterstitialAd = new com.facebook.ads.InterstitialAd(context, context.getResources().getString(R.string.FACEBOOK_INTER_ID));
-        facebookInterstitialAd.setAdListener(new InterstitialAdListener() {
-            @Override
-            public void onInterstitialDisplayed(Ad ad) {
 
-            }
-
-            @Override
-            public void onInterstitialDismissed(Ad ad) {
-                openWebUrl(webURL);
-
-            }
-
-            @Override
-            public void onError(Ad ad, AdError adError) {
-
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-
-            }
-
-        });
-
-        facebookInterstitialAd.loadAd();
-    }
-
-    public void showFacebookInterstitialAds() {
-        if (facebookInterstitialAd == null || !facebookInterstitialAd.isAdLoaded()) {
-            facebookInterstitialAds();
-            openWebUrl(webURL);
-        }
-        // Check if ad is already expired or invalidated, and do not show ad if that is the case. You will not get paid to show an invalidated ad.
-        if (facebookInterstitialAd.isAdInvalidated()) {
-
-            facebookInterstitialAds();
-        }
-        if (facebookInterstitialAd != null && facebookInterstitialAd.isAdLoaded() && !facebookInterstitialAd.isAdInvalidated())
-            // Show the ad
-            facebookInterstitialAd.show();
-        facebookInterstitialAds();
-    }
 
     class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
 

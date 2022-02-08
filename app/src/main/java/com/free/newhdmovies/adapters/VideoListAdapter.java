@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.InterstitialAd;
 import com.free.newhdmovies.R;
 import com.free.newhdmovies.activities.DailyMotionVideoPlayer;
@@ -30,8 +29,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
     String id, admob_InterID, facebook_InterID;
     public Context mContext;
     private ArrayList<YoutubeVideoItem> mItems = new ArrayList<>();
-    private InterstitialAd admobInterstitialAd;
-    private com.facebook.ads.InterstitialAd facebookInterstitialAd;
+
 
 
     public VideoListAdapter(Context c, boolean isYoutube, int adds, @Nullable ArrayList<YoutubeVideoItem> items,
@@ -43,7 +41,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
         this.Adds = adds;
         this.admob_InterID = admob_InterID;
         this.facebook_InterID = facebook_InterID;
-        AudienceNetworkAds.initialize(mContext);
+//        AudienceNetworkAds.initialize(mContext);
     }
 
 

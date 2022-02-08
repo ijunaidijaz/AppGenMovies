@@ -26,6 +26,10 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+//            minifyEnabled true
+//            shrinkResources true
+        }
     }
     buildFeatures {
         viewBinding true
@@ -59,10 +63,8 @@ dependencies {
 //    implementation 'com.onesignal:OneSignal:3.12.6'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
     // For control over item selection of both touch and mouse driven selection
-    implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
-    implementation 'com.google.code.gson:gson:2.8.6'
+  implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
     implementation('com.google.api-client:google-api-client-android:1.22.0') {
         exclude group: 'org.apache.httpcomponents'
@@ -70,10 +72,10 @@ dependencies {
     implementation('com.google.apis:google-api-services-youtube:v3-rev183-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
-    implementation 'com.android.support:recyclerview-v7:29.0.1'
+//    implementation 'com.android.support:recyclerview-v7:29.0.1'
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'com.google.android.gms:play-services-ads:19.3.0'
-    implementation 'com.facebook.android:audience-network-sdk:5.10.0'
+//    implementation 'com.facebook.android:audience-network-sdk:5.10.0'
     implementation 'com.dailymotion.dailymotion-sdk-android:sdk:0.2.2'
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.0"
@@ -91,15 +93,8 @@ dependencies {
     implementation 'com.applovin:applovin-sdk:+'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
-    // Java language implementation navigation
-//    def nav_version = "2.4.0"
-//    implementation "androidx.navigation:navigation-fragment:$nav_version"
-//    implementation "androidx.navigation:navigation-ui:$nav_version"
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
-
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-
     // Declare the dependency for the Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics'
 

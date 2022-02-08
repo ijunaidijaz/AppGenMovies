@@ -32,7 +32,6 @@ import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdkUtils;
-import com.facebook.ads.AudienceNetworkAds;
 import com.free.newhdmovies.databinding.MainActivityBinding;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         super.onCreate(savedInstanceState);
         binding = MainActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        AudienceNetworkAds.initialize(this);
+//        AudienceNetworkAds.initialize(this);
         applicationSettings = (ApplicationSettings) getIntent().getSerializableExtra("applicationSettings");
         fragmentTrx(new HomeFragment(), null, "HomeFragment");
 
