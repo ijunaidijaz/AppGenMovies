@@ -51,13 +51,13 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
     int itemID = 0, position = 0;
     List<Songs_list> songsList = new ArrayList<>();
     ApplicationSettings applicationSettings;
+    String linkURL;
     private ServerLinksViewModel mViewModel;
     private VideoListAdapter mAdapter;
     private String keyword, imageURL, colorString, admob_Inter_Id, facebook_Inter_Id;
     private int limit, adds;
     private boolean isWebLink = false;
     private boolean isPlayList;
-    String linkURL;
 
     public static ServerLinksFragment newInstance() {
         return new ServerLinksFragment();
@@ -101,7 +101,7 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
             binding.serverLink4.setOnClickListener(v -> {
                 ((MainActivity) getActivity()).clickCount++;
                 ((MainActivity) getActivity()).scrollToTop();
-                ((MainActivity) getActivity()).isSingleVideoFrag=true;
+                ((MainActivity) getActivity()).isSingleVideoFrag = true;
                 ((MainActivity) getActivity()).openSinglePost(song.getId(), clickCount, true);
             });
             imageURL = applicationSettings.getLog();
@@ -181,6 +181,7 @@ public class ServerLinksFragment extends Fragment implements MoviesCallback, OnN
         Toast.makeText(getContext(), "UnSuccessful" + response.message, Toast.LENGTH_SHORT).show();
 
     }
+
     public void openWebUrl(singlePost singlePost) {
         String url = singlePost.getServerLink1();
         if (linkURL.equalsIgnoreCase("1")) {

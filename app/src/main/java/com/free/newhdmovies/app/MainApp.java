@@ -4,30 +4,23 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.StrictMode;
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinSdkConfiguration;
-import com.free.newhdmovies.BuildConfig;
-import com.free.newhdmovies.R;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.startapp.sdk.adsbase.StartAppAd;
 
 public class MainApp extends Application {
     public static MainApp INSTANCE;
+    SharedPreferences prefs = null;
     private Activity activity;
+
     public static MainApp getAppContext() {
         return INSTANCE;
     }
-    SharedPreferences prefs = null;
 
     @Override
     public void onCreate() {
@@ -56,6 +49,7 @@ public class MainApp extends Application {
         FirebaseMessaging.getInstance().subscribeToTopic("myTopic");
 
     }
+
     public Activity getCurrentActivity() {
         return activity;
     }

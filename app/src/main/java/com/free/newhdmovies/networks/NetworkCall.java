@@ -1,6 +1,5 @@
 package com.free.newhdmovies.networks;
 
-import com.google.gson.stream.MalformedJsonException;
 import com.free.newhdmovies.R;
 import com.free.newhdmovies.app.BaseClass;
 import com.free.newhdmovies.models.BaseResponse;
@@ -8,6 +7,7 @@ import com.free.newhdmovies.utils.Configurations;
 import com.free.newhdmovies.utils.Loading;
 import com.free.newhdmovies.utils.Utils;
 import com.free.newhdmovies.utils.ViewDialog;
+import com.google.gson.stream.MalformedJsonException;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -28,10 +28,10 @@ public class NetworkCall extends BaseClass {
 
 
     public ViewDialog viewDialog;
+    Loading loading;
     private Object taggedObject;
     private OnNetworkResponse callback;
     private Call request;
-    Loading loading;
 
 
     private NetworkCall() {

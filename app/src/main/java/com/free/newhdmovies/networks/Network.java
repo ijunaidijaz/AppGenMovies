@@ -98,9 +98,6 @@ public class Network {
         return getInstance().retrofit;
     }
 
-    public ApiServices getApiServices() {
-        return object.services;
-    }
     public static BaseResponse parseErrorResponse(Response response) {
         BaseResponse errorResponse = null;
         try {
@@ -133,6 +130,10 @@ public class Network {
             errorResponse.setMessage(errorString);
             return errorResponse;
         }
+    }
+
+    public ApiServices getApiServices() {
+        return object.services;
     }
 
 }

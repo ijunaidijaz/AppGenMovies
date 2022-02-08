@@ -107,9 +107,7 @@ public class WatchNowFirstFragment extends Fragment implements OnNetworkResponse
         bundle.putSerializable("applicationSettings", applicationSettings);
         WatchNowSecondFragment fragment = new WatchNowSecondFragment();
         ((MainActivity) getActivity()).fragmentTrx(fragment, bundle, "Second");
-  }
-
-
+    }
 
 
     @Override

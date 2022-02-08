@@ -2,22 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="20dp"
-    android:gravity="center"
     android:layout_gravity="center_horizontal"
-    android:paddingHorizontal="50dp"
-    android:paddingVertical="40dp"
-    android:elevation="5dp"
+    android:layout_margin="20dp"
     android:background="@drawable/round_corner_image"
-    android:orientation="vertical">
+    android:elevation="5dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="50dp"
+    android:paddingVertical="40dp">
 
     <ProgressBar
         style="?attr/lottie_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/btn_color"
         android:layout_centerHorizontal="true"
+        android:indeterminateTint="@color/btn_color"
         android:src="@drawable/ic_no_wifi_icon" />
 
     <TextView

@@ -20,9 +20,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.smarteist.autoimageslider.IndicatorAnimations;
-import com.smarteist.autoimageslider.SliderAnimations;
-import com.smarteist.autoimageslider.SliderView;
 import com.free.newhdmovies.R;
 import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.activities.WebViewActivity;
@@ -51,6 +48,9 @@ import com.free.newhdmovies.utils.RequestCodes;
 import com.free.newhdmovies.utils.Utils;
 import com.free.newhdmovies.utils.functions;
 import com.free.newhdmovies.viewModels.HomeViewModel;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -60,8 +60,6 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, OnNetworkResponse, MoviesCallback, CategoryCallback, CategoryTwoCallback {
-
-    private HomeViewModel mViewModel;
 
     ImageView imageView_searchBar, search_button, search_backBtn;
     SliderView sliderView;
@@ -77,6 +75,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
     boolean isSingleVideoFrag = false, isCategory = false;
     HomeFragmentBinding binding;
     String categoryName;
+    private HomeViewModel mViewModel;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -89,7 +88,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         binding = HomeFragmentBinding.inflate(inflater, container, false);
 
         applicationSettings = applicationSettings.retrieveApplicationSettings(getActivity());
-        MainActivity.applicationSettings=applicationSettings;
+        MainActivity.applicationSettings = applicationSettings;
         appSliders = (ArrayList<AppSlider>) applicationSettings.getSlider(getActivity());
         initViews(binding.getRoot());
         setListeners();
@@ -121,7 +120,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
                 binding.secondSubCatTitle.setText(applicationSettings.getAppSubCategories().get(1).getName());
                 getPostByCategory(applicationSettings.getPostCategory().getId(), applicationSettings.getAppSubCategories().get(1).getId(), RequestCodes.API.GET_POST_BY_CATEGORY_2);
             }
-        }else {
+        } else {
             binding.firstSubCatTitle.setVisibility(View.GONE);
             binding.secondSubCatTitle.setVisibility(View.GONE);
         }
@@ -315,7 +314,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
 
         } else if (singlePost1.isRedirectLink()) {
             openWebUrl(singlePost1);
-        }else {
+        } else {
             openWatchNowFirstFragment(songsList);
         }
     }

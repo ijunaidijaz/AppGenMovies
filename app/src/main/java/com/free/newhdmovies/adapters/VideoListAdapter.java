@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.InterstitialAd;
 import com.free.newhdmovies.R;
 import com.free.newhdmovies.activities.DailyMotionVideoPlayer;
 import com.free.newhdmovies.activities.MainActivity;
@@ -24,12 +23,11 @@ import java.util.ArrayList;
 
 public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.ViewHolder> {
 
+    public Context mContext;
     boolean isYoutube;
     int Adds;
     String id, admob_InterID, facebook_InterID;
-    public Context mContext;
     private ArrayList<YoutubeVideoItem> mItems = new ArrayList<>();
-
 
 
     public VideoListAdapter(Context c, boolean isYoutube, int adds, @Nullable ArrayList<YoutubeVideoItem> items,

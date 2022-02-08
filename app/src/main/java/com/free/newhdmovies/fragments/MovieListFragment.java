@@ -70,7 +70,6 @@ public class MovieListFragment extends Fragment implements MoviesCallback {
     }
 
 
-
     public void setMoviesAdapter(List<Songs_list> lists) {
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), applicationSettings.getRowDisplay());
         MoviesAdapter adapter = new MoviesAdapter(getContext(), lists, this);

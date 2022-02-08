@@ -3,7 +3,6 @@ package com.free.newhdmovies.utils;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
-
 import com.free.newhdmovies.R;
 import com.free.newhdmovies.app.MainApp;
 
@@ -27,7 +26,7 @@ public class Loading {
 
     private Loading(Activity activity) {
         this.activity = activity != null ? activity : MainApp.getAppContext().getCurrentActivity();
-        this.pDialog = new ProgressDialog(this.activity,R.style.MyAlertDialogStyle);
+        this.pDialog = new ProgressDialog(this.activity, R.style.MyAlertDialogStyle);
 //        Sprite doubleBounce = new CubeGrid();
 //        doubleBounce.setColorFilter(new ColorFilter());
 //        doubleBounce.setColor(R.color.primary);

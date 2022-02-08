@@ -12,8 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.free.newhdmovies.R;
 import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.adapters.VideoListAdapter;
@@ -23,6 +21,8 @@ import com.free.newhdmovies.utils.Constants;
 import com.free.newhdmovies.utils.DailyMotionSearchHelper;
 import com.free.newhdmovies.utils.YoutubeSearchHelper;
 import com.free.newhdmovies.utils.functions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 

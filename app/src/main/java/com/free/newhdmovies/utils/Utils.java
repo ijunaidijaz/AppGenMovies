@@ -1,7 +1,6 @@
 package com.free.newhdmovies.utils;
 
 
-
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -119,6 +118,7 @@ public class Utils {
                 .setMessage(mesage)
                 .show();
     }
+
     public static void sendNotification(Context context, String messageBody, String title) {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -159,6 +159,7 @@ public class Utils {
         notificationManager.notify(0, builder.build());
 
     }
+
     public static Bitmap getBitmapFromURL(String strURL) {
         try {
             URL url = new URL(strURL);

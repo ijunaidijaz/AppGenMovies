@@ -32,13 +32,8 @@ import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdkUtils;
-import com.free.newhdmovies.databinding.MainActivityBinding;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.LoadAdError;
-import com.startapp.sdk.adsbase.StartAppAd;
 import com.free.newhdmovies.R;
+import com.free.newhdmovies.databinding.MainActivityBinding;
 import com.free.newhdmovies.fragments.HomeFragment;
 import com.free.newhdmovies.fragments.MovieListFragment;
 import com.free.newhdmovies.fragments.ServerLinksFragment;
@@ -55,6 +50,11 @@ import com.free.newhdmovies.networks.OnNetworkResponse;
 import com.free.newhdmovies.utils.AdsTypes;
 import com.free.newhdmovies.utils.RequestCodes;
 import com.free.newhdmovies.utils.Utils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
+import com.startapp.sdk.adsbase.StartAppAd;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -69,21 +69,21 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements OnNetworkResponse {
 
     public static int clickCount = 0;
+    public static ApplicationSettings applicationSettings;
+    public boolean isSingleVideoFrag = false, isCategory = false;
     ArrayList<Songs_list> songsList;
     ArrayList<Songs_list> categoryList, categoryTwoList = new ArrayList<>();
-    public static ApplicationSettings applicationSettings;
     int itemId = 0;
     int itemPosition;
-    public boolean isSingleVideoFrag = false, isCategory = false;
     //    static GridViewActivity instance;
     String inFragment = "";
     MainActivityBinding binding;
     MaxAdView maxAdView;
     String categoryName;
     MaxInterstitialAd maxinterstitialAd;
+    Dialog dialog;
     private com.google.android.gms.ads.AdView admobAdView;
     private InterstitialAd admobInterstitialAd;
-    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -519,6 +519,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             maxInterstitialAd();
         }
     }
+
     public void showAd() {
         if (clickCount >= applicationSettings.getAdMobLimit()) {
             if (applicationSettings.getAdds() == AdsTypes.admobAds) {

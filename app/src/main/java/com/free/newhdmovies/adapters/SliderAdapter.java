@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.free.newhdmovies.R;
 import com.free.newhdmovies.activities.MainActivity;
 import com.free.newhdmovies.activities.WebViewActivity;
@@ -21,6 +17,8 @@ import com.free.newhdmovies.models.ApplicationSettings;
 import com.free.newhdmovies.utils.AdsTypes;
 import com.free.newhdmovies.utils.Constants;
 import com.free.newhdmovies.utils.functions;
+import com.google.android.gms.ads.InterstitialAd;
+import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.List;
 
@@ -82,7 +80,7 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
                     if (clickCount == applicationSettings.getAdMobLimit()) {
 //                        admobInterstitialAds();
 
-                            openWebUrl(images.get(position).getWebUrl());
+                        openWebUrl(images.get(position).getWebUrl());
 
                     } else {
                         openWebUrl(images.get(position).getWebUrl());
@@ -133,8 +131,6 @@ public class SliderAdapter extends SliderViewAdapter<SliderAdapter.SliderAdapter
         i.putExtra("WEBURL", url);
         context.startActivity(i);
     }
-
-
 
 
     class SliderAdapterVH extends SliderViewAdapter.ViewHolder {

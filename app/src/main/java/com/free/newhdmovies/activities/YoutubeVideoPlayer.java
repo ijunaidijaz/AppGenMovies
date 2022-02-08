@@ -9,6 +9,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.applovin.mediation.ads.MaxInterstitialAd;
+import com.free.newhdmovies.R;
+import com.free.newhdmovies.models.ApplicationSettings;
+import com.free.newhdmovies.utils.AdsTypes;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.youtube.player.YouTubeBaseActivity;
@@ -16,9 +19,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.startapp.sdk.adsbase.StartAppAd;
-import com.free.newhdmovies.R;
-import com.free.newhdmovies.models.ApplicationSettings;
-import com.free.newhdmovies.utils.AdsTypes;
 
 public class YoutubeVideoPlayer extends YouTubeBaseActivity {
     YouTubePlayerView youtubeVideoView;
@@ -26,9 +26,9 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
     String videoId;
     ApplicationSettings applicationSettings = new ApplicationSettings();
     MaxInterstitialAd maxinterstitialAd;
+    Dialog dialog;
     private com.google.android.gms.ads.AdView admobAdView;
     private InterstitialAd admobInterstitialAd;
-    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +133,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
         // Load the first ad
         maxinterstitialAd.loadAd();
     }
+
     public void showingAdDialog() {
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -147,6 +148,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
+
     public void cancelShowingAdDialog() {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
