@@ -177,18 +177,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
     }
 
     private void getAllPosts() {
-        List<String> subCategories=new ArrayList<>();
-        for (AppSubCategory appSubCategory:applicationSettings.getAppSubCategories()){
+        List<String> subCategories = new ArrayList<>();
+        for (AppSubCategory appSubCategory : applicationSettings.getAppSubCategories()) {
             subCategories.add(appSubCategory.getId().toString());
         }
-        String ids=subCategories.toString();
-        ids=ids.replace("[","");
-        ids=ids.replace("]","");
+        String ids = subCategories.toString();
+        ids = ids.replace("[", "");
+        ids = ids.replace("]", "");
         NetworkCall.make()
                 .setCallback(this)
                 .autoLoadingCancel(Utils.getLoading(getActivity(), "Loading"))
                 .setTag(RequestCodes.API.GET_ALL_POSTS)
-                .enque(new Network().apis().getAllPosts(applicationSettings.getPostCategory().getId(),ids))
+                .enque(new Network().apis().getAllPosts(applicationSettings.getPostCategory().getId(), ids))
                 .execute();
 
     }

@@ -3,9 +3,10 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="settings"
-            type="com.livematch.livesportstv.models.ApplicationSettings"/>
+            type="com.livematch.livesportstv.models.ApplicationSettings" />
     </data>
 
     <RelativeLayout
@@ -47,8 +48,7 @@
                     android:textColor="@color/common_google_signin_btn_text_light"
                     android:visibility="visible" />
 
-                <com.google.android.gms.ads.AdView
-                    xmlns:ads="http://schemas.android.com/apk/res-auto"
+                <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/adView"
                     android:layout_width="wrap_content"
                     android:layout_height="55dp"

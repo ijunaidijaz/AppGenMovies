@@ -1,5 +1,6 @@
 package com.livematch.livesportstv.networks;
 
+import com.google.gson.stream.MalformedJsonException;
 import com.livematch.livesportstv.R;
 import com.livematch.livesportstv.app.BaseClass;
 import com.livematch.livesportstv.models.BaseResponse;
@@ -7,7 +8,6 @@ import com.livematch.livesportstv.utils.Configurations;
 import com.livematch.livesportstv.utils.Loading;
 import com.livematch.livesportstv.utils.Utils;
 import com.livematch.livesportstv.utils.ViewDialog;
-import com.google.gson.stream.MalformedJsonException;
 
 import java.io.IOException;
 import java.net.ConnectException;

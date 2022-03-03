@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.livematch.livesportstv.R;
 import com.livematch.livesportstv.activities.MainActivity;
 import com.livematch.livesportstv.adapters.VideoListAdapter;
@@ -21,8 +23,6 @@ import com.livematch.livesportstv.utils.Constants;
 import com.livematch.livesportstv.utils.DailyMotionSearchHelper;
 import com.livematch.livesportstv.utils.YoutubeSearchHelper;
 import com.livematch.livesportstv.utils.functions;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 

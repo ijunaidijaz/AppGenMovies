@@ -1,9 +1,9 @@
 package com.livematch.livesportstv.models;
 
-import com.livematch.livesportstv.app.BaseClass;
-import com.livematch.livesportstv.networks.ResponseCode;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.livematch.livesportstv.app.BaseClass;
+import com.livematch.livesportstv.networks.ResponseCode;
 
 import java.io.Serializable;
 

@@ -21,9 +21,11 @@ public interface ApiServices {
     @GET("v2/applicationPost/GetAllPost")
     Call<ArrayList<Songs_list>> getAllPosts(@Query("categoryId") Integer categoryId,
                                             @Query("subcategoryId") Integer subcategoryId);
+
     @GET("v2/applicationPost/GetAllPost")
     Call<ArrayList<Songs_list>> getAllPosts(@Query("categoryId") Integer categoryId,
                                             @Query("subcategoryId") String subcategories);
+
     @GET("v2/applicationPost/getPostByCategory")
     Call<ArrayList<Songs_list>> getPostsByCategory(@Query("categoryId") Integer categoryId,
                                                    @Query("subcategoryId") Integer subcategoryId,
@@ -35,10 +37,11 @@ public interface ApiServices {
                                                    @Query("subcategoryId") List<Integer> subcategories,
                                                    @Query("pageSize") Integer pageSize,
                                                    @Query("page") Integer page);
+
     @GET("v2/applicationPost/getPostDescription")
     Call<singlePost> getSinglePost(@Query("postId") Integer postID);
 
-        @GET("v3/application/AppSlider")
+    @GET("v3/application/AppSlider")
     Call<ArrayList<AppSlider>> getApplicationSlider(@Query("packageName") String packageName);
 
     @GET("videos")

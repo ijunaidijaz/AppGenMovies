@@ -4,9 +4,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.livematch.livesportstv.utils.Utils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.livematch.livesportstv.utils.Utils;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override

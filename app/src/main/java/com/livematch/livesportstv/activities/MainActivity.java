@@ -32,6 +32,12 @@ import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdkUtils;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.livematch.livesportstv.R;
 import com.livematch.livesportstv.databinding.MainActivityBinding;
 import com.livematch.livesportstv.fragments.HomeFragment;
@@ -50,12 +56,6 @@ import com.livematch.livesportstv.networks.OnNetworkResponse;
 import com.livematch.livesportstv.utils.AdsTypes;
 import com.livematch.livesportstv.utils.RequestCodes;
 import com.livematch.livesportstv.utils.Utils;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.LoadAdError;
 import com.startapp.sdk.adsbase.StartAppAd;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -326,11 +326,13 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         i.putExtra("WEBURL", singlePost.getBaseApi().getUrl());
         startActivity(i);
     }
+
     public void openWebUrl(String url) {
         Intent i = new Intent(this, WebViewActivity.class);
         i.putExtra("WEBURL", url);
         startActivity(i);
     }
+
     public void singlePostResponseHandling(singlePost singlePost1) {
         if (isSingleVideoFrag) {
             openVideoFragment(singlePost1.getKeyword(), singlePost1.getBaseApi().getCode(),

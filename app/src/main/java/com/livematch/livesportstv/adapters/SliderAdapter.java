@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.InterstitialAd;
 import com.livematch.livesportstv.R;
 import com.livematch.livesportstv.activities.MainActivity;
 import com.livematch.livesportstv.activities.WebViewActivity;
@@ -17,7 +18,6 @@ import com.livematch.livesportstv.models.ApplicationSettings;
 import com.livematch.livesportstv.utils.AdsTypes;
 import com.livematch.livesportstv.utils.Constants;
 import com.livematch.livesportstv.utils.functions;
-import com.google.android.gms.ads.InterstitialAd;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.List;

@@ -5,11 +5,11 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.livematch.livesportstv.app.MainApp;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
+import com.livematch.livesportstv.app.MainApp;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;

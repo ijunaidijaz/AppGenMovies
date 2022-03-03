@@ -152,8 +152,8 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
                                     startActivity(splashIntent);
                                     finish();
                                 }
-                            }else {
-                                Toast.makeText(getApplicationContext(),"No Slider found",Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "No Slider found", Toast.LENGTH_SHORT).show();
                             }
                         }, 2000);
                     }
@@ -182,6 +182,7 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
     private void setIDs() {
 
     }
+
     public boolean isInternetConnected() {
 
         ConnectivityManager mgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);

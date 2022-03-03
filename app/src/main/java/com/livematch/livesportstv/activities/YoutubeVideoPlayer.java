@@ -9,15 +9,15 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.applovin.mediation.ads.MaxInterstitialAd;
-import com.livematch.livesportstv.R;
-import com.livematch.livesportstv.models.ApplicationSettings;
-import com.livematch.livesportstv.utils.AdsTypes;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.livematch.livesportstv.R;
+import com.livematch.livesportstv.models.ApplicationSettings;
+import com.livematch.livesportstv.utils.AdsTypes;
 import com.startapp.sdk.adsbase.StartAppAd;
 
 public class YoutubeVideoPlayer extends YouTubeBaseActivity {
