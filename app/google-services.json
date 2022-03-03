@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "106359465503",
-    "project_id": "new-movies-7e891",
-    "storage_bucket": "new-movies-7e891.appspot.com"
+    "project_number": "486933080973",
+    "project_id": "sunny-stock",
+    "storage_bucket": "sunny-stock.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:106359465503:android:6f53d5d9851b2edca3172a",
+        "mobilesdk_app_id": "1:486933080973:android:f0e4e54072d5652c7febc4",
         "android_client_info": {
-          "package_name": "com.free.newhdmovies"
+          "package_name": "com.livematch.livesportstv"
         }
       },
       "oauth_client": [
         {
-          "client_id": "106359465503-a537mbtft4klbpl7jgev29te1croh057.apps.googleusercontent.com",
+          "client_id": "486933080973-gbeosffq5cr0b8dkttvm35fgqfs8vt44.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD0Qa6TsMRqmOuU4WnhhONmnFd57-lVszA"
+          "current_key": "AIzaSyD5dHF771r0_UDNX_fsi_TlF7v6X7GQY_A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "106359465503-a537mbtft4klbpl7jgev29te1croh057.apps.googleusercontent.com",
+              "client_id": "486933080973-gbeosffq5cr0b8dkttvm35fgqfs8vt44.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

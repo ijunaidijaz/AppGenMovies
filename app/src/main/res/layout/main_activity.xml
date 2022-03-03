@@ -3,7 +3,9 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="settings"
+            type="com.livematch.livesportstv.models.ApplicationSettings"/>
     </data>
 
     <RelativeLayout
@@ -30,6 +32,7 @@
                 android:layout_height="55dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/white"
+                android:gravity="center"
                 android:visibility="visible">
 
                 <TextView
@@ -45,15 +48,13 @@
                     android:visibility="visible" />
 
                 <com.google.android.gms.ads.AdView
+                    xmlns:ads="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/adView"
                     android:layout_width="wrap_content"
                     android:layout_height="55dp"
                     android:visibility="gone"
                     ads:adSize="SMART_BANNER"
-                    ads:adUnitId="@string/ADMOB_BANNER_ID"
-
-
-                    />
+                    ads:adUnitId="@string/ADMOB_BANNER_ID" />
 
                 <com.startapp.sdk.ads.banner.Banner
                     android:id="@+id/startAppBannerAd"
