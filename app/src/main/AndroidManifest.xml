@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.livematch.livesportstv">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.imtyaz.quranurdutarjuma">
     <!-- Include required permissions for Google Mobile Ads to run. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,7 +11,7 @@
     <uses-permission android:name="android.permission.Ad_ID" />
 
     <application
-        android:name=".app.MainApp"
+        android:name="com.imtyaz.quranurdutarjuma.app.MainApp"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/app_icon_sports"
@@ -20,12 +21,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activities.WebViewActivity"
+            android:name="com.imtyaz.quranurdutarjuma.activities.WebViewActivity"
             android:configChanges="orientation"
             android:hardwareAccelerated="true"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity
-            android:name=".activities.DailyMotionVideoPlayer"
+            android:name="com.imtyaz.quranurdutarjuma.activities.DailyMotionVideoPlayer"
             android:hardwareAccelerated="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -35,16 +36,16 @@
             android:value="@string/ADMOB_APP_ID" />
 
         <activity
-            android:name=".activities.YoutubeVideoPlayer"
+            android:name="com.imtyaz.quranurdutarjuma.activities.YoutubeVideoPlayer"
             android:configChanges="orientation|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.imtyaz.quranurdutarjuma.activities.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="com.imtyaz.quranurdutarjuma.activities.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -55,6 +56,7 @@
         </activity>
 
         <meta-data
+            tools:replace="android:value"
             android:name="applovin.sdk.key"
             android:value="@string/APPLOVIN_SDK_KEY" />
         <meta-data
@@ -65,7 +67,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <service
-            android:name=".services.MyFirebaseMessagingService"
+            android:name="com.imtyaz.quranurdutarjuma.services.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

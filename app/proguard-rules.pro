@@ -19,16 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep public class com.livematch.livesportstv.activities.SplashActivity
--keep public class com.livematch.livesportstv.activities.MainActivity
--keep public class com.livematch.livesportstv.activities.DailyMotionVideoPlayer
--keep public class com.livematch.livesportstv.activities.WebViewActivity
--keep public class com.livematch.livesportstv.activities.YoutubeVideoPlayer
--keep public class com.livematch.livesportstv.fragments.VideoListFragment
--keep public class com.livematch.livesportstv.adapters.VideoListAdapter
--keep public class com.livematch.livesportstv.adapters.GridViewAdapter
--keep public class com.livematch.livesportstv.adapters.imagesAdapter
--keep public class com.livematch.livesportstv.adapters.SliderAdapter
+-keep public class com.imtyaz.quranurdutarjuma.activities.SplashActivity
+-keep public class com.imtyaz.quranurdutarjuma.activities.MainActivity
+-keep public class com.imtyaz.quranurdutarjuma.activities.DailyMotionVideoPlayer
+-keep public class com.imtyaz.quranurdutarjuma.activities.WebViewActivity
+-keep public class com.imtyaz.quranurdutarjuma.activities.YoutubeVideoPlayer
+-keep public class com.imtyaz.quranurdutarjuma.fragments.VideoListFragment
+-keep public class com.imtyaz.quranurdutarjuma.adapters.VideoListAdapter
+-keep public class com.imtyaz.quranurdutarjuma.adapters.GridViewAdapter
+-keep public class com.imtyaz.quranurdutarjuma.adapters.imagesAdapter
+-keep public class com.imtyaz.quranurdutarjuma.adapters.SliderAdapter
 # Prevent R8 from leaving Data object members always null
 -keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;
