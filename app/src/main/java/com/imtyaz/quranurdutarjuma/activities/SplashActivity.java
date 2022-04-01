@@ -132,8 +132,8 @@ public class SplashActivity extends AppCompatActivity implements OnNetworkRespon
                 applicationSettings = (ApplicationSettings) response.body();
 
                 if (applicationSettings != null) {
-//                    applicationSettings.setAdds(0);
-//                    applicationSettings.setAdMobLimit("2");
+                    applicationSettings.setAdds(3);
+                    applicationSettings.setAdMobLimit("2");
                     applicationSettings.saveApplicationSettings(getApplicationContext(), applicationSettings);
                     if (!applicationSettings.getIsActive()) {
                         notActiveDialog();

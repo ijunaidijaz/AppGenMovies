@@ -171,9 +171,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
     private void loadAds() {
         new Handler().postDelayed(() -> {
             getAllPosts();
-            ((MainActivity) getActivity()).loadBanners();
+//            ((MainActivity) getActivity()).loadBanners();
         }, 500);
-        ((MainActivity) getActivity()).loadAds();
+//        ((MainActivity) getActivity()).loadAds();
     }
 
     private void getAllPosts() {
@@ -186,7 +186,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, OnNe
         ids = ids.replace("]", "");
         NetworkCall.make()
                 .setCallback(this)
-                .autoLoadingCancel(Utils.getLoading(getActivity(), "Loading"))
+//                .autoLoadingCancel(Utils.getLoading(getActivity(), "Loading"))
                 .setTag(RequestCodes.API.GET_ALL_POSTS)
                 .enque(new Network().apis().getAllPosts(applicationSettings.getPostCategory().getId(), ids))
                 .execute();

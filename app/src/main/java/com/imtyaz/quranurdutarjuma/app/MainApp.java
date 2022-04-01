@@ -51,7 +51,7 @@ public class MainApp extends Application {
                 // AppLovin SDK is initialized, start loading ads
             }
         });
-        FirebaseMessaging.getInstance().subscribeToTopic("myTopic");
+//        FirebaseMessaging.getInstance().subscribeToTopic("myTopic");
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {

@@ -13,11 +13,14 @@
     <string name="ssl">SSL cetificate error. Unable to handshake</string>
     <string name="text_somethingwentwrong">Something went wrong. Please try again</string>
     <string name="pleaseWait">Please wait ...</string>
+    <string name="yodo1_demo_video">Show Rewarded Video Ad</string>
+    <string name="yodo1_demo_interstitial">Show Interstitial Ad</string>
+    <string name="yodo1_demo_banner">Show Banner Ad</string>
     <string name="key">lakjfalsjfiosdjl fowi 029u4893rji9pq3fw</string>
     <string name="salt">sd;lfja094rjmo3wf90iewdf</string>
     //ADMOB ID's
-    <!--    <string name="ADMOB_APP_ID">ca-app-pub-3489810328478410~304093714</string>-->
-    <string name="ADMOB_APP_ID">ca-app-pub-2830201261334544~2516166051</string>
+    <string name="ADMOB_APP_ID">ca-app-pub-5580537606944457~4465578836</string>
+    <!--    <string name="ADMOB_APP_ID">ca-app-pub-2830201261334544~2516166051</string>-->
     <string name="STARTAPP_APP_ID">200468252</string>
     <string name="APPLOVIN_SDK_KEY">U3WzVWmlM4is2Md6zUTzSbFCygBe7812TP5rCB4PaDuXcmhDezTJVIUaPF0UiPnoTvZGTWWOR8DKTL7ytmuc-5</string>
     <!--    <string name="ADMOB_BANNER_ID">ca-app-pub-3489810328478410/935607688</string>-->
@@ -48,6 +51,11 @@
     <string name="msg_subscribed">subscribed</string>
     <string name="msg_subscribe_failed">subscribe failed</string>
     <string name="DACM_URL">https://www.google.com</string>
+
+    //AdColony
+    <string name="ADCOLONY_APP_ID">app6ff0e0a799244a0ebd</string>
+    <string name="ADCOLONY_INTER_ZONE_ID">vzdebea15f3c9947c686</string>
+    <string name="ADCOLONY_BANNER_ZONE_ID">vze7cec19f349e4460ac</string>
 
 
 </resources>

@@ -9,8 +9,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.applovin.mediation.ads.MaxInterstitialAd;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -18,7 +16,6 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import com.imtyaz.quranurdutarjuma.R;
 import com.imtyaz.quranurdutarjuma.models.ApplicationSettings;
 import com.imtyaz.quranurdutarjuma.utils.AdsTypes;
-import com.startapp.sdk.adsbase.StartAppAd;
 
 public class YoutubeVideoPlayer extends YouTubeBaseActivity {
     YouTubePlayerView youtubeVideoView;
@@ -28,7 +25,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
     MaxInterstitialAd maxinterstitialAd;
     Dialog dialog;
     private com.google.android.gms.ads.AdView admobAdView;
-    private InterstitialAd admobInterstitialAd;
+//    private InterstitialAd admobInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +38,7 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
         initViews();
         loadAds();
         new Handler().postDelayed(() -> {
-            showAd();
+//            showAd();
         }, 3000);
 
 
@@ -80,53 +77,53 @@ public class YoutubeVideoPlayer extends YouTubeBaseActivity {
 
     public void loadAds() {
         if (applicationSettings.getAdds() == AdsTypes.admobAds) {
-            admobInterstitialAds();
+//            admobInterstitialAds();
         } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
             maxInterstitialAd();
         }
     }
 
-    public void showAd() {
-        if (MainActivity.clickCount >= applicationSettings.getAdMobLimit()) {
-            if (applicationSettings.getAdds() == AdsTypes.admobAds) {
-                if (admobInterstitialAd.isLoaded()) {
-                    showingAdDialog();
-                    new Handler().postDelayed(() -> {
-                        cancelShowingAdDialog();
-                        admobInterstitialAd.show();
-                    }, 2000);
+//    public void showAd() {
+//        if (MainActivity.clickCount >= applicationSettings.getAdMobLimit()) {
+//            if (applicationSettings.getAdds() == AdsTypes.admobAds) {
+//                if (admobInterstitialAd.isLoaded()) {
+//                    showingAdDialog();
+//                    new Handler().postDelayed(() -> {
+//                        cancelShowingAdDialog();
+//                        admobInterstitialAd.show();
+//                    }, 2000);
+//
+//                }
+//                MainActivity.clickCount = 0;
+//            } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
+//                if (maxinterstitialAd.isReady()) {
+//                    showingAdDialog();
+//                    new Handler().postDelayed(() -> {
+//                        cancelShowingAdDialog();
+//                        maxinterstitialAd.showAd();
+//                    }, 2000);
+//                }
+//                MainActivity.clickCount = 0;
+//
+//            } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
+//                showingAdDialog();
+//                new Handler().postDelayed(() -> {
+//                    cancelShowingAdDialog();
+//                    StartAppAd.showAd(this);
+//                }, 2000);
+//
+//                MainActivity.clickCount = 0;
+//            }
+//            loadAds();
+//        }
+//    }
 
-                }
-                MainActivity.clickCount = 0;
-            } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
-                if (maxinterstitialAd.isReady()) {
-                    showingAdDialog();
-                    new Handler().postDelayed(() -> {
-                        cancelShowingAdDialog();
-                        maxinterstitialAd.showAd();
-                    }, 2000);
-                }
-                MainActivity.clickCount = 0;
-
-            } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
-                showingAdDialog();
-                new Handler().postDelayed(() -> {
-                    cancelShowingAdDialog();
-                    StartAppAd.showAd(this);
-                }, 2000);
-
-                MainActivity.clickCount = 0;
-            }
-            loadAds();
-        }
-    }
-
-    public void admobInterstitialAds() {
-        admobInterstitialAd = new InterstitialAd(this);
-        admobInterstitialAd.setAdUnitId(getResources().getString(R.string.ADMOB_INTER_ID));
-        admobInterstitialAd.loadAd(new AdRequest.Builder().build());
-        AdRequest adRequest = new AdRequest.Builder().build();
-    }
+//    public void admobInterstitialAds() {
+//        admobInterstitialAd = new InterstitialAd(this);
+//        admobInterstitialAd.setAdUnitId(getResources().getString(R.string.ADMOB_INTER_ID));
+//        admobInterstitialAd.loadAd(new AdRequest.Builder().build());
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//    }
 
     void maxInterstitialAd() {
         maxinterstitialAd = new MaxInterstitialAd(getResources().getString(R.string.APPLOVIN_INTER_ID), this);
