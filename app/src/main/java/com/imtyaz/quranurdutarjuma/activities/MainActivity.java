@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         applicationSettings = (ApplicationSettings) getIntent().getSerializableExtra("applicationSettings");
         binding.setSettings(applicationSettings);
         setContentView(binding.getRoot());
-//        AudienceNetworkAds.initialize(this);
         fragmentTrx(new HomeFragment(), null, "HomeFragment");
         Yodo1MasAdBuildConfig config = new Yodo1MasAdBuildConfig.Builder()
                 .enableAdaptiveBanner(true)
@@ -185,47 +184,48 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         initializeYodo1Ads();
         setColonyAds();
         loadAds();
-        Yodo1MasBannerAdView bannerAdView = new Yodo1MasBannerAdView(this);
-        bannerAdView.setAdSize(Yodo1MasBannerAdSize.Banner);
-        binding.yodo1Banner.setAdListener(new Yodo1MasBannerAdListener() {
-            @Override
-            public void onBannerAdLoaded(Yodo1MasBannerAdView bannerAdView) {
-                // Code to be executed when an ad finishes loading.
-                Toast.makeText(getApplicationContext(),"onBannerAdLoaded",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onBannerAdFailedToLoad(Yodo1MasBannerAdView bannerAdView, @NonNull Yodo1MasError error) {
-                // Code to be executed when an ad request fails.
-                Toast.makeText(getApplicationContext(),"onBannerAdFailedToLoad"+error.toString(),Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onBannerAdOpened(Yodo1MasBannerAdView bannerAdView) {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-                Toast.makeText(getApplicationContext(),"onBannerAdOpened",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onBannerAdFailedToOpen(Yodo1MasBannerAdView bannerAdView, @NonNull Yodo1MasError error) {
-                // Code to be executed when an ad open fails.
-                Toast.makeText(getApplicationContext(),"onBannerAdFailedToOpen",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onBannerAdClosed(Yodo1MasBannerAdView bannerAdView) {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-                Toast.makeText(getApplicationContext(),"onBannerAdClosed",Toast.LENGTH_SHORT).show();
-            }
-        });
-        binding.yodo1Banner.loadAd();
+        loadBanners();
+//        Yodo1MasBannerAdView bannerAdView = new Yodo1MasBannerAdView(this);
+//        bannerAdView.setAdSize(Yodo1MasBannerAdSize.Banner);
+//        binding.yodo1Banner.setAdListener(new Yodo1MasBannerAdListener() {
+//            @Override
+//            public void onBannerAdLoaded(Yodo1MasBannerAdView bannerAdView) {
+//                // Code to be executed when an ad finishes loading.
+//                Toast.makeText(getApplicationContext(),"onBannerAdLoaded",Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onBannerAdFailedToLoad(Yodo1MasBannerAdView bannerAdView, @NonNull Yodo1MasError error) {
+//                // Code to be executed when an ad request fails.
+//                Toast.makeText(getApplicationContext(),"onBannerAdFailedToLoad"+error.toString(),Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onBannerAdOpened(Yodo1MasBannerAdView bannerAdView) {
+//                // Code to be executed when an ad opens an overlay that
+//                // covers the screen.
+//                Toast.makeText(getApplicationContext(),"onBannerAdOpened",Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onBannerAdFailedToOpen(Yodo1MasBannerAdView bannerAdView, @NonNull Yodo1MasError error) {
+//                // Code to be executed when an ad open fails.
+//                Toast.makeText(getApplicationContext(),"onBannerAdFailedToOpen",Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onBannerAdClosed(Yodo1MasBannerAdView bannerAdView) {
+//                // Code to be executed when the user is about to return
+//                // to the app after tapping on an ad.
+//                Toast.makeText(getApplicationContext(),"onBannerAdClosed",Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        binding.yodo1Banner.loadAd();
 
     }
 
     public void initializeYodo1Ads() {
-        Yodo1Mas.getInstance().init(this, "UIsisNnKmx", new Yodo1Mas.InitListener() {
+        Yodo1Mas.getInstance().init(this, getResources().getString(R.string.YODO_APP_KEY), new Yodo1Mas.InitListener() {
             @Override
             public void onMasInitSuccessful() {
 //                Toast.makeText(MainActivity.this, "sdk init successful", Toast.LENGTH_SHORT).show();
