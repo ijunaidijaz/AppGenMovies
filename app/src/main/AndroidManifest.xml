@@ -70,9 +70,9 @@
 <!--        <meta-data-->
 <!--            android:name="applovin.sdk.key"-->
 <!--            android:value="@string/APPLOVIN_SDK_KEY" />-->
-        <meta-data
-            android:name="com.startapp.sdk.APPLICATION_ID"
-            android:value="@string/STARTAPP_APP_ID" />
+<!--        <meta-data-->
+<!--            android:name="com.startapp.sdk.APPLICATION_ID"-->
+<!--            android:value="@string/STARTAPP_APP_ID" />-->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
