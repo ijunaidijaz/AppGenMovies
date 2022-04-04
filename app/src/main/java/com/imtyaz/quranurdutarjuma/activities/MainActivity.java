@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
 
             @Override
             public void onMasInitFailed(@NonNull Yodo1MasError error) {
-                Toast.makeText(MainActivity.this, "init failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "init failed", Toast.LENGTH_SHORT).show();
             }
         });
         Yodo1Mas.getInstance().setRewardListener(rewardListener);
