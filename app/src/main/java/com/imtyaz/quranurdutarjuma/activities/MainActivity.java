@@ -176,56 +176,15 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         binding.setSettings(applicationSettings);
         setContentView(binding.getRoot());
         fragmentTrx(new HomeFragment(), null, "HomeFragment");
-//        Yodo1MasAdBuildConfig config = new Yodo1MasAdBuildConfig.Builder()
-//                .enableAdaptiveBanner(true)
-//                .enableUserPrivacyDialog(true)
-//                .build();
-//        Yodo1Mas.getInstance().setAdBuildConfig(config);
         initializeYodo1Ads();
         setColonyAds();
         loadAds();
         loadBanners();
-//        Yodo1MasBannerAdView bannerAdView = new Yodo1MasBannerAdView(this);
-//        bannerAdView.setAdSize(Yodo1MasBannerAdSize.Banner);
-//        binding.yodo1Banner.setAdListener(new Yodo1MasBannerAdListener() {
-//            @Override
-//            public void onBannerAdLoaded(Yodo1MasBannerAdView bannerAdView) {
-//                // Code to be executed when an ad finishes loading.
-//                Toast.makeText(getApplicationContext(),"onBannerAdLoaded",Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onBannerAdFailedToLoad(Yodo1MasBannerAdView bannerAdView, @NonNull Yodo1MasError error) {
-//                // Code to be executed when an ad request fails.
-//                Toast.makeText(getApplicationContext(),"onBannerAdFailedToLoad"+error.toString(),Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onBannerAdOpened(Yodo1MasBannerAdView bannerAdView) {
-//                // Code to be executed when an ad opens an overlay that
-//                // covers the screen.
-//                Toast.makeText(getApplicationContext(),"onBannerAdOpened",Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onBannerAdFailedToOpen(Yodo1MasBannerAdView bannerAdView, @NonNull Yodo1MasError error) {
-//                // Code to be executed when an ad open fails.
-//                Toast.makeText(getApplicationContext(),"onBannerAdFailedToOpen",Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onBannerAdClosed(Yodo1MasBannerAdView bannerAdView) {
-//                // Code to be executed when the user is about to return
-//                // to the app after tapping on an ad.
-//                Toast.makeText(getApplicationContext(),"onBannerAdClosed",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        binding.yodo1Banner.loadAd();
 
     }
 
     public void initializeYodo1Ads() {
-        Yodo1Mas.getInstance().init(this, getResources().getString(R.string.YODO_APP_KEY), new Yodo1Mas.InitListener() {
+        Yodo1Mas.getInstance().init(this, applicationSettings.getYodo1AppId(), new Yodo1Mas.InitListener() {
             @Override
             public void onMasInitSuccessful() {
 //                Toast.makeText(MainActivity.this, "sdk init successful", Toast.LENGTH_SHORT).show();
@@ -247,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         AdColonyAppOptions appOptions = new AdColonyAppOptions()
                 .setUserID("unique_user_id")
                 .setKeepScreenOn(true);
-        AdColony.configure(this, appOptions, getString(R.string.ADCOLONY_APP_ID));
+        AdColony.configure(this, appOptions, applicationSettings.getAdmobAppId());
         AdColonyAdOptions adOptions = new AdColonyAdOptions();
 
     }
@@ -339,137 +298,9 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         adOptions = new AdColonyAdOptions();
 
         //Request Ad
-        AdColony.requestAdView(getString(R.string.ADCOLONY_BANNER_ZONE_ID), adColonyAdViewListener, AdColonyAdSize.BANNER, adOptions);
-    }
-    public void admobBannerAds() {
-//        AdView adView = new AdView(this);
-//        adView.setAdSize(AdSize.BANNER);
-//        adView.setAdUnitId(applicationSettings.getAdMobBannerId());
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        adView.loadAd(adRequest);
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        binding.bannerLayout.addView(adView, params);
-////        admobAdView = findViewById(R.id.adView);
-//////        AdRequest adRequest = new AdRequest.Builder().build();
-////        admobAdView.loadAd(adRequest);
-//        adView.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdLoaded() {
-//                // Code to be executed when an ad finishes loading.
-////                binding.adSpace.setVisibility(View.GONE);
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(LoadAdError adError) {
-//                // Code to be executed when an ad request fails.
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                // Code to be executed when an ad opens an overlay that
-//                // covers the screen.
-//            }
-//
-//            @Override
-//            public void onAdClicked() {
-//                // Code to be executed when the user clicks on an ad.
-//            }
-//
-//            @Override
-//            public void onAdClosed() {
-//                // Code to be executed when the user is about to return
-//                // to the app after tapping on an ad.
-//            }
-//        });
+        AdColony.requestAdView(applicationSettings.getAdMobBannerId(), adColonyAdViewListener, AdColonyAdSize.BANNER, adOptions);
     }
 
-    public void admobInterstitialAds() {
-//        admobInterstitialAd = new InterstitialAd() {
-//            @Nullable
-//            @Override
-//            public FullScreenContentCallback getFullScreenContentCallback() {
-//                return null;
-//            }
-//
-//            @Nullable
-//            @Override
-//            public OnPaidEventListener getOnPaidEventListener() {
-//                return null;
-//            }
-//
-//            @NonNull
-//            @Override
-//            public ResponseInfo getResponseInfo() {
-//                return null;
-//            }
-//
-//            @NonNull
-//            @Override
-//            public String getAdUnitId() {
-//                return null;
-//            }
-//
-//            @Override
-//            public void setFullScreenContentCallback(@Nullable FullScreenContentCallback fullScreenContentCallback) {
-//
-//            }
-//
-//            @Override
-//            public void setImmersiveMode(boolean b) {
-//
-//            }
-//
-//            @Override
-//            public void setOnPaidEventListener(@Nullable OnPaidEventListener onPaidEventListener) {
-//
-//            }
-//
-//            @Override
-//            public void show(@NonNull Activity activity) {
-//
-//            }
-//        };
-//        admobInterstitialAd.show(this);
-//        admobInterstitialAd.setAdUnitId(applicationSettings.getAdMobInterstitialId());
-//        admobInterstitialAd.loadAd(new AdRequest.Builder().build());
-//        admobInterstitialAd.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdClosed() {
-//                super.onAdClosed();
-//            }
-//
-//            @Override
-//            public void onAdFailedToLoad(int i) {
-//                super.onAdFailedToLoad(i);
-//            }
-//
-//            @Override
-//            public void onAdLeftApplication() {
-//                super.onAdLeftApplication();
-//            }
-//
-//            @Override
-//            public void onAdOpened() {
-//                super.onAdOpened();
-//            }
-//
-//            @Override
-//            public void onAdLoaded() {
-//                super.onAdLoaded();
-//            }
-//
-//            @Override
-//            public void onAdClicked() {
-//                super.onAdClicked();
-//            }
-//
-//            @Override
-//            public void onAdImpression() {
-//                super.onAdImpression();
-//            }
-//        });
-//    }
-    }
 
     public void fragmentTrx(Fragment fragment, Bundle bundle, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -815,7 +646,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             public void onExpiring(AdColonyInterstitial ad) {
                 // Request a new ad if ad is expiring
                 isColonyAdLoaded=false;
-                AdColony.requestInterstitial( getString(R.string.ADCOLONY_INTER_ZONE_ID), this, adOptions);
+                AdColony.requestInterstitial( applicationSettings.getAdMobInterstitialId(), this, adOptions);
                 Log.d(TAG, "onExpiring");
             }
 
@@ -823,11 +654,11 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             public void onClosed(AdColonyInterstitial ad) {
                 super.onClosed(ad);
                 isColonyAdLoaded=false;
-                AdColony.requestInterstitial(getString(R.string.ADCOLONY_INTER_ZONE_ID), this, adOptions);
+                AdColony.requestInterstitial(applicationSettings.getAdMobInterstitialId(), this, adOptions);
             }
         };
         // Set up button to show an ad when clicked
-        AdColony.requestInterstitial(getString(R.string.ADCOLONY_INTER_ZONE_ID), listener, adOptions);
+        AdColony.requestInterstitial(applicationSettings.getAdMobInterstitialId(), listener, adOptions);
 
     }
 

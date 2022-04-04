@@ -24,6 +24,9 @@ public class ApplicationSettings implements Serializable {
     @SerializedName("Title")
     @Expose
     private String title;
+    @SerializedName("Yodo1")
+    @Expose
+    private String Yodo1AppId;
     @SerializedName("Discraption")
     @Expose
     private String discraption;
@@ -164,6 +167,14 @@ public class ApplicationSettings implements Serializable {
 
     public String getLayoutBackGround() {
         return layoutBackGround;
+    }
+
+    public String getYodo1AppId() {
+        return Yodo1AppId;
+    }
+
+    public void setYodo1AppId(String yodo1AppId) {
+        Yodo1AppId = yodo1AppId;
     }
 
     public void setLayoutBackGround(String layoutBackGround) {
