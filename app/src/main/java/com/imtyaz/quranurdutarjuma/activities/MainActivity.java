@@ -178,15 +178,9 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         binding.setSettings(applicationSettings);
         setContentView(binding.getRoot());
         fragmentTrx(new HomeFragment(), null, "HomeFragment");
-//        Yodo1MasAdBuildConfig config = new Yodo1MasAdBuildConfig.Builder()
-//                .enableAdaptiveBanner(true)
-//                .userAgreementUrl("https://developers.yodo1.com/knowledge-base/faq/#android-related")
-//                .enableUserPrivacyDialog(true)
-//                .build();
-//        Yodo1Mas.getInstance().setAdBuildConfig(config);
         initializeYodo1Ads();
         setColonyAds();
-        loadAds();
+        loadAds();s
         loadBanners();
     }
 
