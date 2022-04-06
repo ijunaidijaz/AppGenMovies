@@ -3,7 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         release {
-            storeFile file('C:\\Users\\Dell\\Downloads\\naat.jks')
+            storeFile file('C:\\Users\\Junaid\\Downloads\\naat.jks')
             storePassword '123456'
             keyAlias 'naat'
             keyPassword '123456'
@@ -20,13 +20,17 @@ android {
         versionName "1.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        ndk {
+            abiFilters "x86", "armeabi"
+        }
     }
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+//            minifyEnabled true
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            multiDexEnabled true
         }
         debug {
 //            minifyEnabled true
@@ -96,6 +100,7 @@ dependencies {
 //    implementation 'com.ironsource.sdk:mediationsdk:7.2.1.1'
 //    implementation 'com.yodo1.mas:full:4.6.1'
     implementation 'com.yodo1.mas:lite:4.6.1'
+
 //    api 'com.yodo1.mas:google:+' //If your game is participating in the Google Play "Developed For Families" program, please use this dependencies
     implementation 'com.google.android.ads:mediation-test-suite:2.0.0'
     implementation 'com.adcolony:sdk:4.7.0'

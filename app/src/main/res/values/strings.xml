@@ -39,7 +39,7 @@
     <string name="FACEBOOK_INTER_ID">YOUR_PLACEMENT_ID</string>
 
     //PACKEGE NAME AND YOUTUBE API KEY
-    <string name="PACKAGE_NAME">com.imtyaz.quranurdutarjuma</string>
+    <string name="PACKAGE_NAME">com.livematch.livesportstv</string>
     <!--    <string name="PACKAGE_NAME">com.free.newhdmovies</string>-->
     <string name="TEST_PACKAGE_NAME">test.app.com</string>
     <string name="YOUTUBE_API_KEY">AIzaSyDT77zvdQIeFdZ7GT3xnXWLBgJCXXKw8n0</string>

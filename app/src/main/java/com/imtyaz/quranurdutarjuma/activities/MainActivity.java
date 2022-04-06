@@ -47,6 +47,7 @@ import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdkUtils;
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -82,6 +83,7 @@ import com.yodo1.mas.banner.Yodo1MasBannerAdView;
 import com.yodo1.mas.error.Yodo1MasError;
 import com.yodo1.mas.event.Yodo1MasAdEvent;
 import com.yodo1.mas.helper.model.Yodo1MasAdBuildConfig;
+import com.yodo1.mas.helper.model.Yodo1MasUserPrivacyConfig;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -176,11 +178,16 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         binding.setSettings(applicationSettings);
         setContentView(binding.getRoot());
         fragmentTrx(new HomeFragment(), null, "HomeFragment");
+//        Yodo1MasAdBuildConfig config = new Yodo1MasAdBuildConfig.Builder()
+//                .enableAdaptiveBanner(true)
+//                .userAgreementUrl("https://developers.yodo1.com/knowledge-base/faq/#android-related")
+//                .enableUserPrivacyDialog(true)
+//                .build();
+//        Yodo1Mas.getInstance().setAdBuildConfig(config);
         initializeYodo1Ads();
         setColonyAds();
         loadAds();
         loadBanners();
-
     }
 
     public void initializeYodo1Ads() {
@@ -192,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
 
             @Override
             public void onMasInitFailed(@NonNull Yodo1MasError error) {
-//                Toast.makeText(MainActivity.this, "init failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
         Yodo1Mas.getInstance().setRewardListener(rewardListener);
