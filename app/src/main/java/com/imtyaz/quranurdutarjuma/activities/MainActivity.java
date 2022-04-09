@@ -1,6 +1,5 @@
 package com.imtyaz.quranurdutarjuma.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -47,16 +45,6 @@ import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.applovin.sdk.AppLovinSdkUtils;
-import com.google.ads.mediation.admob.AdMobAdapter;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.OnPaidEventListener;
-import com.google.android.gms.ads.ResponseInfo;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.imtyaz.quranurdutarjuma.R;
 import com.imtyaz.quranurdutarjuma.databinding.MainActivityBinding;
 import com.imtyaz.quranurdutarjuma.fragments.HomeFragment;
@@ -75,7 +63,6 @@ import com.imtyaz.quranurdutarjuma.networks.OnNetworkResponse;
 import com.imtyaz.quranurdutarjuma.utils.AdsTypes;
 import com.imtyaz.quranurdutarjuma.utils.RequestCodes;
 import com.imtyaz.quranurdutarjuma.utils.Utils;
-import com.startapp.sdk.adsbase.StartAppAd;
 import com.yodo1.mas.Yodo1Mas;
 import com.yodo1.mas.banner.Yodo1MasBannerAdListener;
 import com.yodo1.mas.banner.Yodo1MasBannerAdSize;
@@ -83,7 +70,6 @@ import com.yodo1.mas.banner.Yodo1MasBannerAdView;
 import com.yodo1.mas.error.Yodo1MasError;
 import com.yodo1.mas.event.Yodo1MasAdEvent;
 import com.yodo1.mas.helper.model.Yodo1MasAdBuildConfig;
-import com.yodo1.mas.helper.model.Yodo1MasUserPrivacyConfig;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -116,29 +102,13 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
 
     private Button showButton;
     private ProgressBar progress;
-     AdColonyInterstitial colonyInterstitial;
+    AdColonyInterstitial colonyInterstitial;
     private AdColonyInterstitialListener listener;
-    boolean isColonyAdLoaded=false;
+    boolean isColonyAdLoaded = false;
     AdColonyAdOptions adOptions;
     AdColonyAdViewListener adColonyAdViewListener;
     AdColonyAdView adView;
-//    private InterstitialAd admobInterstitialAd;
-    private final Yodo1Mas.RewardListener rewardListener = new Yodo1Mas.RewardListener() {
-        @Override
-        public void onAdOpened(@NonNull Yodo1MasAdEvent event) {
-
-        }
-
-        @Override
-        public void onAdvertRewardEarned(@NonNull Yodo1MasAdEvent event) {
-
-        }
-
-        @Override
-        public void onAdError(@NonNull Yodo1MasAdEvent event, @NonNull Yodo1MasError error) {
-            Log.d("TAG", "onAdError: reward");
-        }
-    };
+    //    private InterstitialAd admobInterstitialAd;
 
     public final Yodo1Mas.InterstitialListener interstitialListener = new Yodo1Mas.InterstitialListener() {
         @Override
@@ -163,12 +133,14 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
 
         @Override
         public void onAdError(@NonNull Yodo1MasAdEvent event, @NonNull Yodo1MasError error) {
+//            Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onAdClosed(@NonNull Yodo1MasAdEvent event) {
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,9 +150,14 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         binding.setSettings(applicationSettings);
         setContentView(binding.getRoot());
         fragmentTrx(new HomeFragment(), null, "HomeFragment");
+        Yodo1MasAdBuildConfig config = new Yodo1MasAdBuildConfig.Builder()
+                .enableAdaptiveBanner(true)
+                .enableUserPrivacyDialog(true)
+                .build();
+        Yodo1Mas.getInstance().setAdBuildConfig(config);
         initializeYodo1Ads();
         setColonyAds();
-        loadAds();s
+        loadAds();
         loadBanners();
     }
 
@@ -196,14 +173,13 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
                 Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        Yodo1Mas.getInstance().setRewardListener(rewardListener);
+//        Yodo1Mas.getInstance().setRewardListener(rewardListener);
         Yodo1Mas.getInstance().setInterstitialListener(interstitialListener);
-//        Yodo1Mas.getInstance().setBannerListener(bannerListener);
-//        Yodo1Mas.getInstance().showBannerAd(MainActivity.this, "mas_test");
+        Yodo1Mas.getInstance().setBannerListener(bannerListener);
 
     }
 
-    private  void setColonyAds(){
+    private void setColonyAds() {
         AdColonyAppOptions appOptions = new AdColonyAppOptions()
                 .setUserID("unique_user_id")
                 .setKeepScreenOn(true);
@@ -253,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
     }
+
     private void requestColonyBannerAd() {
         // Optional Ad specific options to be sent with request
         adColonyAdViewListener = new AdColonyAdViewListener() {
@@ -602,10 +579,15 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             loadMaxBannerAd();
         } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
 
+            loadYodoBanner();
 //            binding.startAppBannerAd.setVisibility(View.VISIBLE);
 //            binding.maxBanner.setVisibility(View.GONE);
 //            binding.adView.setVisibility(View.GONE);
         }
+    }
+
+    private void loadYodoBanner() {
+        Yodo1Mas.getInstance().showBannerAd(MainActivity.this, "mas_test");
     }
 
     public void loadAds() {
@@ -613,7 +595,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             loadColonyInterstitial();
         } else if (applicationSettings.getAdds() == AdsTypes.facebooksAds) {
             maxInterstitialAd();
-        }else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
+        } else if (applicationSettings.getAdds() == AdsTypes.startAppAds) {
 //           initializeYodo1Ads();
         }
     }
@@ -624,7 +606,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             public void onRequestFilled(AdColonyInterstitial ad) {
                 // Ad passed back in request filled callback, ad can now be shown
                 colonyInterstitial = ad;
-                isColonyAdLoaded=true;
+                isColonyAdLoaded = true;
 //                showButton.setEnabled(true);
 //                progress.setVisibility(View.INVISIBLE);
                 Log.d(TAG, "onRequestFilled");
@@ -633,7 +615,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             @Override
             public void onRequestNotFilled(AdColonyZone zone) {
                 // Ad request was not filled
-                isColonyAdLoaded=false;
+                isColonyAdLoaded = false;
                 Log.d(TAG, "onRequestNotFilled: ");
             }
 
@@ -646,15 +628,15 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             @Override
             public void onExpiring(AdColonyInterstitial ad) {
                 // Request a new ad if ad is expiring
-                isColonyAdLoaded=false;
-                AdColony.requestInterstitial( applicationSettings.getAdMobInterstitialId(), this, adOptions);
+                isColonyAdLoaded = false;
+                AdColony.requestInterstitial(applicationSettings.getAdMobInterstitialId(), this, adOptions);
                 Log.d(TAG, "onExpiring");
             }
 
             @Override
             public void onClosed(AdColonyInterstitial ad) {
                 super.onClosed(ad);
-                isColonyAdLoaded=false;
+                isColonyAdLoaded = false;
                 AdColony.requestInterstitial(applicationSettings.getAdMobInterstitialId(), this, adOptions);
             }
         };
@@ -796,6 +778,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
             }
         });
     }
+
     private void showYodoInterstitial() {
         if (!Yodo1Mas.getInstance().isInterstitialAdLoaded()) {
             Toast.makeText(this, "Interstitial ad has not been cached.", Toast.LENGTH_SHORT).show();
@@ -803,6 +786,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         }
         Yodo1Mas.getInstance().showInterstitialAd(this);
     }
+
     private void showYodoBanner(View v) {
         if (!Yodo1Mas.getInstance().isBannerAdLoaded()) {
             Toast.makeText(this, "Banner ad has not been cached.", Toast.LENGTH_SHORT).show();
@@ -814,6 +798,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         int offsetY = 0;
         Yodo1Mas.getInstance().showBannerAd(this, placement, align, offsetX, offsetY);
     }
+
     private void showColonyInterstitial() {
         if (!isColonyAdLoaded) {
             setColonyAds();
@@ -822,9 +807,10 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
         showingAdDialog();
         new Handler().postDelayed(() -> {
             cancelShowingAdDialog();
-           colonyInterstitial.show();
+            colonyInterstitial.show();
         }, 2000);
     }
+
     public void showingAdDialog() {
         dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

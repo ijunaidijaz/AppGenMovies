@@ -90,11 +90,11 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         progress = findViewById(R.id.progress);
-        setColonyAds();
-//        initializeYodo1Ads();
-//        findViewById(R.id.yodo1_demo_video).setOnClickListener(this::showVideo);
+//        setColonyAds();
+        initializeYodo1Ads();
+//        findViewById(R.id.yodo1_demo_video_id).setOnClickListener(this::showVideo);
 //        findViewById(R.id.yodo1_demo_interstitial).setOnClickListener(this::showInterstitial);
-//        findViewById(R.id.yodo1_demo_banner).setOnClickListener(this::showBanner);
+        findViewById(R.id.yodo1_demo_banner).setOnClickListener(this::showBanner);
         showButton = findViewById(R.id.yodo1_demo_interstitial);
         showButton.setOnClickListener(v -> ad.show());
     }
@@ -134,51 +134,51 @@ public class TestActivity extends AppCompatActivity {
     private void showBanner(View v) {
         int align = Yodo1Mas.BannerTop | Yodo1Mas.BannerHorizontalCenter;
         Yodo1Mas.getInstance().showBannerAd(TestActivity.this, align);
-//        if (!Yodo1Mas.getInstance().isBannerAdLoaded()) {
-//            Toast.makeText(this, "Banner ad has not been cached.", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        String placement = "placementId";
-//
-//        /**
-//         * 'align' will determine the general position of the banner, such as:
-//         *       - top horizontal center
-//         *       - bottom horizontal center
-//         *       - left vertical center
-//         *       - right vertical center
-//         *       - horizontal vertical center
-//         *        The above 5 positions can basically meet most of the needs
-//         *
-//         * align = vertical | horizontal
-//         *              vertical:
-//         *              Yodo1Mas.BannerTop
-//         *              Yodo1Mas.BannerBottom
-//         *              Yodo1Mas.BannerVerticalCenter
-//         *              horizontal:
-//         *              Yodo1Mas.BannerLeft
-//         *              Yodo1Mas.BannerRight
-//         */
+        if (!Yodo1Mas.getInstance().isBannerAdLoaded()) {
+            Toast.makeText(this, "Banner ad has not been cached.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String placement = "placementId";
+
+        /**
+         * 'align' will determine the general position of the banner, such as:
+         *       - top horizontal center
+         *       - bottom horizontal center
+         *       - left vertical center
+         *       - right vertical center
+         *       - horizontal vertical center
+         *        The above 5 positions can basically meet most of the needs
+         *
+         * align = vertical | horizontal
+         *              vertical:
+         *              Yodo1Mas.BannerTop
+         *              Yodo1Mas.BannerBottom
+         *              Yodo1Mas.BannerVerticalCenter
+         *              horizontal:
+         *              Yodo1Mas.BannerLeft
+         *              Yodo1Mas.BannerRight
+         */
 //        int align = Yodo1Mas.BannerBottom | Yodo1Mas.BannerHorizontalCenter;
-//
-//        /**
-//         * 'offset' will adjust the position of the banner on the basis of 'align'
-//         *  If 'align' cannot meet the demand, you can adjust it by 'offset'
-//         *
-//         *  horizontal offset:
-//         *  offsetX > 0, the banner will move to the right.
-//         *  offsetX < 0, the banner will move to the left.
-//         *  if align = Yodo1Mas.BannerLeft, offsetX < 0 is invalid
-//         *
-//         *  vertical offset:
-//         *  offsetY > 0, the banner will move to the bottom.
-//         *  offsetY < 0, the banner will move to the top.
-//         *  if align = Yodo1Mas.BannerTop, offsetY < 0 is invalid
-//         *
-//         *  Click here to see more details: https://developers.yodo1.com/knowledge-base/android-banner-configuration/
-//         */
-//        int offsetX = 0;
-//        int offsetY = 0;
-//        Yodo1Mas.getInstance().showBannerAd(this, placement, align, offsetX, offsetY);
+
+        /**
+         * 'offset' will adjust the position of the banner on the basis of 'align'
+         *  If 'align' cannot meet the demand, you can adjust it by 'offset'
+         *
+         *  horizontal offset:
+         *  offsetX > 0, the banner will move to the right.
+         *  offsetX < 0, the banner will move to the left.
+         *  if align = Yodo1Mas.BannerLeft, offsetX < 0 is invalid
+         *
+         *  vertical offset:
+         *  offsetY > 0, the banner will move to the bottom.
+         *  offsetY < 0, the banner will move to the top.
+         *  if align = Yodo1Mas.BannerTop, offsetY < 0 is invalid
+         *
+         *  Click here to see more details: https://developers.yodo1.com/knowledge-base/android-banner-configuration/
+         */
+        int offsetX = 0;
+        int offsetY = 0;
+        Yodo1Mas.getInstance().showBannerAd(this, placement, align, offsetX, offsetY);
 //    }
 //
 //    private void showAppLovinMediationDebugger(View v) {

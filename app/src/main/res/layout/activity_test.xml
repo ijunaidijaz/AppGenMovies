@@ -14,7 +14,7 @@
         android:padding="15dp">
 
         <Button
-            android:id="@+id/yodo1_demo_video"
+            android:id="@+id/yodo1_demo_video_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

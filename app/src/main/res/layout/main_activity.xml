@@ -62,13 +62,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:visibility="gone" />
-                <com.yodo1.mas.banner.Yodo1MasBannerAdView
-                    xmlns:masads="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/yodo1_banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    masads:adSize="Banner" />
                 <RelativeLayout
                     android:id="@+id/maxBanner"
                     android:layout_width="match_parent"
