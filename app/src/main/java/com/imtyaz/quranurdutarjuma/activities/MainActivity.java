@@ -801,7 +801,7 @@ public class MainActivity extends AppCompatActivity implements OnNetworkResponse
 
     private void showColonyInterstitial() {
         if (!isColonyAdLoaded) {
-            setColonyAds();
+//            setColonyAds();
             return;
         }
         showingAdDialog();
